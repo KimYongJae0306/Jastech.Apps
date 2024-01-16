@@ -1,5 +1,4 @@
 ﻿using ATT_UT_IPAD.UI.Controls;
-using ATT_UT_Remodeling.Core.Data;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
@@ -7,67 +6,71 @@ using System;
 using System.Windows.Forms;
 using static Jastech.Apps.Winform.UI.Controls.ResultChartControl;
 
-namespace ATT_UT_Remodeling.UI.Controls
+namespace Jastech.Apps.Winform.UI.Controls
 {
-    public partial class AlignViewerControl : UserControl
+    public partial class AkkonViewerControl : UserControl
     {
         #region 속성
-        public AlignResultDisplayControl AlignResultDisplayControl { get; set; } = null;
+        public AkkonResultDisplayControl AkkonResultDisplayControl { get; set; } = null;
         #endregion
 
         #region 이벤트
         public event SetTabDelegate SetTabEventHandler;
+
+        public event GetTabInspResultDelegate GetTabInspResultEvent;
         #endregion
 
         #region 델리게이트
         public delegate void SetTabDelegate(int tabNo);
+
+        public delegate TabInspResult GetTabInspResultDelegate(int tabNo);
         #endregion
 
         #region 생성자
-        public AlignViewerControl()
+        public AkkonViewerControl()
         {
             InitializeComponent();
         }
         #endregion
 
         #region 메서드
-        private void AlignViewerControl_Load(object sender, EventArgs e)
+        private void AkkonViewerControl_Load(object sender, EventArgs e)
         {
             AddControls();
         }
 
         private void AddControls()
         {
-            AlignResultDisplayControl = new AlignResultDisplayControl();
-            AlignResultDisplayControl.Dock = DockStyle.Fill;
-            AlignResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
-            AlignResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
-            pnlResultDisplay.Controls.Add(AlignResultDisplayControl);
+            AkkonResultDisplayControl = new AkkonResultDisplayControl();
+            AkkonResultDisplayControl.Dock = DockStyle.Fill;
+            AkkonResultDisplayControl.SendTabNumberEvent += UpdateResultChart;
+            AkkonResultDisplayControl.GetTabInspResultEvent += GetTabInspResult;
+            pnlResultDisplay.Controls.Add(AkkonResultDisplayControl);
         }
 
         private TabInspResult GetTabInspResult(int tabNo)
         {
-            return AppsInspResult.Instance().Get(tabNo);
+            return GetTabInspResultEvent?.Invoke(tabNo);
         }
 
-        public void UpdateTabCount(int tabCount)
+        public void CreateTabButton(int tabCount)
         {
-            AlignResultDisplayControl.UpdateTabButtons(tabCount);
+            AkkonResultDisplayControl.CreateTabButton(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)
         {
-            AlignResultDisplayControl.UpdateResultDisplay(tabNo);
+            AkkonResultDisplayControl.UpdateResultDisplay(tabNo);
         }
 
         public void UpdateResultTabButton(int tabNo)
         {
-            AlignResultDisplayControl.UpdateResultTabButton(tabNo);
+            AkkonResultDisplayControl.UpdateResultTabButton(tabNo);
         }
 
         public void TabButtonResetColor()
         {
-            AlignResultDisplayControl.TabButtonResetColor();
+            AkkonResultDisplayControl.TabButtonResetColor();
         }
 
         private void UpdateResultChart(int tabNo)
@@ -77,7 +80,7 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         public void Enable(bool isEnable)
         {
-            AlignResultDisplayControl.Enable(isEnable);
+            AkkonResultDisplayControl.Enable(isEnable);
         }
         #endregion
     }

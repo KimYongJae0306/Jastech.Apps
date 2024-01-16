@@ -132,6 +132,12 @@
     <Compile Include="UI\Controls\AkkonResultDataControl.Designer.cs">
       <DependentUpon>AkkonResultDataControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Controls\AkkonViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AkkonViewerControl.designer.cs">
+      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\AlignMonitoringControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -155,6 +161,18 @@
     </Compile>
     <Compile Include="UI\Controls\AlignTrendXControl.Designer.cs">
       <DependentUpon>AlignTrendXControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\AlignViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\AlignViewerControl.designer.cs">
+      <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DailyInfoViewerControl.designer.cs">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Controls\LightControl.cs">
       <SubType>UserControl</SubType>
@@ -430,6 +448,9 @@
     <EmbeddedResource Include="UI\Controls\AkkonTrendControl.resx">
       <DependentUpon>AkkonTrendControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AkkonViewerControl.resx">
+      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AlignControl.resx">
       <DependentUpon>AlignControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -451,8 +472,14 @@
     <EmbeddedResource Include="UI\Controls\AlignTrendXControl.resx">
       <DependentUpon>AlignTrendXControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\AlignViewerControl.resx">
+      <DependentUpon>AlignViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\AutoFocusControl.resx">
       <DependentUpon>AutoFocusControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\DailyInfoViewerControl.resx">
+      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\LightControl.resx">
       <DependentUpon>LightControl.cs</DependentUpon>

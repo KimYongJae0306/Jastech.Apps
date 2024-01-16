@@ -63,11 +63,13 @@ namespace ATT_UT_IPAD.UI.Pages
             AkkonViewerControl = new AkkonViewerControl();
             AkkonViewerControl.Dock = DockStyle.Fill;
             AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
+            AkkonViewerControl.GetTabInspResultEvent += AkkonViewerControl_GetTabInspResultEvent;
             pnlAkkon.Controls.Add(AkkonViewerControl);
 
             AlignViewerControl = new AlignViewerControl();
             AlignViewerControl.Dock = DockStyle.Fill;
             AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
+            AlignViewerControl.GetTabInspResultEvent += AlignViewerControl_GetTabInspResultEvent;
             pnlAlign.Controls.Add(AlignViewerControl);
 
             AlignMonitoringControl = new AlignMonitoringControl();
@@ -82,6 +84,16 @@ namespace ATT_UT_IPAD.UI.Pages
 
             pnlMainView.Dock = DockStyle.Fill;
             pnlAlignMonitoringView.Dock = DockStyle.Fill;
+        }
+
+        private TabInspResult AkkonViewerControl_GetTabInspResultEvent(int tabNo)
+        {
+            return AppsInspResult.Instance().GetAkkon(tabNo);
+        }
+
+        private TabInspResult AlignViewerControl_GetTabInspResultEvent(int tabNo)
+        {
+            return AppsInspResult.Instance().GetAlign(tabNo);
         }
 
         private TabInspResult AlignMonitoringControl_GetTabInspResultEvent(int tabNo)

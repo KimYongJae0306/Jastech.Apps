@@ -7,6 +7,7 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
@@ -89,7 +90,6 @@ namespace ATT
             TeachingPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.SetInspModelService(ATTInspModelService);
             DataPageControl.ApplyModelEventHandler += ModelPageControl_ApplyModelEventHandler;
-
             ModelManager.Instance().CurrentModelChangedEvent += MainForm_CurrentModelChangedEvent;
 
             if (ModelManager.Instance().CurrentModel != null)
@@ -97,6 +97,8 @@ namespace ATT
                 lblCurrentModel.Text = ModelManager.Instance().CurrentModel.Name;
                 ModelManager.Instance().ApplyChangedEvent();
             }
+
+            SystemManager.Instance().Initialize();
 
             tmrMainForm.Start();
             tmrUpdateStates.Start();
@@ -106,12 +108,12 @@ namespace ATT
 
             PlcControlManager.Instance().WriteVersion();
 
-            if (ConfigSet.Instance().Operation.VirtualMode == false)
-            {
-                CancelSafetyDoorlockTask = new CancellationTokenSource();
-                CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
-                CheckSafetyDoorlockTask.Start();
-            }
+            //if (ConfigSet.Instance().Operation.VirtualMode == false)
+            //{
+            //    CancelSafetyDoorlockTask = new CancellationTokenSource();
+            //    CheckSafetyDoorlockTask = new Task(CheckDoorOpenedLoop, CancelSafetyDoorlockTask.Token);
+            //    CheckSafetyDoorlockTask.Start();
+            //}
         }
 
         private void MainForm_InspRunnerHandler(bool isStart)
@@ -171,7 +173,8 @@ namespace ATT
                 label.ForeColor = Color.White;
 
             Label currentLabel = sender as Label;
-            currentLabel.ForeColor = Color.Blue;
+            int labelIndex = Convert.ToInt32(currentLabel.Parent.Tag);
+            PageLabelList[labelIndex].ForeColor = Color.DodgerBlue;
         }
 
         private void SetSelectPage(UserControl selectedControl)
@@ -186,14 +189,15 @@ namespace ATT
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
-            AppsInspModel model = inspModel as AppsInspModel;
+            AppsInspModel appsInspModel = inspModel as AppsInspModel;
 
-            //AppsInspResult.Instance().Dispose();
+            DailyInfoService.Reset();
+            DailyInfoService.Load(appsInspModel.Name);
 
-            MainPageControl.MainViewControl?.UpdateTabCount(model.TabCount);
+            MainPageControl.ChangeModel(appsInspModel);
 
-            UpdateLabel(model.Name);
-            ConfigSet.Instance().Operation.LastModelName = model.Name;
+            UpdateLabel(appsInspModel.Name);
+            ConfigSet.Instance().Operation.LastModelName = appsInspModel.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
 
             AppsInspResult.Instance().Dispose();
@@ -258,14 +262,10 @@ namespace ATT
             if (user.Type == AuthorityType.None)
             {
                 lblCurrentUser.Text = "Operator";
-                lblTeachingPage.Enabled = false;
-                lblTeachingPageImage.Enabled = false;
             }
             else
             {
                 lblCurrentUser.Text = user.Id.ToString();
-                lblTeachingPage.Enabled = true;
-                lblTeachingPageImage.Enabled = true;
             }
 
             if (MainPageControl.Visible)
@@ -273,17 +273,41 @@ namespace ATT
 
             if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
+                if (user.Type == AuthorityType.Maker)
+                {
+                    lblLogPageImage.Enabled = true;
+                    lblLogPage.Enabled = true;
+                    lblDataPageImage.Enabled = true;
+                    lblDataPage.Enabled = true;
+                }
+                else
+                {
+                    lblLogPageImage.Enabled = false;
+                    lblLogPage.Enabled = false;
+                    lblDataPageImage.Enabled = false;
+                    lblDataPage.Enabled = false;
+                }
+
                 lblTeachingPageImage.Enabled = false;
                 lblTeachingPage.Enabled = false;
-                lblDataPageImage.Enabled = false;
-                lblDataPage.Enabled = false;
             }
             else
             {
-                lblTeachingPageImage.Enabled = true;
-                lblTeachingPage.Enabled = true;
+                if (user.Type == AuthorityType.None)
+                {
+                    lblTeachingPage.Enabled = false;
+                    lblTeachingPageImage.Enabled = false;
+                }
+                else
+                {
+                    lblTeachingPage.Enabled = true;
+                    lblTeachingPageImage.Enabled = true;
+                }
+
                 lblDataPageImage.Enabled = true;
                 lblDataPage.Enabled = true;
+                lblLogPageImage.Enabled = true;
+                lblLogPage.Enabled = true;
             }
         }
 
@@ -299,10 +323,6 @@ namespace ATT
             ControlDisplayHelper.DisposeDisplay(lblMotionState);
             lblMotionState.Image = GetStateImage(isMotionConnected);
 
-            //bool isCognexLicenseNormal = Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count != 0;
-            //ControlDisplayHelper.DisposeDisplay(lblLicenseState);
-            //lblLicenseState.Image = GetStateImage(isCognexLicenseNormal);
-
             var laf = DeviceManager.Instance().LAFCtrlHandler;
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
             ControlDisplayHelper.DisposeDisplay(lblLafState);
@@ -316,32 +336,37 @@ namespace ATT
 
         public void UpdateMainAkkonResult(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateMainAkkonResultData(tabNo);
+            MainPageControl.UpdateMainAkkonResultData(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateMainAlignResult(tabNo);
+            MainPageControl.UpdateMainAlignResult(tabNo);
+        }
+
+        public void UpdateAllRefreshData()
+        {
+            MainPageControl.UpdateAllRefreshData();
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateAkkonResultTabButton(tabNo);
+            MainPageControl.UpdateAkkonResultTabButton(tabNo);
         }
 
         public void UpdateAlignResultTabButton(int tabNo)
         {
-            MainPageControl.MainViewControl.UpdateAlignResultTabButton(tabNo);
+            MainPageControl.UpdateAlignResultTabButton(tabNo);
         }
 
         public void TabButtonResetColor()
         {
-            MainPageControl.MainViewControl.TabButtonResetColor();
+            MainPageControl.TabButtonResetColor();
         }
 
         public void AddSystemLogMessage(string logMessage)
         {
-            MainPageControl.MainViewControl.AddSystemLogMessage(logMessage);
+            MainPageControl.AddSystemLogMessage(logMessage);
         }
 
         private void lblCurrentUser_Click(object sender, EventArgs e)
@@ -366,7 +391,6 @@ namespace ATT
             DeviceManager.Instance().Release();
             GrabberMil.Release();
             MilHelper.FreeApplication();
-            //Application.ExitThread();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -529,41 +553,6 @@ namespace ATT
             }
         }
 
-        bool testForceDoorLockToggle = false;
-        public void CheckDoorOpenedLoop()
-        {
-            while (true)
-            {
-                if (CancelSafetyDoorlockTask.IsCancellationRequested)
-                    break;
-
-                if (testForceDoorLockToggle == true && PlcControlManager.Instance().IsDoorOpened == false)
-                {
-					_prevMachineStatus = PlcControlManager.Instance().MachineStatus;
-                    PlcControlManager.Instance().IsDoorOpened = true;
-
-                    MotionManager.Instance().GetAxisHandler(AxisHandlerName.Handler0).StopMove();
-                    LAFManager.Instance().GetLAF("Laf").LafCtrl.SetMotionStop();
-
-                    SystemManager.Instance().SetStopMode();
-                    lblDoorlockState.BackColor = Color.Red;
-                    lblDoorlockState.ForeColor = Color.Yellow;
-                }
-                else if (testForceDoorLockToggle == false && PlcControlManager.Instance().IsDoorOpened == true)
-                {
-                    PlcControlManager.Instance().IsDoorOpened = false;
-
-                    if (_prevMachineStatus == MachineStatus.RUN)
-                        SystemManager.Instance().SetRunMode();
-
-                    lblDoorlockState.BackColor = BackColor;
-                    lblDoorlockState.ForeColor = BackColor;
-                }
-
-                Thread.Sleep(500);
-            }
-        }
-
         private string GetVirtualImagePath()
         {
             lock (VirtualImagePathQueue)
@@ -588,11 +577,6 @@ namespace ATT
         public void Enable(bool isEnable)
         {
             MainPageControl?.Enable(isEnable);
-        }
-
-        private void lblDoorlockState_Click(object sender, EventArgs e)
-        {
-            testForceDoorLockToggle = !testForceDoorLockToggle;
         }
 
         public void MessageConfirm(string message)

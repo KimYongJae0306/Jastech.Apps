@@ -53,9 +53,15 @@ namespace ATT
             return _instance;
         }
 
-        public bool Initialize(MainForm mainForm)
+        public void SetMainForm(MainForm mainForm)
         {
             _mainForm = mainForm;
+        }
+
+        public bool Initialize()
+        {
+            if (_mainForm == null)
+                return false;
 
             Logger.Write(LogType.System, "Init SplashForm");
 
@@ -64,11 +70,7 @@ namespace ATT
             form.Title = "ATT Inspection";
             form.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             form.SetupActionEventHandler = SplashSetupAction;
-
             form.ShowDialog();
-
-            var recentModelName = ConfigSet.Instance().Operation.LastModelName;
-            DailyInfoService.Load(recentModelName);
 
             return true;
         }

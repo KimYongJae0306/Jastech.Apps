@@ -280,20 +280,20 @@ namespace ATT_UT_Remodeling
 
         private void MainForm_CurrentModelChangedEvent(InspModel inspModel)
         {
-            AppsInspModel model = inspModel as AppsInspModel;
+            AppsInspModel appsInspModel = inspModel as AppsInspModel;
 
             DailyInfoService.Reset();
-            DailyInfoService.Load(model.Name);
+            DailyInfoService.Load(appsInspModel.Name);
 
-            MainPageControl.UpdateTabCount(model.TabCount);
+            MainPageControl.ChangeModel(appsInspModel);
             MainPageControl.ClearPreAlignResult();
 
-            UpdateLabel(model.Name);
-            ConfigSet.Instance().Operation.LastModelName = model.Name;
+            UpdateLabel(appsInspModel.Name);
+            ConfigSet.Instance().Operation.LastModelName = appsInspModel.Name;
             ConfigSet.Instance().Operation.Save(ConfigSet.Instance().Path.Config);
 
-            PlcControlManager.Instance().WriteCurrentModelName(model.Name);
-            Logger.Debug(LogType.Parameter, $"Applied Model name : {model.Name}");
+            PlcControlManager.Instance().WriteCurrentModelName(appsInspModel.Name);
+            Logger.Debug(LogType.Parameter, $"Applied Model name : {appsInspModel.Name}");
 
             AppsInspResult.Instance().Dispose();
         }

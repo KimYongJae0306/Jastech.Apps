@@ -1,4 +1,4 @@
-﻿namespace ATT_UT_Remodeling.UI.Controls
+﻿namespace Jastech.Apps.Winform.UI.Controls
 {
     partial class AkkonViewerControl
     {

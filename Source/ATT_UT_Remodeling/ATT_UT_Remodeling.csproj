@@ -101,29 +101,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
-    <Compile Include="UI\Controls\AkkonViewerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonViewerControl.Designer.cs">
-      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AlignViewerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AlignViewerControl.Designer.cs">
-      <DependentUpon>AlignViewerControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\TeachingPositionListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Controls\TeachingPositionListControl.Designer.cs">
       <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\DailyInfoViewerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\DailyInfoViewerControl.Designer.cs">
-      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\MotionPopupForm.cs">
       <SubType>Form</SubType>
@@ -168,17 +150,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\Controls\AkkonViewerControl.resx">
-      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AlignViewerControl.resx">
-      <DependentUpon>AlignViewerControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\TeachingPositionListControl.resx">
       <DependentUpon>TeachingPositionListControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\DailyInfoViewerControl.resx">
-      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\MotionPopupForm.resx">
       <DependentUpon>MotionPopupForm.cs</DependentUpon>

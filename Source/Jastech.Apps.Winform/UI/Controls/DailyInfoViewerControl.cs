@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Jastech.Apps.Winform.UI.Controls.ResultChartControl;
 
-namespace ATT_UT_Remodeling.UI.Controls
+namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class DailyInfoViewerControl : UserControl
     {
@@ -112,7 +113,7 @@ namespace ATT_UT_Remodeling.UI.Controls
             if (lblAlign.BackColor == _selectedColor)
                 AlignResultDataControl.UpdateAlignDaily(tabNo);
         }
-
+       
         public void UpdateAllRefreshData()
         {
             AkkonResultDataControl.RefreshData();

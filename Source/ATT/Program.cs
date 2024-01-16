@@ -66,7 +66,7 @@ namespace ATT
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
-                SystemManager.Instance().Initialize(mainForm);
+                SystemManager.Instance().SetMainForm(mainForm);
                 Application.Run(mainForm);
             }
             else

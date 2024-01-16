@@ -99,24 +99,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemManager.cs" />
-    <Compile Include="UI\Controls\AkkonViewerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AkkonViewerControl.Designer.cs">
-      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\AlignViewerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\AlignViewerControl.Designer.cs">
-      <DependentUpon>AlignViewerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Controls\DailyInfoViewerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\Controls\DailyInfoViewerControl.Designer.cs">
-      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Controls\MainViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -184,15 +166,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\Controls\AkkonViewerControl.resx">
-      <DependentUpon>AkkonViewerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\AlignViewerControl.resx">
-      <DependentUpon>AlignViewerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Controls\DailyInfoViewerControl.resx">
-      <DependentUpon>DailyInfoViewerControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Controls\MainViewControl.resx">
       <DependentUpon>MainViewControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -233,9 +206,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Next.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Jastech.Core\src\Jastech.Framework.Algorithms\Jastech.Framework.Algorithms.csproj">
@@ -300,27 +270,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Model.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Inspection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Teaching.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Log.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Settings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\JastechLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\People.png" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MetroFramework.RunTime">
       <Version>1.2.0.3</Version>
     </PackageReference>
@@ -332,40 +281,79 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Prev.png" />
+    <None Include="Resources\Model.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Cancel_White.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Save_White.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Prev_White.png" />
+    <None Include="Resources\Next.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Next_White.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Exit_White.png" />
+    <None Include="Resources\People.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Stop_White.png" />
+    <None Include="Resources\Prev.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Stop.png" />
+    <None Include="Resources\Prev_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Settings.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Start.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Start_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\Start_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop_Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stop_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Teaching.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignView_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlignView_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancel_White.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Circle_Green.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Circle_Red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exit_White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Inspection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\JastechLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Log.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,6 +11,8 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Winform.Forms;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Structure.Data;
+using ATT.Core.Data;
 
 namespace ATT.UI.Controls
 {
@@ -60,11 +62,13 @@ namespace ATT.UI.Controls
             AkkonViewerControl = new AkkonViewerControl();
             AkkonViewerControl.Dock = DockStyle.Fill;
             AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
+            AkkonViewerControl.GetTabInspResultEvent += AkkonViewerControl_GetTabInspResultEvent;
             pnlAkkon.Controls.Add(AkkonViewerControl);
 
             AlignViewerControl = new AlignViewerControl();
             AlignViewerControl.Dock = DockStyle.Fill;
             AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
+            AlignViewerControl.GetTabInspResultEvent += AlignViewerControl_GetTabInspResultEvent;
             pnlAlign.Controls.Add(AlignViewerControl);
 
             SystemLogControl = new SystemLogControl();
@@ -72,20 +76,30 @@ namespace ATT.UI.Controls
             pnlSystemLog.Controls.Add(SystemLogControl);
         }
 
+        private TabInspResult AkkonViewerControl_GetTabInspResultEvent(int tabNo)
+        {
+            return AppsInspResult.Instance().GetAkkon(tabNo);
+        }
+
+        private TabInspResult AlignViewerControl_GetTabInspResultEvent(int tabNo)
+        {
+            return AppsInspResult.Instance().GetAlign(tabNo);
+        }
+
         private void AkkonViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+            //DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 
         private void AlignViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+            //DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)
         {
-            AkkonViewerControl.UpdateTabCount(tabCount);
-            AlignViewerControl.UpdateTabCount(tabCount);
+           // AkkonViewerControl.UpdateTabCount(tabCount);
+           // AlignViewerControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainAkkonResultDisplay(int tabNo)
@@ -96,13 +110,13 @@ namespace ATT.UI.Controls
         public void UpdateMainAkkonResultData(int tabNo)
         {
             AkkonViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+           // DailyInfoViewerControl.UpdateAkkonResult(tabNo);
         }
 
         public void UpdateMainAlignResult(int tabNo)
         {
             AlignViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+            //DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)

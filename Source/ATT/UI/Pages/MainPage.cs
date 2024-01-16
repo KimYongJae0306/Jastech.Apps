@@ -4,7 +4,9 @@ using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
 using System.Drawing;
@@ -31,11 +33,15 @@ namespace ATT.UI.Pages
         #endregion
 
         #region 속성
-        public MainViewControl MainViewControl { get; set; } = null;
+        public AkkonViewerControl AkkonViewerControl { get; set; } = null;
 
-        public TabAlignViewControl TabAlignViewControl { get; set; } = null;
+        public AlignViewerControl AlignViewerControl { get; set; } = null;
 
-        public TabAkkonViewControl TabAkkonViewControl { get; set; } = null;
+        public AlignMonitoringControl AlignMonitoringControl { get; set; } = null;
+
+        public DailyInfoViewerControl DailyInfoViewerControl { get; set; } = null;
+
+        public SystemLogControl SystemLogControl { get; set; } = null;
         #endregion
 
         #region 생성자
@@ -53,88 +59,50 @@ namespace ATT.UI.Pages
 
         private void AddControls()
         {
-            MainViewControl = new MainViewControl();
-            MainViewControl.Dock = DockStyle.Fill;
-            MainViewControl.Visible = false;
-            pnlView.Controls.Add(MainViewControl);
+            DailyInfoViewerControl = new DailyInfoViewerControl();
+            DailyInfoViewerControl.Dock = DockStyle.Fill;
+            pnlDailyInfo.Controls.Add(DailyInfoViewerControl);
 
-            TabAlignViewControl = new TabAlignViewControl();
-            TabAlignViewControl.Dock = DockStyle.Fill;
-            TabAlignViewControl.Visible = false;
-            pnlView.Controls.Add(TabAlignViewControl);
+            AkkonViewerControl = new AkkonViewerControl();
+            AkkonViewerControl.Dock = DockStyle.Fill;
+            AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
+            AkkonViewerControl.GetTabInspResultEvent += AkkonViewerControl_GetTabInspResultEvent;
+            pnlAkkon.Controls.Add(AkkonViewerControl);
 
-            TabAkkonViewControl = new TabAkkonViewControl();
-            TabAkkonViewControl.Dock = DockStyle.Fill;
-            TabAkkonViewControl.Visible = false;
-            pnlView.Controls.Add(TabAkkonViewControl);
+            AlignViewerControl = new AlignViewerControl();
+            AlignViewerControl.Dock = DockStyle.Fill;
+            AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
+            AlignViewerControl.GetTabInspResultEvent += AlignViewerControl_GetTabInspResultEvent;
+            pnlAlign.Controls.Add(AlignViewerControl);
 
-            SelectMainView();
+            AlignMonitoringControl = new AlignMonitoringControl();
+            AlignMonitoringControl.Dock = DockStyle.Fill;
+            AlignMonitoringControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
+            AlignMonitoringControl.GetTabInspResultEvent += AlignMonitoringControl_GetTabInspResultEvent;
+            pnlAlignMonitoringView.Controls.Add(AlignMonitoringControl);
+
+
+            SystemLogControl = new SystemLogControl();
+            SystemLogControl.Dock = DockStyle.Fill;
+            pnlSystemLog.Controls.Add(SystemLogControl);
+
+            pnlMainView.Dock = DockStyle.Fill;
+            pnlAlignMonitoringView.Dock = DockStyle.Fill;
         }
 
-        private void lblMainButton_Click(object sender, EventArgs e)
+        private TabInspResult AkkonViewerControl_GetTabInspResultEvent(int tabNo)
         {
-            SelectMainView();
+            return AppsInspResult.Instance().GetAkkon(tabNo);
         }
 
-        private void lblAkkonButton_Click(object sender, EventArgs e)
+        private TabInspResult AlignViewerControl_GetTabInspResultEvent(int tabNo)
         {
-            SelectAkkonView();
+            return AppsInspResult.Instance().GetAlign(tabNo);
         }
 
-        private void lblAlignButton_Click(object sender, EventArgs e)
+        private TabInspResult AlignMonitoringControl_GetTabInspResultEvent(int tabNo)
         {
-            SelectAlignView();
-        }
-
-        private void SelectMainView()
-        {
-            if (MainViewControl.Visible)
-                return;
-
-            lblMainButton.BackColor = _selectedColor;
-            lblAkkonButton.BackColor = _noneSelectColor;
-            lblAlignButton.BackColor = _noneSelectColor;
-
-            MainViewControl.Visible = true;
-            TabAlignViewControl.Visible = false;
-            TabAkkonViewControl.Visible = false;
-
-            MainViewControl.Dock = DockStyle.Fill;
-            pnlView.Controls.Add(MainViewControl);
-        }
-
-        public void SelectAlignView()
-        {
-            if (TabAlignViewControl.Visible)
-                return;
-
-            lblMainButton.BackColor = _noneSelectColor;
-            lblAkkonButton.BackColor = _noneSelectColor;
-            lblAlignButton.BackColor = _selectedColor;
-
-            MainViewControl.Visible = false;
-            TabAlignViewControl.Visible = true;
-            TabAkkonViewControl.Visible = false;
-
-            TabAlignViewControl.Dock = DockStyle.Fill;
-            pnlView.Controls.Add(TabAlignViewControl);
-        }
-
-        public void SelectAkkonView()
-        {
-            if (TabAkkonViewControl.Visible)
-                return;
-
-            lblMainButton.BackColor = _noneSelectColor;
-            lblAkkonButton.BackColor = _selectedColor;
-            lblAlignButton.BackColor = _noneSelectColor;
-
-            MainViewControl.Visible = false;
-            TabAlignViewControl.Visible = false;
-            TabAkkonViewControl.Visible = true;
-
-            TabAkkonViewControl.Dock = DockStyle.Fill;
-            pnlView.Controls.Add(TabAkkonViewControl);
+            return AppsInspResult.Instance().GetAlign(tabNo);
         }
 
         private void lblStart_Click(object sender, EventArgs e)
@@ -148,30 +116,149 @@ namespace ATT.UI.Pages
             }
 
             SystemManager.Instance().StartRun();
-        }
 
+            Logger.Write(LogType.GUI, "Clicked Start Button");
+        }
+        
         private void lblStop_Click(object sender, EventArgs e)
         {
             SystemManager.Instance().StopRun();
+            Logger.Write(LogType.GUI, "Clicked Stop Button");
         }
 
         public void UpdateButton()
         {
             if (PlcControlManager.Instance().MachineStatus == MachineStatus.RUN)
             {
-                lblStartText.ForeColor = Color.Blue;
+                lblStartText.ForeColor = Color.LawnGreen;
                 lblStopText.ForeColor = Color.White;
+                lblStart.Image = Properties.Resources.Start_Green;
+                lblStop.Image = Properties.Resources.Stop_White;
             }
             else
             {
                 lblStartText.ForeColor = Color.White;
-                lblStopText.ForeColor = Color.Blue;
+                lblStopText.ForeColor = Color.Red;
+                lblStart.Image = Properties.Resources.Start_White;
+                lblStop.Image = Properties.Resources.Stop_Red;
             }
+
+            if (AppsConfig.Instance().EnableAlignMonitoring)
+            {
+                if (tlpAlignMonitoring.Visible == false)
+                    tlpAlignMonitoring.Visible = true;
+
+                if (AppsStatus.Instance().IsAlignMonitoringView)
+                {
+                    lblAlignMonitoringText.ForeColor = Color.LawnGreen;
+                    lblAlignMonitoring.Image = Properties.Resources.AlignView_Green;
+                }
+                else
+                {
+                    lblAlignMonitoringText.ForeColor = Color.White;
+                    lblAlignMonitoring.Image = Properties.Resources.AlignView_White;
+                }
+            }
+            else
+            {
+                if (tlpAlignMonitoring.Visible == true)
+                {
+                    tlpAlignMonitoring.Visible = false;
+                    AppsStatus.Instance().IsAlignMonitoringView = false;
+                    UpdateView();
+                }
+            }
+        }
+
+        private void AkkonViewerControl_SetTabEventHandler(int tabNo)
+        {
+            DailyInfoViewerControl.UpdateAkkonChart(tabNo);
+        }
+
+        private void AlignViewerControl_SetTabEventHandler(int tabNo)
+        {
+            DailyInfoViewerControl.UpdateAlignChart(tabNo);
+        }
+
+        public void ChangeModel(AppsInspModel inspModel)
+        {
+            DailyInfoViewerControl.UpdateAllRefreshData();
+
+            AkkonViewerControl.CreateTabButton(inspModel.TabCount);
+            AlignViewerControl.CreateTabButton(inspModel.TabCount);
+            AlignMonitoringControl.UpdateRefreshControl(inspModel.TabCount);
+        }
+
+        public void UpdateMainAkkonResultData(int tabNo)
+        {
+            AkkonViewerControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateMainAlignResult(int tabNo)
+        {
+            AlignViewerControl.UpdateMainResult(tabNo);
+
+            if (AppsConfig.Instance().EnableAlignMonitoring)
+                AlignMonitoringControl.UpdateMainResult(tabNo);
+        }
+
+        public void UpdateAllRefreshData()
+        {
+            DailyInfoViewerControl.UpdateAllRefreshData();
+        }
+
+        public void UpdateAkkonResultTabButton(int tabNo)
+        {
+            AkkonViewerControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void UpdateAlignResultTabButton(int tabNo)
+        {
+            AlignViewerControl.UpdateResultTabButton(tabNo);
+            AlignMonitoringControl.UpdateResultTabButton(tabNo);
+        }
+
+        public void TabButtonResetColor()
+        {
+            AkkonViewerControl.TabButtonResetColor();
+            AlignViewerControl.TabButtonResetColor();
+            AlignMonitoringControl.TabButtonResetColor();
+        }
+
+        public void AddSystemLogMessage(string logMessage)
+        {
+            SystemLogControl.AddLogMessage(logMessage);
         }
 
         public void Enable(bool isEnable)
         {
-            MainViewControl.Enable(isEnable);
+            AkkonViewerControl.Enable(isEnable);
+            AlignViewerControl.Enable(isEnable);
+            DailyInfoViewerControl.Enable(isEnable);
+            AlignMonitoringControl.Enable(isEnable);
+        }
+
+        private void lblAlignMonitoring_Click(object sender, EventArgs e)
+        {
+            AppsStatus.Instance().IsAlignMonitoringView = !AppsStatus.Instance().IsAlignMonitoringView;
+
+            UpdateView();
+        }
+
+        private void UpdateView()
+        {
+            if (AppsStatus.Instance().IsAlignMonitoringView)
+            {
+                pnlMainView.Visible = false;
+                pnlAlignMonitoringView.Visible = true;
+                pnlAlignMonitoringView.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                pnlAlignMonitoringView.Visible = false;
+                pnlMainView.Visible = true;
+                pnlMainView.Dock = DockStyle.Fill;
+            }
         }
         #endregion
     }

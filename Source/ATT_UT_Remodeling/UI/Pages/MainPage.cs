@@ -1,4 +1,5 @@
-﻿using ATT_UT_Remodeling.UI.Controls;
+﻿using ATT_UT_Remodeling.Core.Data;
+using ATT_UT_Remodeling.UI.Controls;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -60,11 +61,13 @@ namespace ATT_UT_Remodeling.UI.Pages
             AkkonViewerControl = new AkkonViewerControl();
             AkkonViewerControl.Dock = DockStyle.Fill;
             AkkonViewerControl.SetTabEventHandler += AkkonViewerControl_SetTabEventHandler;
+            AkkonViewerControl.GetTabInspResultEvent += AkkonViewerControl_GetTabInspResultEvent;
             pnlAkkon.Controls.Add(AkkonViewerControl);
 
             AlignViewerControl = new AlignViewerControl();
             AlignViewerControl.Dock = DockStyle.Fill;
             AlignViewerControl.SetTabEventHandler += AlignViewerControl_SetTabEventHandler;
+            AlignViewerControl.GetTabInspResultEvent += AlignViewerControl_GetTabInspResultEvent;
             pnlAlign.Controls.Add(AlignViewerControl);
 
             PreAlignDisplayControl = new PreAlignDisplayControl();
@@ -74,6 +77,16 @@ namespace ATT_UT_Remodeling.UI.Pages
             SystemLogControl = new SystemLogControl();
             SystemLogControl.Dock = DockStyle.Fill;
             pnlSystemLog.Controls.Add(SystemLogControl);
+        }
+
+        private TabInspResult AlignViewerControl_GetTabInspResultEvent(int tabNo)
+        {
+            return AppsInspResult.Instance().Get(tabNo);
+        }
+
+        private TabInspResult AkkonViewerControl_GetTabInspResultEvent(int tabNo)
+        {
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         private void lblStart_Click(object sender, EventArgs e)
@@ -124,12 +137,6 @@ namespace ATT_UT_Remodeling.UI.Pages
         private void AlignViewerControl_SetTabEventHandler(int tabNo)
         {
             DailyInfoViewerControl.UpdateAlignChart(tabNo);
-        }
-
-        public void UpdateTabCount(int tabCount)
-        {
-            AkkonViewerControl.UpdateTabCount(tabCount);
-            AlignViewerControl.UpdateTabCount(tabCount);
         }
 
         public void UpdateMainResult(int tabNo)
@@ -187,6 +194,14 @@ namespace ATT_UT_Remodeling.UI.Pages
         public void UpdateAllRefreshData()
         {
             DailyInfoViewerControl.UpdateAllRefreshData();
+        }
+
+        public void ChangeModel(AppsInspModel inspModel)
+        {
+            DailyInfoViewerControl.UpdateAllRefreshData();
+
+            AkkonViewerControl.CreateTabButton(inspModel.TabCount);
+            AlignViewerControl.CreateTabButton(inspModel.TabCount);
         }
         #endregion
     }

@@ -351,14 +351,10 @@ namespace ATT_UT_IPAD
             if (user.Type == AuthorityType.None)
             {
                 lblCurrentUser.Text = "Operator";
-                //lblTeachingPage.Enabled = false;
-                //lblTeachingPageImage.Enabled = false;
             }
             else
             {
                 lblCurrentUser.Text = user.Id.ToString();
-                //lblTeachingPage.Enabled = true;
-                //lblTeachingPageImage.Enabled = true;
             }
 
             if (MainPageControl.Visible)
