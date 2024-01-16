@@ -38,6 +38,8 @@ namespace Jastech.Framework.Winform.Forms
     public partial class InspectionTeachingForm : Form
     {
         #region 필드
+        private bool _isWaitingUpdateUI { get; set; } = false;
+
         private Color _selectedColor;
 
         private Color _nonSelectedColor;
@@ -248,6 +250,8 @@ namespace Jastech.Framework.Winform.Forms
         {
             int tabNo = Convert.ToInt32(_currentTabNo);
             UpdateDisplayImage(tabNo);
+
+            _isWaitingUpdateUI = false;
         }
 
         private void MarkControl_MarkParamChanged(string component, string parameter, double oldValue, double newValue)
@@ -546,6 +550,8 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            _isWaitingUpdateUI = true;
+
             LineCamera.StopGrab();
             LAFCtrl.SetTrackingOnOFF(false);
 
@@ -600,7 +606,16 @@ namespace Jastech.Framework.Winform.Forms
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
             DeviceManager.Instance().LightCtrlHandler.TurnOff();
-            
+
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+            while (_isWaitingUpdateUI)
+            {
+                if (sw.ElapsedMilliseconds > 60 * 1000)
+                    break;
+                Thread.Sleep(50);
+            }
+
             Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Grab Start Button");
         }
 

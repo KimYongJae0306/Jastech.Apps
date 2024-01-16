@@ -9,9 +9,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AkkonResultDataControl : UserControl
     {
-        #region 필드
-        #endregion
-
         #region 속성
         public ResultChartControl ResultChartControl { get; private set; } = null;
         #endregion

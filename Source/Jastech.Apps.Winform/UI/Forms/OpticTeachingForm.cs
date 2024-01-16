@@ -32,6 +32,8 @@ namespace Jastech.Framework.Winform.Forms
     public partial class OpticTeachingForm : Form
     {
         #region 필드
+        private bool _isWaitingUpdateUI { get; set; } = false;
+
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
@@ -745,7 +747,6 @@ namespace Jastech.Framework.Winform.Forms
         {
             StopGrab();
 
-            //ControlDisplayHelper.DisposeDisplay(DrawBoxControl);
             DrawBoxControl.DisposeImage();
             CogDisplayHelper.DisposeDisplay(cogDisplay);
 
@@ -823,9 +824,6 @@ namespace Jastech.Framework.Winform.Forms
 
             if (isRepeat)
             {
-                //if (_repeatThread != null)
-                //    return;
-
                 LineCamera.StopGrab();
                 LineCamera.IsLive = false;
 
@@ -851,6 +849,7 @@ namespace Jastech.Framework.Winform.Forms
                     _isInfinite = true;
 
                 _isRepeat = true;
+                _isWaitingUpdateUI = false;
                 _repeatThread = new Thread(new ParameterizedThreadStart(this.MoveRepeatThread));
                 _repeatThread.Start(param);
             }
@@ -880,7 +879,14 @@ namespace Jastech.Framework.Winform.Forms
 
             while (_isRepeat)
             {
+                if (_isWaitingUpdateUI)
+                {
+                    Thread.Sleep(50);
+                    continue;
+                }
+
                 StartGrab(true);
+                _isWaitingUpdateUI = true;
 
                 SelectedAxis.StartAbsoluteMove(repeatParam.EndPosition, movingParam);
                 while (!SelectedAxis.WaitForDone())
@@ -972,6 +978,8 @@ namespace Jastech.Framework.Winform.Forms
                 }
                 Console.WriteLine("Update Repeat Display");
             }
+
+            _isWaitingUpdateUI = false;
         }
 
         public ICogImage ConvertCogImage(Mat image)
