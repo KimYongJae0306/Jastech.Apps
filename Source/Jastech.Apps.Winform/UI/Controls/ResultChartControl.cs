@@ -30,7 +30,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         }
 
         #region 속성
-        public int SelectedTabNo { get; set; } = 0;
+        private int SelectedTabNo { get; set; } = 0;
 
         public InspChartType ChartType { get; set; } = InspChartType.Akkon;
 
@@ -157,6 +157,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                 BeginInvoke(callback, tabNo);
                 return;
             }
+            if (tabNo == SelectedTabNo)
+                return;
 
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             if (inspModel == null)
@@ -322,6 +324,9 @@ namespace Jastech.Apps.Winform.UI.Controls
                 BeginInvoke(callback, tabNo);
                 return;
             }
+
+            if (tabNo == SelectedTabNo)
+                return;
 
             SelectedTabNo = tabNo;
 

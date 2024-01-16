@@ -167,7 +167,7 @@ namespace ATT_UT_IPAD.UI.Pages
 
         public void ChangeModel(AppsInspModel inspModel)
         {
-            DailyInfoViewerControl.UpdateDailyInfo();
+            DailyInfoViewerControl.UpdateAllRefreshData();
 
             AkkonViewerControl.CreateTabButton(inspModel.TabCount);
             AlignViewerControl.CreateTabButton(inspModel.TabCount);
@@ -186,10 +186,10 @@ namespace ATT_UT_IPAD.UI.Pages
             if(AppsConfig.Instance().EnableAlignMonitoring)
                 AlignMonitoringControl.UpdateMainResult(tabNo);
         }
-        
-        public void UpdateDailyInfo()
+     
+        public void UpdateAllRefreshData()
         {
-            DailyInfoViewerControl.UpdateDailyInfo();
+            DailyInfoViewerControl.UpdateAllRefreshData();
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)

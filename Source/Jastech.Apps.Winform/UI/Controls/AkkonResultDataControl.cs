@@ -38,30 +38,33 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlChart.Controls.Add(ResultChartControl);
         }
 
-        public void UpdateData()
+        public void RefreshData()
         {
             if (this.InvokeRequired)
             {
-                UpdateAkkonResultDelegate callback = UpdateData;
+                UpdateAkkonResultDelegate callback = RefreshData;
                 BeginInvoke(callback);
                 return;
             }
-
-            var dailyInfo = DailyInfoService.GetDailyInfo();
-            if (dailyInfo.GetAkkonDailyInfoCount() == dgvAkkonHistory.Rows.Count)
-                return;
 
             UpdateDataGridView();
             UpdateChart();
         }
 
-        public void SetSelectedTabNo(int tabNo)
+        public void UpdateAkkonDaily(int tabNo)
         {
-            ResultChartControl.SelectedTabNo = tabNo;
+            ResultChartControl.UpdateAkkonDaily(tabNo);
         }
 
-        private void UpdateDataGridView()
+        public void UpdateDataGridView()
         {
+            if (this.InvokeRequired)
+            {
+                UpdateAkkonResultDelegate callback = UpdateDataGridView;
+                BeginInvoke(callback);
+                return;
+            }
+
             dgvAkkonHistory.Rows.Clear();
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
@@ -89,7 +92,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAkkonHistory.Rows.Clear();
         }
 
-        private void UpdateChart()
+        public void UpdateChart()
         {
             ResultChartControl.UpdateChart();
         }

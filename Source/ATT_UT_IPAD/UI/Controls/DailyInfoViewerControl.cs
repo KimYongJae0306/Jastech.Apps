@@ -51,11 +51,11 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             AkkonResultDataControl = new AkkonResultDataControl() { Dock = DockStyle.Fill};
             pnlDailyResult.Controls.Add(AkkonResultDataControl);
-            AkkonResultDataControl.UpdateData();
+            AkkonResultDataControl.RefreshData();
 
             AlignResultDataControl = new AlignResultDataControl() { Dock = DockStyle.Fill };
             pnlDailyResult.Controls.Add(AlignResultDataControl);
-            AlignResultDataControl.UpdateData();
+            AlignResultDataControl.RefreshData();
         }
 
         private void InitializeUI()
@@ -75,6 +75,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
                 pnlDailyResult.Controls.Clear();
                 pnlDailyResult.Controls.Add(AkkonResultDataControl);
+                //AkkonResultDataControl.UpdateDataGridView();
             }
         }
 
@@ -87,45 +88,38 @@ namespace ATT_UT_IPAD.UI.Controls
 
                 pnlDailyResult.Controls.Clear();
                 pnlDailyResult.Controls.Add(AlignResultDataControl);
+                //AlignResultDataControl.UpdateDataGridView();
             }
         }
 
         private void lblAkkon_Click(object sender, EventArgs e)
         {
             ShowAkkonDailyInfo();
-            UpdateDailyInfo();
         }
 
         private void lblAlign_Click(object sender, EventArgs e)
         {
             ShowAlignDailyInfo();
-            UpdateDailyInfo();
         }
 
         public void UpdateAkkonChart(int tabNo)
         {
-            AkkonResultDataControl.SetSelectedTabNo(tabNo);
-
             ShowAkkonDailyInfo();
             if (lblAkkon.BackColor == _selectedColor)
-                AkkonResultDataControl.UpdateData();
+                AkkonResultDataControl.UpdateAkkonDaily(tabNo);
         }
 
         public void UpdateAlignChart(int tabNo)
         {
-            AlignResultDataControl.SetSelectedTabNo(tabNo);
-
             ShowAlignDailyInfo();
             if (lblAlign.BackColor == _selectedColor)
-                AlignResultDataControl.UpdateData();
+                AlignResultDataControl.UpdateAlignDaily(tabNo);
         }
-
-        public void UpdateDailyInfo()
+       
+        public void UpdateAllRefreshData()
         {
-            if (lblAkkon.BackColor == _selectedColor)
-                AkkonResultDataControl.UpdateData();
-            if (lblAlign.BackColor == _selectedColor)
-                AlignResultDataControl.UpdateData();
+            AkkonResultDataControl.RefreshData();
+            AlignResultDataControl.RefreshData();
         }
 
         public void Enable(bool isEnable)

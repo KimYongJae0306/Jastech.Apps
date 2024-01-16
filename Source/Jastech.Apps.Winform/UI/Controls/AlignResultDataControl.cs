@@ -57,20 +57,16 @@ namespace Jastech.Apps.Winform.UI.Controls
             pnlChart.Controls.Add(ResultChartControl);
         }
 
-        public void UpdateData()
+        public void RefreshData()
         {
             try
             {
                 if (this.InvokeRequired)
                 {
-                    UpdateAlignResultDelegate callback = UpdateData;
+                    UpdateAlignResultDelegate callback = RefreshData;
                     BeginInvoke(callback);
                     return;
                 }
-
-                var dailyInfo = DailyInfoService.GetDailyInfo();
-                if (dailyInfo.GetAlignDailyInfoCount() == dgvAlignHistory.Rows.Count)
-                    return;
 
                 UpdateDataGridView();
                 UpdateChart();
@@ -81,8 +77,15 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         
-        private void UpdateDataGridView()
+        public void UpdateDataGridView()
         {
+            if (this.InvokeRequired)
+            {
+                UpdateAlignResultDelegate callback = UpdateDataGridView;
+                BeginInvoke(callback);
+                return;
+            }
+
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
             dgvAlignHistory.Rows.Clear();
@@ -111,9 +114,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public void SetSelectedTabNo(int tabNo)
+        public void UpdateAlignDaily(int tabNo)
         {
-            ResultChartControl.SelectedTabNo = tabNo;
+            ResultChartControl.UpdateAlignDaily(tabNo);
         }
 
         private void UpdateChart()

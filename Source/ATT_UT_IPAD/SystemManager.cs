@@ -254,7 +254,7 @@ namespace ATT_UT_IPAD
         {
             Stopwatch sw = new Stopwatch();
             sw.Restart();
-            _mainForm.UpdateDailyInfo();
+            _mainForm.UpdateAllRefreshData();
 
             sw.Stop();
             Console.WriteLine("Chart : " + sw.ElapsedMilliseconds);

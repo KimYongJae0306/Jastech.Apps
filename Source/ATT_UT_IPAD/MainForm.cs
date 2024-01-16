@@ -437,9 +437,9 @@ namespace ATT_UT_IPAD
             MainPageControl.UpdateMainAlignResult(tabNo);
         }
 
-        public void UpdateDailyInfo()
+        public void UpdateAllRefreshData()
         {
-            MainPageControl.UpdateDailyInfo();
+            MainPageControl.UpdateAllRefreshData();
         }
 
         public void UpdateAkkonResultTabButton(int tabNo)
