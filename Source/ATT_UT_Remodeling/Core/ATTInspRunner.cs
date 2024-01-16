@@ -6,17 +6,13 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure.VisionTool;
 using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.Core;
-using Jastech.Apps.Winform.Core.Calibrations;
 using Jastech.Apps.Winform.Service;
 using Jastech.Apps.Winform.Service.Plc.Maps;
 using Jastech.Apps.Winform.Settings;
 using Jastech.Apps.Winform.UI.Forms;
-using Jastech.Framework.Algorithms.Akkon;
 using Jastech.Framework.Algorithms.Akkon.Parameters;
-using Jastech.Framework.Algorithms.Akkon.Results;
 using Jastech.Framework.Config;
 using Jastech.Framework.Device.Cameras;
 using Jastech.Framework.Device.LAFCtrl;
@@ -26,8 +22,6 @@ using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.Helper;
 using Jastech.Framework.Imaging.Result;
 using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Results;
-using Jastech.Framework.Util;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
@@ -40,7 +34,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using static Jastech.Framework.Modeller.Controls.ModelControl;
 
 namespace ATT_UT_Remodeling.Core
 {
@@ -381,8 +374,6 @@ namespace ATT_UT_Remodeling.Core
                         WriteLog("Light Turn On.", true);
                     }
 
-                    //LineCamera.SetOperationMode(TDIOperationMode.TDI);
-
                     LineCamera.StartGrab();
                     WriteLog("Start LineScanner Grab.", true);
 
@@ -503,14 +494,9 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_IMAGE:
-                    //SaveImage();
-                    //WriteLog("Save inspection images.");
-
-                    //SeqStep = SeqStep.SEQ_DELETE_DATA;
-                    //break;
+                    
                     UpdateDailyInfo();
-                    DailyInfoService.Save(inspModel.Name);
-                    //SaveInspResultCSV();
+                    SaveInspResultCSV();
 
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
@@ -737,8 +723,10 @@ namespace ATT_UT_Remodeling.Core
         #region 메서드
         private void UpdateDailyInfo()
         {
+            AppsInspModel inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             var dailyInfo = DailyInfoService.GetDailyInfo();
-            if (dailyInfo == null)
+
+            if (dailyInfo == null || inspModel == null)
                 return;
 
             var dailyData = new DailyData();
@@ -747,6 +735,9 @@ namespace ATT_UT_Remodeling.Core
             UpdateAkkonDailyInfo(ref dailyData);
 
             dailyInfo.AddDailyDataList(dailyData);
+
+            SystemManager.Instance().UpdateDailyInfo();
+            DailyInfoService.Save(inspModel.Name);
         }
 
         private void UpdateAlignDailyInfo(ref DailyData dailyData)

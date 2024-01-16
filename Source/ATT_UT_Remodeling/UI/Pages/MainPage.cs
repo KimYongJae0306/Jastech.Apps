@@ -118,12 +118,12 @@ namespace ATT_UT_Remodeling.UI.Pages
 
         private void AkkonViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
+            DailyInfoViewerControl.UpdateAkkonChart(tabNo);
         }
 
         private void AlignViewerControl_SetTabEventHandler(int tabNo)
         {
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
+            DailyInfoViewerControl.UpdateAlignChart(tabNo);
         }
 
         public void UpdateTabCount(int tabCount)
@@ -135,10 +135,7 @@ namespace ATT_UT_Remodeling.UI.Pages
         public void UpdateMainResult(int tabNo)
         {
             AkkonViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAkkonResult(tabNo);
-
             AlignViewerControl.UpdateMainResult(tabNo);
-            DailyInfoViewerControl.UpdateAlignResult(tabNo);
         }
 
         public void UpdateResultTabButton(int tabNo)
@@ -185,6 +182,11 @@ namespace ATT_UT_Remodeling.UI.Pages
             AkkonViewerControl.Enable(isEnable);
             AlignViewerControl.Enable(isEnable);
             DailyInfoViewerControl.Enable(isEnable);
+        }
+
+        public void UpdateAllRefreshData()
+        {
+            DailyInfoViewerControl.UpdateAllRefreshData();
         }
         #endregion
     }

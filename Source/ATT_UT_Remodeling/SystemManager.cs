@@ -199,6 +199,16 @@ namespace ATT_UT_Remodeling
             return true;
         }
 
+        public void UpdateDailyInfo()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+            _mainForm.UpdateAllRefreshData();
+
+            sw.Stop();
+            Console.WriteLine("Chart : " + sw.ElapsedMilliseconds);
+        }
+
         public void UpdateMainResult(int tabNo)
         {
             _mainForm.UpdateMainResult(tabNo);

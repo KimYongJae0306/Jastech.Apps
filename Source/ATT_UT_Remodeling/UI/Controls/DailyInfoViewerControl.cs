@@ -23,11 +23,7 @@ namespace ATT_UT_Remodeling.UI.Controls
         #region 속성
         public AkkonResultDataControl AkkonResultDataControl { get; set; } = null;
 
-        public ResultChartControl AkkonResultChartControl { get; set; } = null;
-
         public AlignResultDataControl AlignResultDataControl { get; set; } = null;
-
-        public ResultChartControl AlignResultChartControl { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -53,20 +49,12 @@ namespace ATT_UT_Remodeling.UI.Controls
         private void AddControls()
         {
             AkkonResultDataControl = new AkkonResultDataControl() { Dock = DockStyle.Fill};
-            AkkonResultDataControl.UpdateData();
             pnlDailyResult.Controls.Add(AkkonResultDataControl);
-
-            AkkonResultChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
-            AkkonResultChartControl.SetInspChartType(InspChartType.Akkon);
-            pnlDailyChart.Controls.Add(AkkonResultChartControl);
+            AkkonResultDataControl.RefreshData();
 
             AlignResultDataControl = new AlignResultDataControl() { Dock = DockStyle.Fill };
-            AlignResultDataControl.RefreshData();
             pnlDailyResult.Controls.Add(AlignResultDataControl);
-
-            AlignResultChartControl = new ResultChartControl() { Dock = DockStyle.Fill };
-            AlignResultChartControl.SetInspChartType(InspChartType.Align);
-            pnlDailyChart.Controls.Add(AlignResultChartControl);
+            AlignResultDataControl.RefreshData();
         }
 
         private void InitializeUI()
@@ -79,26 +67,26 @@ namespace ATT_UT_Remodeling.UI.Controls
 
         private void ShowAkkonDailyInfo()
         {
-            lblAkkon.BackColor = _selectedColor;
-            lblAlign.BackColor = _nonSelectedColor;
+            if (lblAkkon.BackColor != _selectedColor)
+            {
+                lblAkkon.BackColor = _selectedColor;
+                lblAlign.BackColor = _nonSelectedColor;
 
-            pnlDailyResult.Controls.Clear();
-            pnlDailyResult.Controls.Add(AkkonResultDataControl);
-
-            pnlDailyChart.Controls.Clear();
-            pnlDailyChart.Controls.Add(AkkonResultChartControl);
+                pnlDailyResult.Controls.Clear();
+                pnlDailyResult.Controls.Add(AkkonResultDataControl);
+            }
         }
 
         private void ShowAlignDailyInfo()
         {
-            lblAkkon.BackColor = _nonSelectedColor;
-            lblAlign.BackColor = _selectedColor;
+            if (lblAlign.BackColor != _selectedColor)
+            {
+                lblAkkon.BackColor = _nonSelectedColor;
+                lblAlign.BackColor = _selectedColor;
 
-            pnlDailyResult.Controls.Clear();
-            pnlDailyResult.Controls.Add(AlignResultDataControl);
-
-            pnlDailyChart.Controls.Clear();
-            pnlDailyChart.Controls.Add(AlignResultChartControl);
+                pnlDailyResult.Controls.Clear();
+                pnlDailyResult.Controls.Add(AlignResultDataControl);
+            }
         }
 
         private void lblAkkon_Click(object sender, EventArgs e)
@@ -111,47 +99,24 @@ namespace ATT_UT_Remodeling.UI.Controls
             ShowAlignDailyInfo();
         }
 
-        public void UpdateAkkonResult(int tabNo)
+        public void UpdateAkkonChart(int tabNo)
+        {
+            ShowAkkonDailyInfo();
+            if (lblAkkon.BackColor == _selectedColor)
+                AkkonResultDataControl.UpdateAkkonDaily(tabNo);
+        }
+
+        public void UpdateAlignChart(int tabNo)
+        {
+            ShowAlignDailyInfo();
+            if (lblAlign.BackColor == _selectedColor)
+                AlignResultDataControl.UpdateAlignDaily(tabNo);
+        }
+
+        public void UpdateAllRefreshData()
         {
             AkkonResultDataControl.RefreshData();
-            UpdateAkkonChart(tabNo);
-        }
-
-        public void UpdateAlignResult(int tabNo)
-        {
             AlignResultDataControl.RefreshData();
-            UpdateAlignChart(tabNo);
-        }
-
-        private void UpdateAkkonChart(int tabNo)
-        {
-            //AkkonResultChartControl.UpdateAkkonDaily(tabNo);
-        }
-
-        private void UpdateAlignChart(int tabNo)
-        {
-            //AlignResultChartControl.UpdateAlignDaily(tabNo);
-        }
-
-        //public void ReUpdate()
-        //{
-        //    AkkonResultDataControl.UpdateData();
-        //    AkkonResultChartControl.UpdateChart(InspChartType.Akkon);
-
-        //    AlignResultDataControl.UpdateData();
-        //    AlignResultChartControl.UpdateChart(InspChartType.Align);
-        //}
-
-        public void ClearAkkonData()
-        {
-            AkkonResultDataControl.ClearData();
-            AkkonResultChartControl.ClearChart();
-        }
-
-        public void ClearAlignData()
-        {
-            AlignResultDataControl.ClearData();
-            AlignResultChartControl.ClearChart();
         }
 
         public void Enable(bool isEnable)

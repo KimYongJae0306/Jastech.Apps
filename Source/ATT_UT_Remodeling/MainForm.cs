@@ -187,6 +187,11 @@ namespace ATT_UT_Remodeling
             return progressForm.IsSuccess;
         }
 
+        public void UpdateAllRefreshData()
+        {
+            MainPageControl.UpdateAllRefreshData();
+        }
+
         private void MainForm_PreAlignRunnerHandler(bool isStart)
         {
             AppsStatus.Instance().IsPreAlignRunnerFlagFromPlc = isStart;

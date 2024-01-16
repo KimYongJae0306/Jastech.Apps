@@ -75,7 +75,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
                 pnlDailyResult.Controls.Clear();
                 pnlDailyResult.Controls.Add(AkkonResultDataControl);
-                //AkkonResultDataControl.UpdateDataGridView();
             }
         }
 
@@ -88,7 +87,6 @@ namespace ATT_UT_IPAD.UI.Controls
 
                 pnlDailyResult.Controls.Clear();
                 pnlDailyResult.Controls.Add(AlignResultDataControl);
-                //AlignResultDataControl.UpdateDataGridView();
             }
         }
 
