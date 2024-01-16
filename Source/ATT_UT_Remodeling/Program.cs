@@ -61,15 +61,15 @@ namespace ATT_UT_Remodeling
                 ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
                 ConfigSet.Instance().Initialize();
 
-                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
-                ACSBufferConfig.Instance().Initialize();
-
                 AppsConfig.Instance().Initialize();
                 CalibrationData.Instance().LoadCalibrationData();
+
+                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                ACSBufferConfig.Instance().Initialize();
                 UserManager.Instance().Initialize();
 
                 var mainForm = new MainForm();
-                SystemManager.Instance().Initialize(mainForm);
+                SystemManager.Instance().SetMainForm(mainForm);
                 Application.Run(mainForm);
             }
             else
