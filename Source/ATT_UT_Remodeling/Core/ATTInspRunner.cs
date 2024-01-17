@@ -1859,8 +1859,6 @@ namespace ATT_UT_Remodeling.Core
 
                 LineCamera.ClearTabScanBuffer();
 
-                //MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
-
                 _clearBufferThread = null;
                 WriteLog("Clear Buffer.");
             }

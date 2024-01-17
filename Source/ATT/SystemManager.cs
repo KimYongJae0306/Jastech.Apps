@@ -201,52 +201,22 @@ namespace ATT
             handler.AddAxis(AxisName.Z0, motion, axisNo: -1, homeOrder: 1);
         }
 
-        public void UpdateAkkonResultTabButton(int tabNo)
-        {
-            _mainForm.UpdateAkkonResultTabButton(tabNo);
-        }
-
-        public void UpdateAlignResultTabButton(int tabNo)
-        {
-            _mainForm.UpdateAlignResultTabButton(tabNo);
-        }
-
-        //public void UpdateMainResult()
-        //{
-        //    var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-        //    for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-        //    {
-        //        _mainForm.UpdateMainAkkonResult(tabNo);
-        //        _mainForm.UpdateMainAlignResult(tabNo);
-        //    }
-        //}
-
-        public void UpdateMainAkkonResult()
-        {
-            // 탭별로 안들어올 수도 있을텐데....
-            var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-                _mainForm.UpdateMainAkkonResult(tabNo);
-        }
-
         public void EnableMainView(bool isEnable)
         {
             _mainForm.Enable(isEnable);
         }
 
-        public void UpdateMainAlignResult()
+        public void TabButtonResetColor()
+        {
+            _mainForm.TabButtonResetColor();
+        }
+
+        public void UpdateMainResult()
         {
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
 
             for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-                _mainForm.UpdateMainAlignResult(tabNo);
-        }
-
-        public void TabButtonResetColor()
-        {
-            _mainForm.TabButtonResetColor();
+                _mainForm.UpdateMainResult(tabNo);
         }
 
         public void AddSystemLogMessage(string logMessage)
@@ -328,6 +298,21 @@ namespace ATT
         public void ReleaseInspRunner()
         {
             _inspRunner.Release();
+        }
+
+        public void UpdateResultTabButton(int tabNo)
+        {
+            _mainForm.UpdateResultTabButton(tabNo);
+        }
+
+        public void UpdateDailyInfo()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Restart();
+            _mainForm.UpdateAllRefreshData();
+
+            sw.Stop();
+            Console.WriteLine("Chart : " + sw.ElapsedMilliseconds);
         }
         #endregion
     }

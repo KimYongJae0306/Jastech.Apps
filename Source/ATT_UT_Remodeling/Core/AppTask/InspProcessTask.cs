@@ -69,9 +69,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
             tabInspResult.CogImage = inspTab.MergeCogImage;
             tabInspResult.Resolution_um = resolution_um;
 
-            // 231128_S
             tabInspResult.AlignResult = new TabAlignResult();
-            // 231128_E
             tabInspResult.AlignResult.PreHead = PlcControlManager.Instance().GetPreHeadData(tabInspResult.TabNo);
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, false);
@@ -84,9 +82,6 @@ namespace ATT_UT_Remodeling.Core.AppTask
                 WriteLog(message, true);
                 Logger.Debug(LogType.Inspection, message);
 
-                // 231128_S
-                //tabInspResult.AlignResult = new TabAlignResult();
-                // 231128_E
                 tabInspResult.AkkonResult = new AkkonResult();
             }
             else

@@ -22,97 +22,58 @@ namespace ATT.Core.Data
 
         public string Cell_ID { get; set; } = "";
 
-        public string FinalHead { get; set; } = "-";
+        public string FinalHead { get; set; } = string.Empty;
 
-        private Dictionary<int, TabInspResult> InspAkkonResultDic { get; set; } = new Dictionary<int, TabInspResult>();
-
-        private Dictionary<int, TabInspResult> InspAlignResultDic { get; set; } = new Dictionary<int, TabInspResult>();
+        private Dictionary<int, TabInspResult> InspResultDic { get; set; } = new Dictionary<int, TabInspResult>();
         #endregion
 
         #region 메서드
         public static AppsInspResult Instance()
         {
             if (_instance == null)
-            {
                 _instance = new AppsInspResult();
-            }
 
             return _instance;
         }
 
         public void ClearResult()
         {
-            foreach (var inspAkkonResult in InspAkkonResultDic)
-            {
-                inspAkkonResult.Value.Dispose();
-            }
-
-            foreach (var inspAlignResult in InspAlignResultDic)
-            {
-                inspAlignResult.Value.Dispose();
-            }
+            foreach (var inspResult in InspResultDic)
+                inspResult.Value.Dispose();
         }
 
         public void Dispose()
         {
-            foreach (var inspAkkonResult in InspAkkonResultDic)
-            {
-                inspAkkonResult.Value.Dispose();
-            }
-            InspAkkonResultDic.Clear();
+            foreach (var inspResult in InspResultDic)
+                inspResult.Value.Dispose();
 
-            foreach (var inspAlignResult in InspAlignResultDic)
-            {
-                inspAlignResult.Value.Dispose();
-            }
-            InspAlignResultDic.Clear();
+            InspResultDic.Clear();
         }
 
-        public void AddAkkon(TabInspResult tabInspResult)
+        public void Add(TabInspResult tabInspResult)
         {
-            lock (InspAkkonResultDic)
+            lock (InspResultDic)
             {
                 int tabNo = tabInspResult.TabNo;
-                if (InspAkkonResultDic.ContainsKey(tabNo))
+
+                if (InspResultDic.ContainsKey(tabNo))
                 {
-                    InspAkkonResultDic[tabNo].Dispose();
-                    InspAkkonResultDic.Remove(tabNo);
+                    InspResultDic[tabNo].Dispose();
+                    InspResultDic.Remove(tabNo);
                 }
-                InspAkkonResultDic.Add(tabNo, tabInspResult);
+
+                InspResultDic.Add(tabNo, tabInspResult);
             }
         }
 
-        public TabInspResult GetAkkon(int tabNo)
+        public TabInspResult Get(int tabNo)
         {
-            lock (InspAkkonResultDic)
+            lock (InspResultDic)
             {
-                if (InspAkkonResultDic.ContainsKey(tabNo))
-                    return InspAkkonResultDic[tabNo];
+                if (InspResultDic.ContainsKey(tabNo))
+                    return InspResultDic[tabNo];
             }
-            return null;
-        }
 
-        public void AddAlign(TabInspResult tabInspResult)
-        {
-            lock (InspAlignResultDic)
-            {
-                int tabNo = tabInspResult.TabNo;
-                if (InspAlignResultDic.ContainsKey(tabNo))
-                {
-                    InspAlignResultDic[tabNo].Dispose();
-                    InspAlignResultDic.Remove(tabNo);
-                }
-                InspAlignResultDic.Add(tabNo, tabInspResult);
-            }
-        }
-
-        public TabInspResult GetAlign(int tabNo)
-        {
-            lock (InspAlignResultDic)
-            {
-                if (InspAlignResultDic.ContainsKey(tabNo))
-                    return InspAlignResultDic[tabNo];
-            }
             return null;
         }
         #endregion

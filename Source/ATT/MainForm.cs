@@ -214,6 +214,12 @@ namespace ATT
 
             lblCurrentModel.Text = modelname;
         }
+
+        public void UpdateMainResult(int tabNo)
+        {
+            MainPageControl.UpdateMainResult(tabNo);
+        }
+
         private void lblMainPage_Click(object sender, EventArgs e)
         {
             SetSelectLabel(sender);
@@ -309,6 +315,11 @@ namespace ATT
                 lblLogPageImage.Enabled = true;
                 lblLogPage.Enabled = true;
             }
+        }
+
+        public void UpdateResultTabButton(int tabNo)
+        {
+            MainPageControl.UpdateResultTabButton(tabNo);
         }
 
         private void tmrUpdateStates_Tick(object sender, EventArgs e)

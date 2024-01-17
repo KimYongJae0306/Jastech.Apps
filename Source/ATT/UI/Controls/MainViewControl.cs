@@ -78,12 +78,12 @@ namespace ATT.UI.Controls
 
         private TabInspResult AkkonViewerControl_GetTabInspResultEvent(int tabNo)
         {
-            return AppsInspResult.Instance().GetAkkon(tabNo);
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         private TabInspResult AlignViewerControl_GetTabInspResultEvent(int tabNo)
         {
-            return AppsInspResult.Instance().GetAlign(tabNo);
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         private void AkkonViewerControl_SetTabEventHandler(int tabNo)

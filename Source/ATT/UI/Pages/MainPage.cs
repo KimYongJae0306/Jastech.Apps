@@ -92,17 +92,17 @@ namespace ATT.UI.Pages
 
         private TabInspResult AkkonViewerControl_GetTabInspResultEvent(int tabNo)
         {
-            return AppsInspResult.Instance().GetAkkon(tabNo);
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         private TabInspResult AlignViewerControl_GetTabInspResultEvent(int tabNo)
         {
-            return AppsInspResult.Instance().GetAlign(tabNo);
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         private TabInspResult AlignMonitoringControl_GetTabInspResultEvent(int tabNo)
         {
-            return AppsInspResult.Instance().GetAlign(tabNo);
+            return AppsInspResult.Instance().Get(tabNo);
         }
 
         private void lblStart_Click(object sender, EventArgs e)
@@ -218,6 +218,12 @@ namespace ATT.UI.Pages
             AlignMonitoringControl.UpdateResultTabButton(tabNo);
         }
 
+        public void UpdateMainResult(int tabNo)
+        {
+            AkkonViewerControl.UpdateMainResult(tabNo);
+            AlignViewerControl.UpdateMainResult(tabNo);
+        }
+
         public void TabButtonResetColor()
         {
             AkkonViewerControl.TabButtonResetColor();
@@ -259,6 +265,12 @@ namespace ATT.UI.Pages
                 pnlMainView.Visible = true;
                 pnlMainView.Dock = DockStyle.Fill;
             }
+        }
+
+        public void UpdateResultTabButton(int tabNo)
+        {
+            AkkonViewerControl.UpdateResultTabButton(tabNo);
+            AlignViewerControl.UpdateResultTabButton(tabNo);
         }
         #endregion
     }
