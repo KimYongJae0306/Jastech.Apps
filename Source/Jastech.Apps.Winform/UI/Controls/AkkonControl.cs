@@ -288,9 +288,9 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             float akkonResizeRatio = CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
             float calcRoiWidth_um = roiwidth * Resolution_um / akkonResizeRatio;
-            float calcRoiHeight_um = roiwidth * Resolution_um / akkonResizeRatio;
+            float calcRoiHeight_um = roiheight * Resolution_um / akkonResizeRatio;
 
-            _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, calcRoiWidth_um, calcRoiHeight_um, constants: constants);
+            _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, /*calcRoiWidth_um*/roiwidth, /*calcRoiHeight_um*/roiheight, constants: constants);
 
             var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (teachingDisplay.GetImage() == null)
@@ -468,7 +468,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 collect.Add(rect);
                 _cogRectAffineList.Add(rect);
 
-                if(isDrawLeadIndex)
+                if (isDrawLeadIndex)
                 {
                     CogGraphicLabel cogLabel = new CogGraphicLabel();
                     cogLabel.Color = CogColorConstants.Green;
@@ -719,6 +719,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var leadCount = CurrentTab.GetAkkonGroup(groupIndex).Count;
             AkkonROI firstRoi = GetFirstROI();
+
+            if (firstRoi.CheckValidRoi() == false)
+            {
+                MessageConfirmForm confirmForm = new MessageConfirmForm();
+                confirmForm.Message = "Not valid ROI.";
+                confirmForm.ShowDialog();
+                return;
+            }
 
             if (Resolution_um == 0)
                 return;
@@ -1588,21 +1596,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public void RunForTest()
         {
-            int groupIndex = cbxGroupNumber.SelectedIndex;
-            if (groupIndex < 0 || CurrentTab == null)
+            if (_cogRectAffineList.Count < 0)
+                return;
+
+            List<AkkonROI> roiList = new List<AkkonROI>();
+
+            foreach (var item in _cogRectAffineList)
+                roiList.Add(ConvertCogRectAffineToAkkonRoi(item));
+            
+            if (roiList.Count < 0)
                 return;
 
             Mat matImage = TeachingUIManager.Instance().GetOriginMatImageBuffer(false);
             if (matImage == null)
                 return;
 
-            AppsInspModel appsInspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
-
-            var akkonParam = CurrentTab.AkkonParam;
-            int akkonThreadCount = AppsConfig.Instance().AkkonThreadCount;
-
             AkkonAlgoritmParam akkonAlgorithmParam = AkkonParamControl.GetCurrentParam();
-            var roiList = CurrentTab.AkkonParam.GetAkkonROIList();
 
             Judgement tabJudgement = Judgement.NG;
             AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
@@ -1610,17 +1619,14 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             UpdateResult(tabResult);
 
-            Mat resultMat = null;
-
-            resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
-
-            Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
-            var akkonCogImage = ConvertCogGrayImage(resizeMat);
-            TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
+            Mat resultMat = GetDebugResultImage(matImage, tabResult, akkonAlgorithmParam);
+            //Mat resizeMat = MatHelper.Resize(matImage, akkonAlgorithmParam.ImageFilterParam.ResizeRatio);
+            //var akkonCogImage = ConvertCogGrayImage(resizeMat);
+            //TeachingUIManager.Instance().SetAkkonCogImage(akkonCogImage);
             var resultCogImage = ConvertCogColorImage(resultMat);
             TeachingUIManager.Instance().SetResultCogImage(resultCogImage);
 
-            resizeMat.Dispose();
+            //resizeMat.Dispose();
             resultMat.Dispose();
             ClearDisplay();
             Console.WriteLine("Completed.");
