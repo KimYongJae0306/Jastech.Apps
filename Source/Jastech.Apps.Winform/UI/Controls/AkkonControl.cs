@@ -201,13 +201,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             // Manual Teaching
             lblGroupCountValue.Text = akkonParam.GroupList.Count.ToString();
             lblLeadCountValue.Text = group.Count.ToString();
-            lblLeadPitchValue.Text = group.Pitch.ToString("F2");
-            lblROIWidthValue.Text = group.Width.ToString("F2");
-            lblROIHeightValue.Text = group.Height.ToString("F2");
+            lblLeadPitchValue_um.Text = group.Pitch.ToString("F2");
+            lblROIWidthValue_um.Text = group.Width.ToString("F2");
+            lblROIHeightValue_um.Text = group.Height.ToString("F2");
 
             //Auto Teaching
             lblAutoThresholdValue.Text = group.Threshold.ToString();
-            lblAutoLeadPitch.Text = group.Pitch.ToString("F2");
+            lblAutoLeadPitch_um.Text = group.Pitch.ToString("F2");
 
             UpdateROIDataGridView(CurrentTab.GetAkkonGroup(groupNo).AkkonROIList);
 
@@ -233,13 +233,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             // Manual Teaching
             lblLeadCountValue.Text = group.Count.ToString();
-            lblLeadPitchValue.Text = group.Pitch.ToString("F2");
-            lblROIWidthValue.Text = group.Width.ToString("F2");
-            lblROIHeightValue.Text = group.Height.ToString("F2");
+            lblLeadPitchValue_um.Text = group.Pitch.ToString("F2");
+            lblROIWidthValue_um.Text = group.Width.ToString("F2");
+            lblROIHeightValue_um.Text = group.Height.ToString("F2");
 
             //Auto Teaching
             lblAutoThresholdValue.Text = group.Threshold.ToString();
-            lblAutoLeadPitch.Text = group.Pitch.ToString("F2");
+            lblAutoLeadPitch_um.Text = group.Pitch.ToString("F2");
 
             UpdateROIDataGridView(groupParam.AkkonROIList);
 
@@ -281,16 +281,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             double centerX = display.GetImageWidth() / 2.0 - display.GetPan().X;
             double centerY = display.GetImageHeight() / 2.0 - display.GetPan().Y;
 
-            float roiwidth = Convert.ToSingle(lblROIWidthValue.Text);
-            float roiheight = Convert.ToSingle(lblROIHeightValue.Text);
+            float roiwidth_um = Convert.ToSingle(lblROIWidthValue_um.Text);
+            float roiheight_um = Convert.ToSingle(lblROIHeightValue_um.Text);
 
             CogRectangleAffineDOFConstants constants = CogRectangleAffineDOFConstants.Position | CogRectangleAffineDOFConstants.Size | CogRectangleAffineDOFConstants.Skew;
 
             float akkonResizeRatio = CurrentTab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
-            float calcRoiWidth_um = roiwidth * Resolution_um / akkonResizeRatio;
-            float calcRoiHeight_um = roiheight * Resolution_um / akkonResizeRatio;
 
-            _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, /*calcRoiWidth_um*/roiwidth, /*calcRoiHeight_um*/roiheight, constants: constants);
+            _firstCogRectAffine = VisionProImageHelper.CreateRectangleAffine(centerX, centerY, roiwidth_um, roiheight_um, constants: constants);
 
             var teachingDisplay = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
             if (teachingDisplay.GetImage() == null)
@@ -663,7 +661,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             CurrentTab.AkkonParam.GroupList[groupIndex].Pitch = leadPitch;
 
             //AutoTeaching
-            lblAutoLeadPitch.Text = leadPitch.ToString();
+            lblAutoLeadPitch_um.Text = leadPitch.ToString();
         }
 
         private void lblROIWidthValue_Click(object sender, EventArgs e)

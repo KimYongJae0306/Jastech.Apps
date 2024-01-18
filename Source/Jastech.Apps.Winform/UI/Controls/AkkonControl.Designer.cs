@@ -36,7 +36,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlAuto = new System.Windows.Forms.Panel();
             this.lblDelete2 = new System.Windows.Forms.Label();
-            this.lblAutoLeadPitch = new System.Windows.Forms.Label();
+            this.lblAutoLeadPitch_um = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblThresholdPreview = new System.Windows.Forms.Label();
             this.lblAutoTeachingExcute = new System.Windows.Forms.Label();
@@ -87,10 +87,10 @@
             this.lblLeadCountValue = new System.Windows.Forms.Label();
             this.lblCloneExecute = new System.Windows.Forms.Label();
             this.lblROIWidth = new System.Windows.Forms.Label();
-            this.lblROIHeightValue = new System.Windows.Forms.Label();
-            this.lblROIWidthValue = new System.Windows.Forms.Label();
+            this.lblROIHeightValue_um = new System.Windows.Forms.Label();
+            this.lblROIWidthValue_um = new System.Windows.Forms.Label();
             this.lblCloneHorizontal = new System.Windows.Forms.Label();
-            this.lblLeadPitchValue = new System.Windows.Forms.Label();
+            this.lblLeadPitchValue_um = new System.Windows.Forms.Label();
             this.lblROIHeight = new System.Windows.Forms.Label();
             this.lblCloneVertical = new System.Windows.Forms.Label();
             this.lblClone = new System.Windows.Forms.Label();
@@ -113,7 +113,7 @@
             // pnlAuto
             // 
             this.pnlAuto.Controls.Add(this.lblDelete2);
-            this.pnlAuto.Controls.Add(this.lblAutoLeadPitch);
+            this.pnlAuto.Controls.Add(this.lblAutoLeadPitch_um);
             this.pnlAuto.Controls.Add(this.label7);
             this.pnlAuto.Controls.Add(this.lblThresholdPreview);
             this.pnlAuto.Controls.Add(this.lblAutoTeachingExcute);
@@ -140,20 +140,20 @@
             this.lblDelete2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblDelete2.Click += new System.EventHandler(this.lblDelete_Click);
             // 
-            // lblAutoLeadPitch
+            // lblAutoLeadPitch_um
             // 
-            this.lblAutoLeadPitch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblAutoLeadPitch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAutoLeadPitch.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblAutoLeadPitch.ForeColor = System.Drawing.Color.White;
-            this.lblAutoLeadPitch.Location = new System.Drawing.Point(148, 49);
-            this.lblAutoLeadPitch.Margin = new System.Windows.Forms.Padding(0);
-            this.lblAutoLeadPitch.Name = "lblAutoLeadPitch";
-            this.lblAutoLeadPitch.Size = new System.Drawing.Size(80, 40);
-            this.lblAutoLeadPitch.TabIndex = 149;
-            this.lblAutoLeadPitch.Text = "0";
-            this.lblAutoLeadPitch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblAutoLeadPitch.Click += new System.EventHandler(this.lblAutoLeadPitch_Click);
+            this.lblAutoLeadPitch_um.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblAutoLeadPitch_um.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAutoLeadPitch_um.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAutoLeadPitch_um.ForeColor = System.Drawing.Color.White;
+            this.lblAutoLeadPitch_um.Location = new System.Drawing.Point(148, 49);
+            this.lblAutoLeadPitch_um.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAutoLeadPitch_um.Name = "lblAutoLeadPitch_um";
+            this.lblAutoLeadPitch_um.Size = new System.Drawing.Size(80, 40);
+            this.lblAutoLeadPitch_um.TabIndex = 149;
+            this.lblAutoLeadPitch_um.Text = "0";
+            this.lblAutoLeadPitch_um.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAutoLeadPitch_um.Click += new System.EventHandler(this.lblAutoLeadPitch_Click);
             // 
             // label7
             // 
@@ -746,10 +746,10 @@
             this.pnlManual.Controls.Add(this.lblLeadCountValue);
             this.pnlManual.Controls.Add(this.lblCloneExecute);
             this.pnlManual.Controls.Add(this.lblROIWidth);
-            this.pnlManual.Controls.Add(this.lblROIHeightValue);
-            this.pnlManual.Controls.Add(this.lblROIWidthValue);
+            this.pnlManual.Controls.Add(this.lblROIHeightValue_um);
+            this.pnlManual.Controls.Add(this.lblROIWidthValue_um);
             this.pnlManual.Controls.Add(this.lblCloneHorizontal);
-            this.pnlManual.Controls.Add(this.lblLeadPitchValue);
+            this.pnlManual.Controls.Add(this.lblLeadPitchValue_um);
             this.pnlManual.Controls.Add(this.lblROIHeight);
             this.pnlManual.Controls.Add(this.lblCloneVertical);
             this.pnlManual.Controls.Add(this.lblClone);
@@ -890,35 +890,35 @@
             this.lblROIWidth.Text = "ROI Width(㎛)";
             this.lblROIWidth.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblROIHeightValue
+            // lblROIHeightValue_um
             // 
-            this.lblROIHeightValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblROIHeightValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblROIHeightValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblROIHeightValue.ForeColor = System.Drawing.Color.White;
-            this.lblROIHeightValue.Location = new System.Drawing.Point(148, 138);
-            this.lblROIHeightValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblROIHeightValue.Name = "lblROIHeightValue";
-            this.lblROIHeightValue.Size = new System.Drawing.Size(80, 40);
-            this.lblROIHeightValue.TabIndex = 17;
-            this.lblROIHeightValue.Text = "0";
-            this.lblROIHeightValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROIHeightValue.Click += new System.EventHandler(this.lblROIHeightValue_Click);
+            this.lblROIHeightValue_um.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblROIHeightValue_um.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblROIHeightValue_um.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblROIHeightValue_um.ForeColor = System.Drawing.Color.White;
+            this.lblROIHeightValue_um.Location = new System.Drawing.Point(148, 138);
+            this.lblROIHeightValue_um.Margin = new System.Windows.Forms.Padding(0);
+            this.lblROIHeightValue_um.Name = "lblROIHeightValue_um";
+            this.lblROIHeightValue_um.Size = new System.Drawing.Size(80, 40);
+            this.lblROIHeightValue_um.TabIndex = 17;
+            this.lblROIHeightValue_um.Text = "0";
+            this.lblROIHeightValue_um.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblROIHeightValue_um.Click += new System.EventHandler(this.lblROIHeightValue_Click);
             // 
-            // lblROIWidthValue
+            // lblROIWidthValue_um
             // 
-            this.lblROIWidthValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblROIWidthValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblROIWidthValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblROIWidthValue.ForeColor = System.Drawing.Color.White;
-            this.lblROIWidthValue.Location = new System.Drawing.Point(148, 92);
-            this.lblROIWidthValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblROIWidthValue.Name = "lblROIWidthValue";
-            this.lblROIWidthValue.Size = new System.Drawing.Size(80, 40);
-            this.lblROIWidthValue.TabIndex = 16;
-            this.lblROIWidthValue.Text = "0";
-            this.lblROIWidthValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblROIWidthValue.Click += new System.EventHandler(this.lblROIWidthValue_Click);
+            this.lblROIWidthValue_um.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblROIWidthValue_um.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblROIWidthValue_um.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblROIWidthValue_um.ForeColor = System.Drawing.Color.White;
+            this.lblROIWidthValue_um.Location = new System.Drawing.Point(148, 92);
+            this.lblROIWidthValue_um.Margin = new System.Windows.Forms.Padding(0);
+            this.lblROIWidthValue_um.Name = "lblROIWidthValue_um";
+            this.lblROIWidthValue_um.Size = new System.Drawing.Size(80, 40);
+            this.lblROIWidthValue_um.TabIndex = 16;
+            this.lblROIWidthValue_um.Text = "0";
+            this.lblROIWidthValue_um.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblROIWidthValue_um.Click += new System.EventHandler(this.lblROIWidthValue_Click);
             // 
             // lblCloneHorizontal
             // 
@@ -935,20 +935,20 @@
             this.lblCloneHorizontal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCloneHorizontal.Click += new System.EventHandler(this.lblCloneHorizontal_Click);
             // 
-            // lblLeadPitchValue
+            // lblLeadPitchValue_um
             // 
-            this.lblLeadPitchValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.lblLeadPitchValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblLeadPitchValue.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
-            this.lblLeadPitchValue.ForeColor = System.Drawing.Color.White;
-            this.lblLeadPitchValue.Location = new System.Drawing.Point(148, 46);
-            this.lblLeadPitchValue.Margin = new System.Windows.Forms.Padding(0);
-            this.lblLeadPitchValue.Name = "lblLeadPitchValue";
-            this.lblLeadPitchValue.Size = new System.Drawing.Size(80, 40);
-            this.lblLeadPitchValue.TabIndex = 18;
-            this.lblLeadPitchValue.Text = "0";
-            this.lblLeadPitchValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLeadPitchValue.Click += new System.EventHandler(this.lblLeadPitchValue_Click);
+            this.lblLeadPitchValue_um.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.lblLeadPitchValue_um.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblLeadPitchValue_um.Font = new System.Drawing.Font("맑은 고딕", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLeadPitchValue_um.ForeColor = System.Drawing.Color.White;
+            this.lblLeadPitchValue_um.Location = new System.Drawing.Point(148, 46);
+            this.lblLeadPitchValue_um.Margin = new System.Windows.Forms.Padding(0);
+            this.lblLeadPitchValue_um.Name = "lblLeadPitchValue_um";
+            this.lblLeadPitchValue_um.Size = new System.Drawing.Size(80, 40);
+            this.lblLeadPitchValue_um.TabIndex = 18;
+            this.lblLeadPitchValue_um.Text = "0";
+            this.lblLeadPitchValue_um.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLeadPitchValue_um.Click += new System.EventHandler(this.lblLeadPitchValue_Click);
             // 
             // lblROIHeight
             // 
@@ -1043,7 +1043,7 @@
         private System.Windows.Forms.Label lblAutoTeachingExcute;
         private System.Windows.Forms.Label lblAutoThresholdValue;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label lblAutoLeadPitch;
+        private System.Windows.Forms.Label lblAutoLeadPitch_um;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblTeachingMode;
         private System.Windows.Forms.DataGridViewTextBoxColumn colROINo;
@@ -1060,10 +1060,10 @@
         private System.Windows.Forms.Label lblLeadCountValue;
         private System.Windows.Forms.Label lblCloneExecute;
         private System.Windows.Forms.Label lblROIWidth;
-        private System.Windows.Forms.Label lblROIHeightValue;
-        private System.Windows.Forms.Label lblROIWidthValue;
+        private System.Windows.Forms.Label lblROIHeightValue_um;
+        private System.Windows.Forms.Label lblROIWidthValue_um;
         private System.Windows.Forms.Label lblCloneHorizontal;
-        private System.Windows.Forms.Label lblLeadPitchValue;
+        private System.Windows.Forms.Label lblLeadPitchValue_um;
         private System.Windows.Forms.Label lblROIHeight;
         private System.Windows.Forms.Label lblCloneVertical;
         private System.Windows.Forms.Label lblClone;
