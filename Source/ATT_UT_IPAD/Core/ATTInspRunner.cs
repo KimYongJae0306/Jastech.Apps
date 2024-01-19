@@ -511,7 +511,7 @@ namespace ATT_UT_IPAD.Core
                         WriteLog("Complete Align LineScanner Grab.", true);
                     }
 
-                    //PlcControlManager.Instance().WriteGrabDone();
+                    PlcControlManager.Instance().WriteGrabDone();
                     WriteLog("Send to Plc Grab Done", true);
 
                     LightCtrlHandler.TurnOff();
