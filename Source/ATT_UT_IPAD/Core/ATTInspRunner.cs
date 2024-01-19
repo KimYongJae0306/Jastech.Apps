@@ -929,11 +929,10 @@ namespace ATT_UT_IPAD.Core
 
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
 
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -1497,8 +1496,8 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.VirtualMode)
                 {
-                    //_saveThread = null;
-                    //return;
+                    _saveThread = null;
+                    return;
                 }
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -1772,16 +1771,13 @@ namespace ATT_UT_IPAD.Core
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
 
-            string fullDate = currentTime.ToString("yyyyMMdd");
+            string date = currentTime.ToString("yyyyMMdd");
             string cellId = AppsInspResult.Instance().Cell_ID;
 
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            //string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, fullDate, cellId);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
 
             return path;
         }
@@ -1835,7 +1831,7 @@ namespace ATT_UT_IPAD.Core
                     break;
 
                 string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
-                string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
+                string akkonNGDir = Path.Combine(resultPath, TabJudgement.NG.ToString(), akkonNGDirName);
                 if (Directory.Exists(akkonNGDir) == false)
                     Directory.CreateDirectory(akkonNGDir);
 
@@ -1876,8 +1872,8 @@ namespace ATT_UT_IPAD.Core
             {
                 if (isHalfSave)
                 {
-                    string leftPath = $"{filePath}\\{imageName}_{judgement}_Left.jpg";
-                    string rightPath = $"{filePath}\\{imageName}_{judgement}_Right.jpg";
+                    string leftPath = $"{filePath}\\{imageName}_Left_{judgement}.jpg";
+                    string rightPath = $"{filePath}\\{imageName}_Right_{judgement}.jpg";
 
                     int half = image.Width / 2;
                     Rectangle leftRect = new Rectangle(0, 0, half, image.Height);

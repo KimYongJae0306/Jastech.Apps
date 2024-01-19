@@ -677,11 +677,10 @@ namespace ATT.Core
 
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
 
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -1284,17 +1283,17 @@ namespace ATT.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
-                    string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
+                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(path, imageName);
 
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
-                        SaveImage(tabInspResult.Image, filePath, Judgement.OK, ImageExtension.Bmp, false);
+                        SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Bmp, false);
                     else if (operation.ExtensionOKImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
-                            SaveImage(tabInspResult.Image, filePath, Judgement.OK, ImageExtension.Jpg, true);
+                            SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Jpg, true);
                         else
-                            SaveImage(tabInspResult.Image, filePath, Judgement.OK, ImageExtension.Jpg, false);
+                            SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Jpg, false);
                     }
                 }
             }
@@ -1302,16 +1301,16 @@ namespace ATT.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
-                    string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
+                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(path, imageName);
                     if (operation.ExtensionNGImage == ImageExtension.Bmp)
-                        SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Bmp, false);
+                        SaveImage(tabInspResult.Image, filePath, imageName, Judgement.NG, ImageExtension.Bmp, false);
                     else if (operation.ExtensionNGImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
-                            SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Jpg, true);
+                            SaveImage(tabInspResult.Image, filePath, imageName, Judgement.NG, ImageExtension.Jpg, true);
                         else
-                            SaveImage(tabInspResult.Image, filePath, Judgement.NG, ImageExtension.Jpg, false);
+                            SaveImage(tabInspResult.Image, filePath, imageName, Judgement.NG, ImageExtension.Jpg, false);
                     }
 
                     if (tabInspResult.AkkonResult.Judgement == Judgement.NG)
@@ -1505,12 +1504,11 @@ namespace ATT.Core
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
 
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
 
             return path;
         }
@@ -1564,7 +1562,7 @@ namespace ATT.Core
                     break;
 
                 string akkonNGDirName = string.Format("Tab{0}_NG", tabInspResult.TabNo);
-                string akkonNGDir = Path.Combine(resultPath, akkonNGDirName);
+                string akkonNGDir = Path.Combine(resultPath, TabJudgement.NG.ToString(), akkonNGDirName);
                 if (Directory.Exists(akkonNGDir) == false)
                     Directory.CreateDirectory(akkonNGDir);
 
@@ -1594,19 +1592,19 @@ namespace ATT.Core
             }
         }
 
-        private void SaveImage(Mat image, string filePath, Judgement judgement, ImageExtension extension, bool isHalfSave)
+        private void SaveImage(Mat image, string filePath, string imageName, Judgement judgement, ImageExtension extension, bool isHalfSave)
         {
             if (extension == ImageExtension.Bmp)
             {
-                filePath += $"_{judgement}.bmp";
+                filePath += $"\\{imageName}_{judgement}.bmp";
                 image.Save(filePath);
             }
             else if (extension == ImageExtension.Jpg)
             {
                 if (isHalfSave)
                 {
-                    string leftPath = $"{filePath}_{judgement}_Left.jpg";
-                    string rightPath = $"{filePath}_{judgement}_Right.jpg";
+                    string leftPath = $"{filePath}_Left_{judgement}.jpg";
+                    string rightPath = $"{filePath}_Right_{judgement}.jpg";
 
                     int half = image.Width / 2;
                     Rectangle leftRect = new Rectangle(0, 0, half, image.Height);
@@ -1623,7 +1621,7 @@ namespace ATT.Core
                 }
                 else
                 {
-                    filePath += $"_{judgement}.jpg";
+                    filePath += $"\\{imageName}_{judgement}.jpg";
                     image.Save(filePath);
                 }
             }

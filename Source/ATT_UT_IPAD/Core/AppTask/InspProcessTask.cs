@@ -562,11 +562,10 @@ namespace ATT_UT_IPAD.Core.AppTask
 
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "Akkon");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "Akkon");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 

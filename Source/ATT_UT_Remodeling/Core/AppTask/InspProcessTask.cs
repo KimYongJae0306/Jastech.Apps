@@ -400,11 +400,10 @@ namespace ATT_UT_Remodeling.Core.AppTask
 
             DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath, "AkkonROI");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "AkkonROI");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 

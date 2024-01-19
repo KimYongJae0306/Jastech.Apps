@@ -244,9 +244,10 @@ namespace Jastech.Framework.Winform.Forms
 
             for (DateTime dateTime = cdrMonthCalendar.SelectionStart; dateTime <= cdrMonthCalendar.SelectionEnd; dateTime = dateTime.AddDays(1))
             {
-                string month = dateTime.Month.ToString("D2");
-                string day = dateTime.Day.ToString("D2");
-                string rootPath = Path.Combine(_selectedPagePath, month);
+                string date = dateTime.ToString("yyyyMMdd");
+                //string month = dateTime.Month.ToString("D2");
+                //string day = dateTime.Day.ToString("D2");
+                string rootPath = Path.Combine(_selectedPagePath, date);
 
                 DirectoryInfo rootDirectoryInfo = new DirectoryInfo(rootPath);
                 TreeNode rootNode;
@@ -258,7 +259,8 @@ namespace Jastech.Framework.Winform.Forms
                 else
                     rootNode = tvwLogPath.Nodes[rootDirectoryInfo.Name];
 
-                DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}\{day}");
+                //DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}\{day}");
+                DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}");
                 if (Directory.Exists(subDirectoryInfo.FullName))
                     rootNode.Nodes.Add(RecursiveDirectory(subDirectoryInfo));
             }
