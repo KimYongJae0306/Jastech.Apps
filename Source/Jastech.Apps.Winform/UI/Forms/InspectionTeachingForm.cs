@@ -182,6 +182,11 @@ namespace Jastech.Framework.Winform.Forms
         {
             // Display Control
             Display = new CogTeachingDisplayControl();
+            if(LineCamera != null)
+            {
+                var camera = LineCamera.Camera;
+                Display.PixelResolution = camera.PixelResolution_um / camera.LensScale;
+            }
             Display.Dock = DockStyle.Fill;
 
             //Event 연결

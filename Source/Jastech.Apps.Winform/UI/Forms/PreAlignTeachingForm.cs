@@ -100,6 +100,12 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void AddControl()
         {
             Display = new CogTeachingDisplayControl();
+            if(AreaCamera != null)
+            {
+                var camera = AreaCamera.Camera;
+                Display.PixelResolution = camera.PixelResolution_um / camera.LensScale;
+            }
+
             Display.Dock = DockStyle.Fill;
             Display.DeleteEventHandler += Display_DeleteEventHandler;
             pnlDisplay.Controls.Add(Display);

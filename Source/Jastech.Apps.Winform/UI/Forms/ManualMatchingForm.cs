@@ -81,6 +81,11 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void AddControls()
         {
             CogDisplayControl = new CogDisplayControl();
+            if(AreaCamera != null)
+            {
+                var camera = AreaCamera.Camera;
+                CogDisplayControl.PixelResolution = camera.PixelResolution_um / camera.LensScale;
+            }
             CogDisplayControl.Dock = DockStyle.Fill;
             pnlDisplay.Controls.Add(CogDisplayControl);
 

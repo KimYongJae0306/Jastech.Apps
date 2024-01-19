@@ -44,10 +44,12 @@ namespace AkkonTester.UI.Pages
         private void AddFullImageControls()
         {
             cogOrgDisplay = new CogTeachingDisplayControl();
+            cogOrgDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             cogOrgDisplay.Dock = DockStyle.Fill;
             pnlOriginalImage.Controls.Add(cogOrgDisplay);
 
             cogResultDisplay = new CogTeachingDisplayControl();
+            cogOrgDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             cogResultDisplay.Dock = DockStyle.Fill;
             pnlResultImage.Controls.Add(cogResultDisplay);
         }
