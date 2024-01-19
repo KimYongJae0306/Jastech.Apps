@@ -489,12 +489,11 @@ namespace ATT_UT_Remodeling
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
 
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day, folderPath);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
 
             return path;
         }
