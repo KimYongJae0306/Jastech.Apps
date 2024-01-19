@@ -1497,8 +1497,8 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.VirtualMode)
                 {
-                    //_saveThread = null;
-                    //return;
+                    _saveThread = null;
+                    return;
                 }
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;

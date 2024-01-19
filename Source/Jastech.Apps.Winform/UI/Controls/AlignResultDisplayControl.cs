@@ -35,6 +35,8 @@ namespace ATT_UT_IPAD.UI.Controls
 
         public CogInspAlignDisplayControl InspAlignDisplay { get; private set; } = null;
 
+        public float TextFontSize { get; set; } = 35.0f;
+
         public int CurrentTabNo { get; set; } = -1;
 
         private List<PointF>[] LeftPointList { get; set; } = null;
@@ -86,6 +88,7 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             InspAlignDisplay = new CogInspAlignDisplayControl();
             InspAlignDisplay.Dock = DockStyle.Fill;
+            InspAlignDisplay.TextFontSize = TextFontSize;
             InspAlignDisplay.UseAllContextMenu(false);
             InspAlignDisplay.LeftDisplayZoomRatio = LeftDisplayZoomRatio;
             InspAlignDisplay.RightDisplayZoomRatio = RightDisplayZoomRatio;
@@ -126,18 +129,6 @@ namespace ATT_UT_IPAD.UI.Controls
         {
             InspAlignDisplay.Enable(isEnable);
             BeginInvoke(new Action(() => Enabled = isEnable));
-        }
-
-        public void UpdateTabButtons(int tabCount)
-        {
-            if (this.InvokeRequired)
-            {
-                UpdateTabButtonDelegate callback = UpdateTabButtons;
-                BeginInvoke(callback, tabCount);
-                return;
-            }
-
-            //InitTabCount(tabCount);
         }
 
         public void CreateTabButton(int tabCount)
