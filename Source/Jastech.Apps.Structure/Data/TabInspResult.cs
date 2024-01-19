@@ -546,7 +546,7 @@ namespace Jastech.Apps.Structure.Data
 
                 if (LeftX.Judgement == Judgement.OK && LeftY.Judgement == Judgement.OK && RightX.Judgement == Judgement.OK && RightY.Judgement == Judgement.OK)
                 {
-                    var cx = GetCx_um();
+                    var cx = GetDoubleCx_um();
 
                     if (Math.Abs(cx) <= Math.Abs(CxJudegementValue_pixel * Resolution_um))
                         return Judgement.OK;
@@ -570,7 +570,7 @@ namespace Jastech.Apps.Structure.Data
 
         public AlignResult RightY { get; set; } = null;
 
-        public double Resolution_um { get; set; }
+        public float Resolution_um { get; set; }
 
         public ICogImage CenterImage { get; set; } = null;
 
@@ -589,17 +589,115 @@ namespace Jastech.Apps.Structure.Data
             return result;
         }
 
-        public double GetCx_um()
+        public string GetStringLx_um()
         {
-            if (LeftX == null || RightX == null)
-                return 0.0;
+            if (LeftX == null)
+                return "-";
+
+            if (LeftX.AlignMissing)
+                return "-";
 
             double lx = MathHelper.GetFloorDecimal(LeftX.ResultValue_pixel * Resolution_um, 4);
+
+            return MathHelper.GetFloorDecimal(lx, 4).ToString();
+        }
+
+        public string GetStringRx_um()
+        {
+            if (RightX == null)
+                return "-";
+
+            if (RightX.AlignMissing)
+                return "-";
+
             double rx = MathHelper.GetFloorDecimal(RightX.ResultValue_pixel * Resolution_um, 4);
 
-            double cx = (lx + rx) / 2.0;
+            return MathHelper.GetFloorDecimal(rx, 4).ToString();
+        }
 
-            return cx;
+
+        public string GetStringLy_um()
+        {
+            if (LeftY == null)
+                return "-";
+
+            if (LeftY.AlignMissing)
+                return "-";
+
+            double ly = MathHelper.GetFloorDecimal(LeftY.ResultValue_pixel * Resolution_um, 4);
+
+            return MathHelper.GetFloorDecimal(ly, 4).ToString();
+        }
+
+        public string GetStringRy_um()
+        {
+            if (RightY == null)
+                return "-";
+
+            if (RightY.AlignMissing)
+                return "-";
+
+            double ry = MathHelper.GetFloorDecimal(RightY.ResultValue_pixel * Resolution_um, 4);
+
+            return MathHelper.GetFloorDecimal(ry, 4).ToString();
+        }
+
+        public string GetStringCx_um()
+        {
+            var lxString = GetStringLx_um();
+            var rxString = GetStringRx_um();
+
+            if (lxString == "-" || rxString == "-")
+                return "-";
+
+            double cx = (Convert.ToDouble(lxString) + Convert.ToDouble(rxString)) / 2.0;
+
+            return MathHelper.GetFloorDecimal(cx, 4).ToString();
+        }
+        //
+        public double GetDoubleLx_um()
+        {
+            var lxString = GetStringLx_um();
+            if (lxString == "-")
+                return 0.0;
+
+            return Convert.ToDouble(lxString);
+        }
+
+        public double GetDoubleRx_um()
+        {
+            var rxString = GetStringRx_um();
+            if (rxString == "-")
+                return 0.0;
+
+            return Convert.ToDouble(rxString);
+        }
+
+        public double GetDoubleLy_um()
+        {
+            var lyString = GetStringLy_um();
+            if (lyString == "-")
+                return 0.0;
+
+            return Convert.ToDouble(lyString);
+        }
+
+        public double GetDoubleRy_um()
+        {
+            var ryString = GetStringRy_um();
+            if (ryString == "-")
+                return 0.0;
+
+            return Convert.ToDouble(ryString);
+        }
+
+        public double GetDoubleCx_um()
+        {
+            var cxString = GetStringCx_um();
+            if (cxString == "-")
+                return 0.0;
+
+            return Convert.ToDouble(cxString);
         }
 
         public void Dispose()

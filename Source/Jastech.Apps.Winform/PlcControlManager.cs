@@ -804,21 +804,10 @@ namespace Jastech.Apps.Winform
                 if (AppsConfig.Instance().EnableAlignByPass)
                     alignJudgement = 1;
 
-                double leftX_um = 0.0;
-                if (alignResult.LeftX != null)
-                    leftX_um = alignResult.LeftX.ResultValue_pixel * resolution;
-
-                double leftY_um = 0.0;
-                if (alignResult.LeftY != null)
-                    leftY_um = alignResult.LeftY.ResultValue_pixel * resolution;
-
-                double rightX_um = 0.0;
-                if (alignResult.RightX != null)
-                    rightX_um = alignResult.RightX.ResultValue_pixel * resolution;
-
-                double rightY_um = 0.0;
-                if (alignResult.RightY != null)
-                    rightY_um = alignResult.RightY.ResultValue_pixel * resolution;
+                double leftX_um = alignResult.GetDoubleLx_um();
+                double leftY_um = alignResult.GetDoubleLy_um();
+                double rightX_um = alignResult.GetDoubleRx_um();
+                double rightY_um = alignResult.GetDoubleRy_um();
 
                 int leftX = ConvertDoubleWordData(leftX_um);
                 int leftY = ConvertDoubleWordData(leftY_um);
@@ -855,10 +844,7 @@ namespace Jastech.Apps.Winform
             }
             else
             {
-                double cx_um = 0.0;
-                if (alignResult.LeftX != null)
-                    cx_um = alignResult.GetCx_um();
-
+                double cx_um = alignResult.GetDoubleCx_um();
                 int cx = ConvertDoubleWordData(cx_um);
 
                 if (parserType == ParserType.Binary)

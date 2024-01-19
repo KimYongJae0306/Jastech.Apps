@@ -43,6 +43,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         public string Ry { get; set; } = "-";//0.0F;
 
+        public string Cx { get; set; } = "-";
+
         #endregion
 
         #region 이벤트

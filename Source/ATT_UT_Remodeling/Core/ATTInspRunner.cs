@@ -756,22 +756,18 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
-                alignInfo.LX = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 4);
-                alignInfo.LY = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 4);
-                alignInfo.RX = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 4);
-                alignInfo.RY = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 4);
+                alignInfo.LX = tabInspResult.AlignResult.GetStringLx_um();
+                alignInfo.LY = tabInspResult.AlignResult.GetStringLy_um();
+                alignInfo.CX = tabInspResult.AlignResult.GetStringCx_um();
+                alignInfo.RX = tabInspResult.AlignResult.GetStringRx_um();
+                alignInfo.RY = tabInspResult.AlignResult.GetStringRy_um();
                 alignInfo.ResultPath = GetResultPath();
-
-                if (double.TryParse(alignInfo.LX, out double lx) && double.TryParse(alignInfo.RX, out double rx))
-                    alignInfo.CX = ((lx + rx) / 2.0F).ToString();
-                else
-                    alignInfo.CX = "-";
 
                 dailyData.AddAlignInfo(alignInfo);
             }
         }
 
-        private string GetResultAlignResultValue(AlignResult alignResult, int decimalPlaces)
+        private string CheckAlignResultValue(AlignResult alignResult, double value)
         {
             if (alignResult == null)
                 return "-";
@@ -779,12 +775,8 @@ namespace ATT_UT_Remodeling.Core
             if (alignResult.AlignMissing)
                 return "-";
 
-            double resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, decimalPlaces);
-
             return value.ToString();
         }
-
 
         private void UpdateAkkonDailyInfo(ref DailyData dailyData)
         {
@@ -886,23 +878,18 @@ namespace ATT_UT_Remodeling.Core
                 var tabInspResult = AppsInspResult.Instance().Get(tabNo);
                 var alignResult = tabInspResult.AlignResult;
 
-                string lx = GetResultAlignResultValue(alignResult.LeftX, 4);
-                string rx = GetResultAlignResultValue(alignResult.RightX, 4);
-                string ly = GetResultAlignResultValue(alignResult.LeftY, 4);
-                string ry = GetResultAlignResultValue(alignResult.RightY, 4);
-                string cx;
-
-                if (double.TryParse(lx, out double lx1) && double.TryParse(rx, out double rx1))
-                    cx = ((lx1 + rx1) / 2.0F).ToString();
-                else
-                    cx = "-";
+                var lx = tabInspResult.AlignResult.GetStringLx_um();
+                var ly = tabInspResult.AlignResult.GetStringLy_um();
+                var rx = tabInspResult.AlignResult.GetStringRx_um();
+                var ry = tabInspResult.AlignResult.GetStringRy_um();
+                var cx = tabInspResult.AlignResult.GetStringCx_um();
 
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{alignResult.Judgement}");                                       // Judge
                 body.Add($"{alignResult.PreHead}");                                         // Pre Head
-                body.Add($"{cx}");                                                       // Align Cx
                 body.Add($"{lx}");                                                       // Align Lx
                 body.Add($"{rx}");                                                       // Align Rx
+                body.Add($"{cx}");                                                       // Align Cx
                 body.Add($"{ly}");                                                       // Align Ly
                 body.Add($"{ry}");                                                       // Align Ry
             }
@@ -1010,12 +997,7 @@ namespace ATT_UT_Remodeling.Core
 
                 string preHead = tabInspResult.AlignResult.PreHead;
                 string finalHead = AppsInspResult.Instance().FinalHead;
-
-                double lx = CheckAlignResultValue(tabInspResult.AlignResult.LeftX);
-                double ly = CheckAlignResultValue(tabInspResult.AlignResult.LeftY);
-                double rx = CheckAlignResultValue(tabInspResult.AlignResult.RightX);
-                double ry = CheckAlignResultValue(tabInspResult.AlignResult.RightY);
-                double cx = (lx + rx) / 2.0F;
+                var alignResult = tabInspResult.AlignResult;
 
                 var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
                 List<string> tabData = new List<string>
@@ -1033,11 +1015,11 @@ namespace ATT_UT_Remodeling.Core
                     $"{preHead}",                                                           // Pre Head
                     $"{finalHead}",                                                         // Final Head
 
-                    $"{lx:F3}",                                                             // Left Align X
-                    $"{ly:F3}",                                                             // Left Align Y
-                    $"{cx:F3}",                                                             // Center Align X
-                    $"{rx:F3}",                                                             // Right Align X
-                    $"{ry:F3}",                                                             // Right Align Y
+                 $"{alignResult.GetStringLx_um()}",                                                             // Left Align X
+                    $"{alignResult.GetStringLy_um()}",                                                             // Left Align Y
+                    $"{alignResult.GetStringCx_um()}",                                                             // Center Align X
+                    $"{alignResult.GetStringRx_um()}",                                                             // Right Align X
+                    $"{alignResult.GetStringRy_um()}",                                                             // Right Align Y
 
                     $"{tabInspResult.AkkonResult.Judgement}",                                          // Akkon Judge
                     $"{tabInspResult.AlignResult.Judgement}",                                          // Align Judge
@@ -1137,18 +1119,17 @@ namespace ATT_UT_Remodeling.Core
                 };
 
                 // Add Body strings
-                var cx = (CheckAlignResultValue(tabInspResult.LeftX) + CheckAlignResultValue(tabInspResult.RightX)) / 2.0F;
                 var body = new List<string>
                 {
                     AppsInspResult.Instance().Cell_ID,
                     $"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}",
                     $"{tabInspResult.PreHead}",
                     $"{AppsInspResult.Instance().FinalHead}",
-                    $"{CheckAlignResultValue(tabInspResult.LeftX):F2}",
-                    $"{CheckAlignResultValue(tabInspResult.LeftY):F2}",
-                    $"{cx:F2}",
-                    $"{CheckAlignResultValue(tabInspResult.RightX):F2}",
-                    $"{CheckAlignResultValue(tabInspResult.RightY):F2}",
+                    $"{tabInspResult.GetStringLx_um()}",
+                    $"{tabInspResult.GetStringLy_um()}",
+                    $"{tabInspResult.GetStringCx_um()}",
+                    $"{tabInspResult.GetStringRx_um()}",
+                    $"{tabInspResult.GetStringRy_um()}",
                 };
 
                 if (header.Count != body.Count)
@@ -1160,15 +1141,6 @@ namespace ATT_UT_Remodeling.Core
                 CSVHelper.WriteHeader(csvFile, header);
                 CSVHelper.WriteData(csvFile, body);
             }
-        }
-
-        private double CheckAlignResultValue(AlignResult alignResult)
-        {
-            float resolution = LineCamera.Camera.PixelResolution_um / LineCamera.Camera.LensScale;
-            if (alignResult == null)
-                return 0.0F;
-            else
-                return MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * resolution, 4);
         }
 
         private Axis GetAxis(AxisHandlerName axisHandlerName, AxisName axisName)
@@ -1481,13 +1453,11 @@ namespace ATT_UT_Remodeling.Core
                 VisionProImageHelper.Save(tabInspResult.AlignResult.CenterImage, filePath);
             }
 
-            string lxData = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, 4);
-            string lyData = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, 4);
-            string rxData = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, 4);
-            string ryData = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, 4);
-            string cxData = "-";
-            if (lxData != "-" && rxData != "-")
-                cxData = $"{Convert.ToDouble(lxData) + Convert.ToDouble(rxData)}";
+            string lxData = tabInspResult.AlignResult.GetStringLx_um();
+            string lyData = tabInspResult.AlignResult.GetStringLy_um();
+            string rxData = tabInspResult.AlignResult.GetStringRx_um();
+            string ryData = tabInspResult.AlignResult.GetStringRy_um();
+            string cxData = tabInspResult.AlignResult.GetStringCx_um();
 
             var leftAlignShapeList = tabInspResult.GetLeftAlignShapeList();
             if (leftAlignShapeList.Count() > 0)

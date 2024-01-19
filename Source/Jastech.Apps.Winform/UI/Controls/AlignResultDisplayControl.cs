@@ -240,18 +240,6 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList.ForEach(x => x.BackColor = Color.FromArgb(52, 52, 52));
         }
 
-        private string GetResultAlignResultValue(AlignResult alignResult, double resolution)
-        {
-            if (alignResult == null)
-                return "-";
-
-            if (alignResult.AlignMissing)
-                return "-";
-
-            double value = MathHelper.GetFloorDecimal(alignResult.ResultValue_pixel * (float)resolution, 4);
-            return value.ToString();
-        }
-
         public void UpdateResultDisplay(int tabNo)
         {
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
@@ -268,20 +256,13 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[index].SetLeftAlignShapeResult(GetLeftAlignShape(tabInspResult), tabInspResult.GetCenterLineByAlignLeftResult());
             TabBtnControlList[index].SetRightAlignShapeResult(GetRightAlignShape(tabInspResult), tabInspResult.GetCenterLineByAlignRightResult());
 
-            if(tabInspResult.AlignResult.LeftX != null)
-                TabBtnControlList[index].Lx = GetResultAlignResultValue(tabInspResult.AlignResult.LeftX, tabInspResult.Resolution_um);
+            TabBtnControlList[index].Lx = tabInspResult.AlignResult.GetStringLx_um();
+            TabBtnControlList[index].Ly = tabInspResult.AlignResult.GetStringLy_um();
+            TabBtnControlList[index].Cx = tabInspResult.AlignResult.GetStringCx_um();
+            TabBtnControlList[index].Rx = tabInspResult.AlignResult.GetStringRx_um();
+            TabBtnControlList[index].Ry = tabInspResult.AlignResult.GetStringRy_um();
 
-            if(tabInspResult.AlignResult.LeftY != null)
-                TabBtnControlList[index].Ly = GetResultAlignResultValue(tabInspResult.AlignResult.LeftY, tabInspResult.Resolution_um);
-
-            if (tabInspResult.AlignResult.RightX != null)
-                TabBtnControlList[index].Rx = GetResultAlignResultValue(tabInspResult.AlignResult.RightX, tabInspResult.Resolution_um);
-
-            if (tabInspResult.AlignResult.RightY != null)
-                TabBtnControlList[index].Ry = GetResultAlignResultValue(tabInspResult.AlignResult.RightY, tabInspResult.Resolution_um);
-
-            if (tabInspResult.AlignResult != null)
-                TabBtnControlList[index].SetCenterImage(tabInspResult.AlignResult.CenterImage);
+            TabBtnControlList[index].SetCenterImage(tabInspResult.AlignResult.CenterImage);
 
             if (tabInspResult != null)
             {
@@ -329,12 +310,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 string ly = TabBtnControlList[tabNo].Ly;
                 string rx = TabBtnControlList[tabNo].Rx;
                 string ry = TabBtnControlList[tabNo].Ry;
-
-                string cx = "";
-                if (lx == "-" || rx == "-")
-                    cx = "-";
-                else
-                    cx = ((Convert.ToDouble(lx) + Convert.ToDouble(rx)) / 2.0).ToString();
+                string cx = TabBtnControlList[tabNo].Cx;
 
                 InspAlignDisplay.UpdateLeftDisplay(image, leftShape.CaliperShapeList, leftShape.LineSegmentList, GetMinimumPointY(LeftPointList[tabNo]));
 
