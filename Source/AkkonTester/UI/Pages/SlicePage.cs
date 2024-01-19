@@ -66,31 +66,37 @@ namespace AkkonTester.UI.Pages
         private void InitializeControls()
         {
             OriginalDisplay.Dock = DockStyle.Fill;
+            OriginalDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             OriginalDisplay.MoveImageEventHandler += OriginalDisplay_MoveImageEventHandler;
             OriginalDisplay.SetMouseMode(CogDisplayMouseModeConstants.Pan);
             pnlOriginal.Controls.Add(OriginalDisplay);
 
             RoiDisplay.Dock = DockStyle.Fill;
+            RoiDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             RoiDisplay.MoveImageEventHandler += RoiDisplay_MoveImageEventHandler;
             RoiDisplay.SetMouseMode(CogDisplayMouseModeConstants.Pan);
             pnlROI.Controls.Add(RoiDisplay);
 
             EnhanceDisplay.Dock = DockStyle.Fill;
+            EnhanceDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             EnhanceDisplay.MoveImageEventHandler += EnhanceDisplay_MoveImageEventHandler;
             EnhanceDisplay.SetMouseMode(CogDisplayMouseModeConstants.Pan);
             pnlEnhance.Controls.Add(EnhanceDisplay);
 
             ProcessingDisplay.Dock = DockStyle.Fill;
+            ProcessingDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             ProcessingDisplay.MoveImageEventHandler += ProcessingDisplay_MoveImageEventHandler;
             ProcessingDisplay.SetMouseMode(CogDisplayMouseModeConstants.Pan);
             pnlProcessing.Controls.Add(ProcessingDisplay);
 
             MaskingDisplay.Dock = DockStyle.Fill;
+            MaskingDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             MaskingDisplay.MoveImageEventHandler += MaskingDisplay_MoveImageEventHandler;
             MaskingDisplay.SetMouseMode(CogDisplayMouseModeConstants.Pan);
             pnlMasking.Controls.Add(MaskingDisplay);
 
             ResultDisplay.Dock = DockStyle.Fill;
+            ResultDisplay.PixelResolution = SystemManager.Instance().Resolution_um;
             ResultDisplay.MoveImageEventHandler += ResultDisplay_MoveImageEventHandler;
             ResultDisplay.SetMouseMode(CogDisplayMouseModeConstants.Pan);
             pnlResult.Controls.Add(ResultDisplay);
