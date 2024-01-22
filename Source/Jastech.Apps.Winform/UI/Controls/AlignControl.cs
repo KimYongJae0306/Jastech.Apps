@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static Jastech.Apps.Winform.UI.Controls.AkkonControl;
 using static Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters.VisionProCaliperParam;
 
 namespace Jastech.Apps.Winform.UI.Controls
@@ -30,8 +31,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Color _selectedColor = new Color();
 
         private Color _nonSelectedColor = new Color();
-
-        private ROIJogForm _roiJogForm { get; set; } = null;
 
         private List<VisionProAlignCaliperResult> _displayCaliperResult = null;
         #endregion
@@ -51,9 +50,13 @@ namespace Jastech.Apps.Winform.UI.Controls
         #endregion
 
         #region 이벤트
+        public ROIJogDelegate OpenROIJogEventHandler;
+
+        public ROIJogDelegate CloseROIJogEventHandler;
         #endregion
 
         #region 델리게이트
+        public delegate void ROIJogDelegate();
         #endregion
 
         #region 생성자
@@ -388,26 +391,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             VisionProImageHelper.Dispose(ref copyCogImage);
         }
 
-        public void ShowROIJog()
-        {
-            //ROIJogControl roiJogForm = new ROIJogControl();
-            //roiJogForm.SetTeachingItem(TeachingItem.Align);
-            //roiJogForm.SendEventHandler += new ROIJogControl.SendClickEventDelegate(ReceiveClickEvent);
-            //roiJogForm.ShowDialog();
 
-            if (_roiJogForm == null)
-            {
-                _roiJogForm = new ROIJogForm();
-                _roiJogForm.SetTeachingItem(TeachingItem.Akkon);
-                _roiJogForm.SendEventHandler += new ROIJogForm.SendClickEventDelegate(ReceiveClickEvent);
-                _roiJogForm.CloseEventDelegate = () => _roiJogForm = null;
-                _roiJogForm.Show();
-            }
-            else
-                _roiJogForm.Focus();
-        }
-
-        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
+        public void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
         {
             if (jogType.Contains("Skew"))
                 SkewMode(jogType, jogScale);

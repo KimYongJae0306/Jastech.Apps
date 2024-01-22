@@ -39,8 +39,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private MarkName _curMarkName = MarkName.Main;
 
         private MarkDirection _curDirection = MarkDirection.Left;
-
-        private ROIJogForm _roiJogForm { get; set; } = null;
         #endregion
 
         #region 속성
@@ -57,12 +55,18 @@ namespace Jastech.Apps.Winform.UI.Controls
         public event SetOriginDelegate SetOriginEventHandler;
 
         public event ParameterValueChangedEventHandler MarkParamChanged;
+
+        public ROIJogDelegate OpenROIJogEventHandler;
+
+        public ROIJogDelegate CloseROIJogEventHandler;
         #endregion
 
         #region 델리게이트
         public delegate void SetOriginDelegate(PointF originPoint);
 
         public delegate void ParameterValueChangedEventHandler(string component, string parameter, double oldValue, double newValue);
+
+        public delegate void ROIJogDelegate();
         #endregion
 
         #region 생성자
@@ -548,21 +552,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        public void ShowROIJog()
-        {
-            if (_roiJogForm == null)
-            {
-                _roiJogForm = new ROIJogForm();
-                _roiJogForm.SetTeachingItem(TeachingItem.Akkon);
-                _roiJogForm.SendEventHandler += new ROIJogForm.SendClickEventDelegate(ReceiveClickEvent);
-                _roiJogForm.CloseEventDelegate = () => _roiJogForm = null;
-                _roiJogForm.Show();
-            }
-            else
-                _roiJogForm.Focus();
-        }
-
-        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
+        public void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
         {
             if (jogType.Contains("Move"))
                 MoveMode(jogType, jogScale, roiType);
