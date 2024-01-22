@@ -575,8 +575,7 @@ namespace ATT_UT_Remodeling
     {
         private void SaveResultImage()
         {
-            // tlqkf
-            if (/*ConfigSet.Instance().Operation.VirtualMode*/false)
+            if (ConfigSet.Instance().Operation.VirtualMode)
                 return;
 
             var appsPreAlignResult = AppsPreAlignResult.Instance();

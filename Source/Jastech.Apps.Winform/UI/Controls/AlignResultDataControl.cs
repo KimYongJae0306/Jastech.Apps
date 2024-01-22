@@ -32,8 +32,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         #region 델리게이트
         private delegate void UpdateAlignResultDelegate();
-
-        //public delegate void SelectAlignResultTypeDelegate(AlignResult alignResultType);
         #endregion
 
         #region 생성자
@@ -139,11 +137,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             dgvAlignHistory.Rows.Clear();
         }
 
-        private void dgvAlignHistory_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-           
-        }
-
         private void dgvAlignHistory_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -151,34 +144,22 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             var dailyInfo = DailyInfoService.GetDailyInfo();
 
-            string time = dgvAlignHistory.Rows[e.RowIndex].Cells[0].Value.ToString();
-            var alignDailyInfo = dailyInfo.GetAlignDailyInfo(time);
+            string date = dgvAlignHistory.Rows[e.RowIndex].Cells[0].Value.ToString();
+            int tabNo = Convert.ToInt16(dgvAlignHistory.Rows[e.RowIndex].Cells[2].Value.ToString());
+            var alignDailyInfo = dailyInfo.GetAlignDailyInfo(date, tabNo - 1);
+            string resultPath = alignDailyInfo.ImagePath;
 
             if (alignDailyInfo != null)
             {
-                string path = Path.Combine(alignDailyInfo.ResultPath, "Inspection", "AlignResult");
-
-                if (Directory.Exists(path))
-                {
-                    Process.Start(path);
-                    return;
-                }
-                else
-                {
-                    path = Path.Combine(alignDailyInfo.ResultPath, "Align", "Result");
-
-                    if (Directory.Exists(path))
-                    {
-                        Process.Start(path);
-                        return;
-                    }
-                }
+                if (Directory.Exists(resultPath))
+                    Process.Start(resultPath);
             }
-
-            MessageConfirmForm form = new MessageConfirmForm();
-            form.Message = "The data does not exist.";
-            form.ShowDialog();
-            return;
+            else
+            {
+                MessageConfirmForm form = new MessageConfirmForm();
+                form.Message = "The data does not exist.";
+                form.ShowDialog();
+            }
         }
         #endregion
     }

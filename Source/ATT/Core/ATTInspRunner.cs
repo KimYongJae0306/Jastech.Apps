@@ -616,7 +616,7 @@ namespace ATT.Core
                 alignInfo.CX = tabInspResult.AlignResult.GetStringCx_um();
                 alignInfo.RX = tabInspResult.AlignResult.GetStringRx_um();
                 alignInfo.RY = tabInspResult.AlignResult.GetStringRy_um();
-                alignInfo.ResultPath = GetResultPath();
+                alignInfo.ImagePath = GetAlignResultPath(alignInfo.Judgement, "Align");
 
                 dailyData.AddAlignInfo(alignInfo);
             }
@@ -1301,7 +1301,12 @@ namespace ATT.Core
         {
             if (tabInspResult == null)
                 return;
-            string savePath = Path.Combine(path, "AlignResult");
+
+            string savePath = string.Empty;
+            if (tabInspResult.AlignResult.Judgement == Judgement.OK)
+                savePath = Path.Combine(path, Judgement.OK.ToString(), "Result");
+            else
+                savePath = Path.Combine(path, Judgement.NG.ToString(), "Result");
 
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
@@ -1475,11 +1480,20 @@ namespace ATT.Core
 
             string date = currentTime.ToString("yyyyMMdd");
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
-            string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
+            string cellId = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, cellId);
 
             return path;
+        }
+
+        private string GetAlignResultPath(Judgement judgement, string inspType)
+        {
+            string path = GetResultPath();
+            if (judgement == Judgement.OK)
+                return Path.Combine(path, inspType, Judgement.OK.ToString());
+            else
+                return Path.Combine(path, inspType, Judgement.NG.ToString());
         }
 
         private Rectangle GetCropROI(List<AlignGraphicPosition> alignShapeList, int imageWidth, int imageHeight)

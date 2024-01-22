@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using static Jastech.Apps.Winform.UI.Controls.AlignResultDataControl;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -11,6 +12,9 @@ namespace Jastech.Apps.Winform.UI.Controls
     {
         #region 속성
         public ResultChartControl ResultChartControl { get; private set; } = null;
+        #endregion
+
+        #region 이벤트
         #endregion
 
         #region 델리게이트

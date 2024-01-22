@@ -759,7 +759,7 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.CX = tabInspResult.AlignResult.GetStringCx_um();
                 alignInfo.RX = tabInspResult.AlignResult.GetStringRx_um();
                 alignInfo.RY = tabInspResult.AlignResult.GetStringRy_um();
-                alignInfo.ResultPath = GetResultPath();
+                alignInfo.ImagePath = GetAlignResultPath(alignInfo.Judgement);
 
                 dailyData.AddAlignInfo(alignInfo);
             }
@@ -1349,8 +1349,7 @@ namespace ATT_UT_Remodeling.Core
         {
             try
             {
-                // tlqkf
-                if (/*ConfigSet.Instance().Operation.VirtualMode*/false)
+                if (ConfigSet.Instance().Operation.VirtualMode)
                 {
                     _saveThread = null;
                     return;
@@ -1448,7 +1447,12 @@ namespace ATT_UT_Remodeling.Core
         {
             if (tabInspResult == null)
                 return;
-            string savePath = Path.Combine(path, "Result");
+
+            string savePath = string.Empty;
+            if (tabInspResult.AlignResult.Judgement == Judgement.OK)
+                savePath = Path.Combine(path, Judgement.OK.ToString(), "Result");
+            else
+                savePath = Path.Combine(path, Judgement.NG.ToString(), "Result");
 
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
@@ -1627,6 +1631,15 @@ namespace ATT_UT_Remodeling.Core
             string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
 
             return path;
+        }
+
+        private string GetAlignResultPath(Judgement judgement)
+        {
+            string path = GetResultPath();
+            if (judgement == Judgement.OK)
+                return Path.Combine(path, "Inspection", Judgement.OK.ToString());
+            else
+                return Path.Combine(path, "Inspection", Judgement.NG.ToString());
         }
 
         private Rectangle GetCropROI(List<AlignGraphicPosition> alignShapeList, int imageWidth, int imageHeight)

@@ -37,6 +37,9 @@ namespace Jastech.Framework.Winform.Forms
         {
             foreach (ImageExtension type in Enum.GetValues(typeof(ImageExtension)))
             {
+                if (type == ImageExtension.Jpg)
+                    continue;
+
                 mcbxOKExtension.Items.Add(type.ToString());
                 mcbxNGExtension.Items.Add(type.ToString());
             }

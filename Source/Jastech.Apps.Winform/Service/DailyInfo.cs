@@ -42,13 +42,13 @@ namespace Jastech.Apps.Winform.Service
             JsonConvertHelper.LoadToExistingTarget<DailyInfo>(filePath, this);
         }
 
-        public AlignDailyInfo GetAlignDailyInfo(string inspTime)
+        public AlignDailyInfo GetAlignDailyInfo(string inspTime, int tabNo)
         {
             foreach (var dailyData in DailyDataList)
             {
                 foreach (var alignDailyInfo in dailyData.AlignDailyInfoList)
                 {
-                    if (alignDailyInfo.InspectionTime == inspTime)
+                    if (alignDailyInfo.InspectionTime == inspTime && alignDailyInfo.TabNo == tabNo)
                         return alignDailyInfo;
                 }
             }
@@ -143,7 +143,7 @@ namespace Jastech.Apps.Winform.Service
         public string CX { get; set; } = "-";
 
         [JsonProperty]
-        public string ResultPath { get; set; } = "";
+        public string ImagePath { get; set; } = "";
     }
 
     public class AkkonDailyInfo

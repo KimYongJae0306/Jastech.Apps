@@ -865,7 +865,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.CX = tabInspResult.AlignResult.GetStringCx_um();
                 alignInfo.RX = tabInspResult.AlignResult.GetStringRx_um();
                 alignInfo.RY = tabInspResult.AlignResult.GetStringRy_um();
-                alignInfo.ResultPath = GetResultPath();
+                alignInfo.ImagePath = GetAlignResultImagePath(alignInfo.Judgement, "Align");
 
                 dailyData.AddAlignInfo(alignInfo);
             }
@@ -1554,7 +1554,11 @@ namespace ATT_UT_IPAD.Core
             if (tabInspResult == null)
                 return;
 
-            string savePath = Path.Combine(path, "Result");
+            string savePath = string.Empty;
+            if (tabInspResult.AlignResult.Judgement == Judgement.OK)
+                savePath = Path.Combine(path, Judgement.OK.ToString(), "Result");
+            else
+                savePath = Path.Combine(path, Judgement.NG.ToString(), "Result");
 
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
@@ -1736,6 +1740,15 @@ namespace ATT_UT_IPAD.Core
             string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
 
             return path;
+        }
+
+        private string GetAlignResultImagePath(Judgement judgement, string inspType)
+        {
+            string path = GetResultPath();
+            if (judgement == Judgement.OK)
+                return Path.Combine(path, inspType, Judgement.OK.ToString());
+            else
+                return Path.Combine(path, inspType, Judgement.NG.ToString());
         }
 
         private Rectangle GetCropROI(List<AlignGraphicPosition> alignShapeList, int imageWidth, int imageHeight)

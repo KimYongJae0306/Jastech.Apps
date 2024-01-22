@@ -27,12 +27,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         public AlignResultDataControl AlignResultDataControl { get; set; } = null;
         #endregion
 
-        #region 이벤트
-        #endregion
-
-        #region 델리게이트
-        #endregion
-
         #region 생성자
         public DailyInfoViewerControl()
         {

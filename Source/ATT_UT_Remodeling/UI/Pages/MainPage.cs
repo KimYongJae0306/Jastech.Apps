@@ -8,7 +8,9 @@ using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling.UI.Pages
