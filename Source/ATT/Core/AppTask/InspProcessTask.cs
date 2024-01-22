@@ -401,7 +401,7 @@ namespace ATT.Core.AppTask
             string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "AkkonROI");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "Akkon");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 

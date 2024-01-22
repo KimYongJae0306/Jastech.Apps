@@ -245,9 +245,7 @@ namespace Jastech.Framework.Winform.Forms
             for (DateTime dateTime = cdrMonthCalendar.SelectionStart; dateTime <= cdrMonthCalendar.SelectionEnd; dateTime = dateTime.AddDays(1))
             {
                 string date = dateTime.ToString("yyyyMMdd");
-                //string month = dateTime.Month.ToString("D2");
-                //string day = dateTime.Day.ToString("D2");
-                string rootPath = Path.Combine(_selectedPagePath, date);
+                string rootPath = _selectedPagePath;
 
                 DirectoryInfo rootDirectoryInfo = new DirectoryInfo(rootPath);
                 TreeNode rootNode;
@@ -259,12 +257,14 @@ namespace Jastech.Framework.Winform.Forms
                 else
                     rootNode = tvwLogPath.Nodes[rootDirectoryInfo.Name];
 
-                //DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}\{day}");
-                DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{rootPath}");
+                string subRootPath = Path.Combine(_selectedPagePath, date);
+                DirectoryInfo subDirectoryInfo = new DirectoryInfo($@"{subRootPath}");
                 if (Directory.Exists(subDirectoryInfo.FullName))
                     rootNode.Nodes.Add(RecursiveDirectory(subDirectoryInfo));
             }
         }
+
+        
 
         private TreeNode RecursiveDirectory(DirectoryInfo directoryInfo)
         {
@@ -304,6 +304,18 @@ namespace Jastech.Framework.Winform.Forms
             }
         }
 
+        private TreeNode GetFirstNode(TreeNode root)
+        {
+            if (root.Parent == null)
+                return root;
+            else
+                return GetFirstNode(root.Parent);
+            //if (root.Parent != null)
+            //    GetFirstNode(root.Parent);
+
+            //return root;
+        }
+
         private void tvwLogPath_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             try
@@ -311,7 +323,10 @@ namespace Jastech.Framework.Winform.Forms
                 if (tvwLogPath.SelectedNode == null)
                     return;
 
-                string fullPath = Path.Combine(_selectedPagePath, tvwLogPath.SelectedNode.FullPath);
+                var firstNodeName = @"\" + GetFirstNode(tvwLogPath.SelectedNode).Text;
+
+                var firsntNodePath = _selectedPagePath.Replace(firstNodeName, "");
+                string fullPath = Path.Combine(firsntNodePath, tvwLogPath.SelectedNode.FullPath);
 
                 string extension = Path.GetExtension(fullPath);
                 if (extension == string.Empty)

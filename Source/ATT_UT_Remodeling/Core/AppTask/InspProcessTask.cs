@@ -401,9 +401,9 @@ namespace ATT_UT_Remodeling.Core.AppTask
             DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string date = currentTime.ToString("yyyyMMdd");
-            string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
+            string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "AkkonROI");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "Inspection", "Akkon");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 

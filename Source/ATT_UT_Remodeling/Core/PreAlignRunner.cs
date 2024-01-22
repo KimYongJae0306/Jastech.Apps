@@ -67,8 +67,6 @@ namespace ATT_UT_Remodeling
         #endregion
 
         #region 메서드
-        #endregion
-
         public void StartSeqTask()
         {
             if (SeqTask != null)
@@ -570,13 +568,15 @@ namespace ATT_UT_Remodeling
 
             return result;
         }
+        #endregion
     }
 
     public partial class PreAlignRunner
     {
         private void SaveResultImage()
         {
-            if (ConfigSet.Instance().Operation.VirtualMode)
+            // tlqkf
+            if (/*ConfigSet.Instance().Operation.VirtualMode*/false)
                 return;
 
             var appsPreAlignResult = AppsPreAlignResult.Instance();
@@ -636,11 +636,10 @@ namespace ATT_UT_Remodeling
             var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
             DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
 
-            string month = currentTime.ToString("MM");
-            string day = currentTime.ToString("dd");
+            string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsPreAlignResult.Instance().Cell_ID;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, month, day);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date);
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 

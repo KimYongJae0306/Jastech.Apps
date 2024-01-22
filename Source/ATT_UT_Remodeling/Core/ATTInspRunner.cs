@@ -486,20 +486,21 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_SAVE_RESULT_DATA:
-                    DailyInfoService.Save(inspModel.Name);
+                    //DailyInfoService.Save(inspModel.Name);
+                    UpdateDailyInfo();
                     SaveInspResultCSV();
                     WriteLog("Save inspection result.");
 
-                    SeqStep = SeqStep.SEQ_SAVE_IMAGE;
-                    break;
-
-                case SeqStep.SEQ_SAVE_IMAGE:
-                    
-                    UpdateDailyInfo();
-                    SaveInspResultCSV();
-
                     SeqStep = SeqStep.SEQ_DELETE_DATA;
                     break;
+
+                //case SeqStep.SEQ_SAVE_IMAGE:
+                    
+                //    UpdateDailyInfo();
+                //    SaveInspResultCSV();
+
+                //    SeqStep = SeqStep.SEQ_DELETE_DATA;
+                //    break;
 
                 case SeqStep.SEQ_DELETE_DATA:
                     StartDeleteData();
@@ -1032,10 +1033,14 @@ namespace ATT_UT_Remodeling.Core
 
         private void SaveAkkonLeadResults(string resultPath, int tabCount)
         {
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
+            string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
+            string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
+
             for (int tabIndex = 0; tabIndex < tabCount; tabIndex++)
             {
                 var tabResult = AppsInspResult.Instance().Get(tabIndex).AkkonResult;
-                string csvFile = Path.Combine(resultPath, $"AkkonLeadResult_Tab{tabIndex + 1}.csv");
+                string csvFile = Path.Combine(resultPath, folderPath, "Inspection", $"AkkonLeadResult_Tab{tabIndex + 1}.csv");
 
                 if (File.Exists(csvFile) == false)
                 {
@@ -1347,7 +1352,8 @@ namespace ATT_UT_Remodeling.Core
         {
             try
             {
-                if (ConfigSet.Instance().Operation.VirtualMode)
+                // tlqkf
+                if (/*ConfigSet.Instance().Operation.VirtualMode*/false)
                 {
                     _saveThread = null;
                     return;
@@ -1394,8 +1400,11 @@ namespace ATT_UT_Remodeling.Core
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
                     string imageName = "Tab_" + tabInspResult.TabNo.ToString();
-                    string filePath = Path.Combine(path, imageName);
-                    
+                    string filePath = Path.Combine(path, TabJudgement.OK.ToString());
+
+                    if (Directory.Exists(filePath) == false)
+                        Directory.CreateDirectory(filePath);
+
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
                         SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Bmp, false);
                     else if(operation.ExtensionOKImage == ImageExtension.Jpg)
@@ -1411,8 +1420,12 @@ namespace ATT_UT_Remodeling.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
-                    string imageName = AppsInspResult.Instance().Cell_ID + "_Tab_" + tabInspResult.TabNo.ToString();
-                    string filePath = Path.Combine(path, imageName);
+                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
+                    string filePath = Path.Combine(path, TabJudgement.NG.ToString());
+
+                    if (Directory.Exists(filePath) == false)
+                        Directory.CreateDirectory(filePath);
+
                     if (operation.ExtensionNGImage == ImageExtension.Bmp)
                         SaveImage(tabInspResult.Image, filePath, imageName, Judgement.NG, ImageExtension.Bmp, false);
                     else if (operation.ExtensionNGImage == ImageExtension.Jpg)
@@ -1440,7 +1453,7 @@ namespace ATT_UT_Remodeling.Core
         {
             if (tabInspResult == null)
                 return;
-            string savePath = Path.Combine(path, "AlignResult");
+            string savePath = Path.Combine(path, "Result");
 
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);
@@ -1921,7 +1934,7 @@ namespace ATT_UT_Remodeling.Core
         SEQ_MANUAL_JUDGE_COMPLETED,
         SEQ_SEND_MANUAL_JUDGE,
         SEQ_SAVE_RESULT_DATA,
-        SEQ_SAVE_IMAGE,
+        //SEQ_SAVE_IMAGE,
         SEQ_DELETE_DATA,
         SEQ_CHECK_STANDBY,
         SEQ_ERROR,

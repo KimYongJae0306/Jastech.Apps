@@ -203,7 +203,7 @@ namespace ATT_UT_Remodeling
                 config.Add(plc);
             }
 			
-            AppsConfig.Instance().ProgramType = "ProgramType_1";
+            AppsConfig.Instance().ProgramType = ProgramType.ProgramType_1.ToString();
             AppsConfig.Instance().MachineName = "OLB_ATT";
         }
 
