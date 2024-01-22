@@ -445,9 +445,6 @@ namespace ATT_UT_IPAD.Core
                     InitializeBuffer();
                     WriteLog("Initialize Buffer.");
 
-                    AppsInspResult.Instance().ClearResult();
-                    WriteLog("Clear Result.");
-
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
                     AppsInspResult.Instance().FinalHead = GetFinalHead();

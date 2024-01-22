@@ -39,20 +39,6 @@ namespace ATT_UT_IPAD.Core.Data
             return _instance;
         }
 
-        public void ClearResult()
-        {
-            Stopwatch sw = new Stopwatch();
-            sw.Restart();
-
-            foreach (var inspAkkonResult in InspAkkonResultDic)
-                inspAkkonResult.Value.Dispose();
-
-            foreach (var inspAlignResult in InspAlignResultDic)
-                inspAlignResult.Value.Dispose();
-
-            sw.Stop();
-        }
-
         public void Dispose()
         {
             foreach (var inspAkkonResult in InspAkkonResultDic)
