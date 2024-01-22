@@ -445,9 +445,6 @@ namespace ATT_UT_IPAD.Core
                     InitializeBuffer();
                     WriteLog("Initialize Buffer.");
 
-                    AppsInspResult.Instance().ClearResult();
-                    WriteLog("Clear Result.");
-
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
                     AppsInspResult.Instance().FinalHead = GetFinalHead();
@@ -1467,10 +1464,9 @@ namespace ATT_UT_IPAD.Core
                 Stopwatch sw = new Stopwatch();
                 sw.Restart();
 
+                string path = GetResultPath();
                 for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
                 {
-                    string path = GetResultPath();
-
                     SaveResultImage(Path.Combine(path, "Akkon"), tabNo, true);
                     SaveResultImage(Path.Combine(path, "Align"), tabNo, false);
                 }
@@ -1565,7 +1561,7 @@ namespace ATT_UT_IPAD.Core
 
             if (tabInspResult.AlignResult.CenterImage != null)
             {
-                string fileName = string.Format("Center_Align_Tab_{0}.jpg", tabInspResult.TabNo);
+                string fileName = string.Format("Center_Align_Tab_{0}.bmp", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 VisionProImageHelper.Save(tabInspResult.AlignResult.CenterImage, filePath);
             }
@@ -1582,7 +1578,7 @@ namespace ATT_UT_IPAD.Core
                 PointF offset = new PointF();
                 Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.jpg", tabInspResult.TabNo);
+                string orgFileName = string.Format("Left_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropLeftImage?.Save(orgFilePath);
 
@@ -1613,7 +1609,7 @@ namespace ATT_UT_IPAD.Core
                     DrawAlignResultString(ref cropLeftImage, $"{AlignResultType.Cx} : {cxData}um", 3);
                 }
 
-                string fileName = string.Format("Left_Align_Tab_{0}.jpg", tabInspResult.TabNo);
+                string fileName = string.Format("Left_Align_Tab_{0}.bmp", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 cropLeftImage?.Save(filePath);
             }
@@ -1624,7 +1620,7 @@ namespace ATT_UT_IPAD.Core
                 PointF offset = new PointF();
                 Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset);
 
-                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.jpg", tabInspResult.TabNo);
+                string orgFileName = string.Format("Right_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
                 cropRightImage?.Save(orgFilePath);
 
@@ -1655,7 +1651,7 @@ namespace ATT_UT_IPAD.Core
                     DrawAlignResultString(ref cropRightImage, $"{AlignResultType.Cx} : {cxData}um", 3);
                 }
 
-                string fileName = string.Format("Right_Align_Tab_{0}.jpg", tabInspResult.TabNo);
+                string fileName = string.Format("Right_Align_Tab_{0}.bmp", tabInspResult.TabNo);
                 string filePath = Path.Combine(savePath, fileName);
                 cropRightImage?.Save(filePath);
             }
@@ -1693,7 +1689,7 @@ namespace ATT_UT_IPAD.Core
             double fontScale = 3;
             int lineOffset = 100;
             Point coord = new Point((int)fontScale * 10, lineIndex * (lineOffset + (int)fontScale));
-            MCvScalar color = new MCvScalar(50, 230, 50, 255);
+            MCvScalar color = new MCvScalar(255, 255, 255, 255);
 
             CvInvoke.PutText(mat, resultString, coord, FontFace.HersheySimplex, fontScale, color);
         }

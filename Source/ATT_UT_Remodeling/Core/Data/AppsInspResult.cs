@@ -36,12 +36,6 @@ namespace ATT_UT_Remodeling.Core.Data
             return _instance;
         }
 
-        public void ClearResult()
-        {
-            foreach (var inspResult in InspResultDic)
-                inspResult.Value.Dispose();
-        }
-
         public void Dispose()
         {
             foreach (var inspResult in InspResultDic)
