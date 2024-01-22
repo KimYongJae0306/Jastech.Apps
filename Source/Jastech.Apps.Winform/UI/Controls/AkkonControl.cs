@@ -55,8 +55,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private bool _isLoading { get; set; } = false;
 
         private int _curSelectedGroup { get; set; } = -1;
-
-        private ROIJogForm _roiJogForm = null;
         #endregion
 
         #region 속성
@@ -79,6 +77,16 @@ namespace Jastech.Apps.Winform.UI.Controls
         public bool IsMoving { get; set; } = false;
 
         public bool IsSkewing { get; set; } = false;
+        #endregion
+
+        #region 이벤트
+        public ROIJogDelegate OpenROIJogEventHandler;
+
+        public ROIJogDelegate CloseROIJogEventHandler;
+        #endregion
+
+        #region 델리게이트
+        public delegate void ROIJogDelegate();
         #endregion
 
         #region 생성자
@@ -923,21 +931,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             UpdateROIDataGridView(group.AkkonROIList);
         }
 
-        public void ShowROIJog()
-        {
-            if (_roiJogForm == null)
-            {
-                _roiJogForm = new ROIJogForm();
-                _roiJogForm.SetTeachingItem(TeachingItem.Akkon);
-                _roiJogForm.SendEventHandler += new ROIJogForm.SendClickEventDelegate(ReceiveClickEvent);
-                _roiJogForm.CloseEventDelegate = () => _roiJogForm = null;
-                _roiJogForm.Show();
-            }
-            else
-                _roiJogForm.Focus();
-        }
-
-        private void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
+        public void ReceiveClickEvent(string jogType, int jogScale, ROIType roiType)
         {
             if (jogType.Contains("Skew"))
                 SkewMode(jogType, jogScale);

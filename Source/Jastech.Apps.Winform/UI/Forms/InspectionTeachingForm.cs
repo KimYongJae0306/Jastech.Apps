@@ -105,6 +105,8 @@ namespace Jastech.Framework.Winform.Forms
         public bool UseAkkonTeaching { get; set; } = true;
 
         public bool UseAlignCamMark { get; set; } = false;
+
+        private ROIJogForm ROIJogForm { get; set; } = null;
         #endregion
 
         #region 이벤트
@@ -201,16 +203,22 @@ namespace Jastech.Framework.Winform.Forms
             MarkControl.UseAlignCamMark = UseAlignCamMark;
             MarkControl.SetParams(CurrentTab);
             MarkControl.MarkParamChanged += MarkControl_MarkParamChanged;
+            MarkControl.OpenROIJogEventHandler += OpenRoiJogEventHandler;
+            MarkControl.CloseROIJogEventHandler += CloseRoiJogEventHandler;
             pnlTeach.Controls.Add(MarkControl);
 
             AlignControl = new AlignControl();
             AlignControl.Dock = DockStyle.Fill;
             AlignControl.SetParams(CurrentTab);
+            AlignControl.OpenROIJogEventHandler += OpenRoiJogEventHandler;
+            AlignControl.CloseROIJogEventHandler += CloseRoiJogEventHandler;
             pnlTeach.Controls.Add(AlignControl);
 
             AkkonControl = new AkkonControl();
             AkkonControl.Dock = DockStyle.Fill;
             AkkonControl.SetParams(CurrentTab);
+            AkkonControl.OpenROIJogEventHandler += OpenRoiJogEventHandler;
+            AkkonControl.CloseROIJogEventHandler += CloseRoiJogEventHandler;
             pnlTeach.Controls.Add(AkkonControl);
 
             TriggerSettingControl = new AFTriggerOffsetSettingControl();
@@ -219,6 +227,73 @@ namespace Jastech.Framework.Winform.Forms
             pnlTeach.Controls.Add(TriggerSettingControl);
 
             OptimizeUIByTeachingItem();
+        }
+
+        private void OpenRoiJogEventHandler()
+        {
+            if (ROIJogForm == null)
+            {
+                ROIJogForm = new ROIJogForm();
+                ROIJogForm.CloseEventDelegate = () => ROIJogForm = null;
+                ROIJogForm.SetTeachingItem(ConvertDisplayTypeToTeachingItem(_displayType));
+                ROIJogForm.SendEventHandler += ROIJogForm_SendEventHandler;
+                ROIJogForm.Show();
+            }
+            else
+                ROIJogForm.Focus();
+        }
+
+        private TeachingItem ConvertDisplayTypeToTeachingItem(DisplayType displayType)
+        {
+            switch (displayType)
+            {
+                case DisplayType.Mark:
+                    return TeachingItem.Mark;
+                    
+                case DisplayType.Align:
+                    return TeachingItem.Align;
+
+                case DisplayType.Akkon:
+                    return TeachingItem.Akkon;
+
+                case DisplayType.PreAlign:
+                case DisplayType.Calibration:
+                case DisplayType.Trigger:
+                default:
+                    return TeachingItem.Mark;
+            }
+        }
+
+        private void ROIJogForm_SendEventHandler(string jogType, int jogScale, ROIType roiType = ROIType.ROI)
+        {
+            switch (_displayType)
+            {
+                case DisplayType.Mark:
+                    MarkControl.ReceiveClickEvent(jogType, jogScale, roiType);
+                    break;
+
+                case DisplayType.Align:
+                    AlignControl.ReceiveClickEvent(jogType, jogScale, roiType);
+                    break;
+
+                case DisplayType.Akkon:
+                    AkkonControl.ReceiveClickEvent(jogType, jogScale, roiType);
+                    break;
+
+                case DisplayType.PreAlign:
+                    break;
+                case DisplayType.Calibration:
+                    break;
+                case DisplayType.Trigger:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void CloseRoiJogEventHandler()
+        {
+            ROIJogForm?.Close();
         }
 
         private void OptimizeUIByTeachingItem()
@@ -320,6 +395,7 @@ namespace Jastech.Framework.Winform.Forms
                 return;
 
             ClearSelectedButton();
+            CloseRoiJogEventHandler();
 
             _displayType = type;
 
@@ -665,6 +741,7 @@ namespace Jastech.Framework.Winform.Forms
         private void InspectionTeachingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseMotionPopupEventHandler?.Invoke(UnitName);
+            CloseRoiJogEventHandler();
 
             if (LineCamera.Camera.IsGrabbing())
                 LineCamera.StopGrab();
@@ -838,13 +915,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblROIJog_Click(object sender, EventArgs e)
         {
-            if (_displayType == DisplayType.Mark)
-                MarkControl.ShowROIJog();
-            else if (_displayType == DisplayType.Align)
-                AlignControl.ShowROIJog();
-            else if (_displayType == DisplayType.Akkon)
-                AkkonControl.ShowROIJog();
-
+            OpenRoiJogEventHandler();
             Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm ROi Jog Button");
         }
 
