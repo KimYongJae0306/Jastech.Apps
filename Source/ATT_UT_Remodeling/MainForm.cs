@@ -756,7 +756,10 @@ namespace ATT_UT_Remodeling
                 form.Message = "Would you like to do a test run?";
 
                 if (form.ShowDialog() == DialogResult.Yes)
+                {
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = true;
+                    AppsStatus.Instance().AutoRunTest = true;
+                }
             }
         }
 

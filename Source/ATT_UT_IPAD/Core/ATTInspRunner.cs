@@ -225,6 +225,8 @@ namespace ATT_UT_IPAD.Core
                 SystemManager.Instance().UpdateMainAlignResult();
 
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                AppsStatus.Instance().AutoRunTest = false;
+
                 PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
 
@@ -448,6 +450,19 @@ namespace ATT_UT_IPAD.Core
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
                     AppsInspResult.Instance().FinalHead = GetFinalHead();
+
+                    if (ConfigSet.Instance().Operation.VirtualMode || AppsStatus.Instance().AutoRunTest)
+                    {
+                        DateTime dateTime = DateTime.Now;
+                        string timeStamp = dateTime.ToString("yyyyMMddHHmmss");
+                        string cellId = $"Test_{timeStamp}";
+
+                        AppsPreAlignResult.Instance().StartInspTime = dateTime;
+                        AppsPreAlignResult.Instance().Cell_ID = cellId;
+
+                        AppsInspResult.Instance().StartInspTime = dateTime;
+                        AppsInspResult.Instance().Cell_ID = cellId;
+                    }
 
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
 
