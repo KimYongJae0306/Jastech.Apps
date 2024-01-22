@@ -1433,7 +1433,7 @@ namespace ATT_UT_Remodeling.Core
 
                     if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
                     {
-                        string akkonLeadImagePath = Path.Combine(resultPath, "Inspection", "AkkonLeadImage");
+                        string akkonLeadImagePath = Path.Combine(resultPath, "Inspection", "NG", "AkkonLeadImage");
                         if (Directory.Exists(akkonLeadImagePath) == false)
                             Directory.CreateDirectory(akkonLeadImagePath);
                         SaveAkkonDefectLeadImage(akkonLeadImagePath, tabInspResult);
@@ -1450,9 +1450,9 @@ namespace ATT_UT_Remodeling.Core
 
             string savePath = string.Empty;
             if (tabInspResult.AlignResult.Judgement == Judgement.OK)
-                savePath = Path.Combine(path, Judgement.OK.ToString(), "Result");
+                savePath = Path.Combine(path, Judgement.OK.ToString(), "AlignResult");
             else
-                savePath = Path.Combine(path, Judgement.NG.ToString(), "Result");
+                savePath = Path.Combine(path, Judgement.NG.ToString(), "AlignResult");
 
             if (Directory.Exists(savePath) == false)
                 Directory.CreateDirectory(savePath);

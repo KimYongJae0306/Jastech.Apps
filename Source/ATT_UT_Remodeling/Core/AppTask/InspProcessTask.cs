@@ -403,7 +403,7 @@ namespace ATT_UT_Remodeling.Core.AppTask
             string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "Inspection", "Akkon");
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath, "Inspection");
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
 
