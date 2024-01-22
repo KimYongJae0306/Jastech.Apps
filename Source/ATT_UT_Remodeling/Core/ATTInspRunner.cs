@@ -166,6 +166,8 @@ namespace ATT_UT_Remodeling.Core
                 SystemManager.Instance().UpdateMainResult();
 
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+                AppsStatus.Instance().AutoRunTest = false;
+
                 PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
 
@@ -357,6 +359,19 @@ namespace ATT_UT_Remodeling.Core
                     AppsInspResult.Instance().Cell_ID = GetCellID();
                     AppsInspResult.Instance().FinalHead = GetFinalHead();
 
+                    if (ConfigSet.Instance().Operation.VirtualMode || AppsStatus.Instance().AutoRunTest)
+                    {
+                        DateTime dateTime = DateTime.Now;
+                        string timeStamp = dateTime.ToString("yyyyMMddHHmmss");
+                        string cellId = $"Test_{timeStamp}";
+
+                        AppsPreAlignResult.Instance().StartInspTime = dateTime;
+                        AppsPreAlignResult.Instance().Cell_ID = cellId;
+
+                        AppsInspResult.Instance().StartInspTime = dateTime;
+                        AppsInspResult.Instance().Cell_ID = cellId;
+                    }
+
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
 
                     SeqStep = SeqStep.SEQ_SCAN_START;
@@ -507,10 +522,6 @@ namespace ATT_UT_Remodeling.Core
                     break;
 
                 case SeqStep.SEQ_CHECK_STANDBY:
-
-                    if (ConfigSet.Instance().Operation.VirtualMode)
-                        AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-
                     ClearBufferThread();
                     SeqStep = SeqStep.SEQ_INIT;
                     break;
