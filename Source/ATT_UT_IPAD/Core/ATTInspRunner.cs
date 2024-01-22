@@ -717,9 +717,13 @@ namespace ATT_UT_IPAD.Core
         {
             Stopwatch sw = Stopwatch.StartNew();
             int timeOutMs = 3000;
+            int deviceAddress = PlcControlManager.Instance().GetAddressMap(address).AddressNum;
 
             while (PlcControlManager.Instance().GetValue(address) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
+            {
+                Logger.Write(LogType.Comm, $"Waiting Clear {address}(D{deviceAddress}) for {sw.ElapsedMilliseconds}ms");
                 Thread.Sleep(20);   //plcScanTime
+            }
 
             if (sw.ElapsedMilliseconds > timeOutMs)
                 new MessageConfirmForm { Message = $"Wait PLC value clear timed out.\r\nCommand : {address}\r\nTime : {timeOutMs}" }.ShowDialog();
