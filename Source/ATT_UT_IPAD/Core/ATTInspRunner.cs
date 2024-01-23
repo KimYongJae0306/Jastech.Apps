@@ -173,7 +173,7 @@ namespace ATT_UT_IPAD.Core
             {
                 if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == true)
                 {
-                    //AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
+                    // AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
                     getData = AkkonLAFCtrl.Status.MPosPulse;
                     MPosDataList.Add(getData);
                     getData = AkkonLAFCtrl.Status.ReturndB;
@@ -456,9 +456,6 @@ namespace ATT_UT_IPAD.Core
                         DateTime dateTime = DateTime.Now;
                         string timeStamp = dateTime.ToString("yyyyMMddHHmmss");
                         string cellId = $"Test_{timeStamp}";
-
-                        AppsPreAlignResult.Instance().StartInspTime = dateTime;
-                        AppsPreAlignResult.Instance().Cell_ID = cellId;
 
                         AppsInspResult.Instance().StartInspTime = dateTime;
                         AppsInspResult.Instance().Cell_ID = cellId;
@@ -2087,11 +2084,8 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
 
-            for (int dataCount = 0; dataCount < MPosDataList.Count; dataCount++)
-            {
-                string mpos = Convert.ToString(MPosDataList[dataCount]);
-                body.Add($"{mpos}");
-            }
+            foreach (var item in MPosDataList)
+                body.Add(item.ToString());
 
             CSVHelper.WriteData(csvFile, body);
         }
@@ -2121,11 +2115,8 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
 
-            for (int dataCount = 0; dataCount < RetDataList.Count; dataCount++)
-            {
-                string ret = Convert.ToString(RetDataList[dataCount]);
-                body.Add($"{ret}");
-            }
+            foreach (var item in RetDataList)
+                body.Add(item.ToString());
 
             CSVHelper.WriteData(csvFile, body);
         }

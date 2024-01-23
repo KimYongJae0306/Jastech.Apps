@@ -159,7 +159,8 @@ namespace ATT.Core
             SystemManager.Instance().UpdateMainResult();
 
             AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-            AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
+            AppsStatus.Instance().AutoRunTest = false;
+
             SystemManager.Instance().EnableMainView(true);
 
             _updateThread = null;
@@ -291,21 +292,22 @@ namespace ATT.Core
                     break;
 
                 case SeqStep.SEQ_MOVE_START_POS:
-               
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_Scan_Start, LAFCtrl, AxisName.Z0);
 
                     if (_ClearBufferThread != null || _updateThread != null)
                         break;
-
-                 
 
                     WriteLog("Wait Inspection Start Signal From PLC.", true);
                     SeqStep = SeqStep.SEQ_WAITING;
                     break;
 
                 case SeqStep.SEQ_WAITING:
+                    AppsStatus.Instance().IsInspRunnerRunning = false;
+
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
+
+                    AppsStatus.Instance().IsInspRunnerRunning = true;
 
                     if (MoveTo(TeachingPosType.Stage1_Scan_Start, out errorMessage) == false)
                         break;
@@ -334,6 +336,16 @@ namespace ATT.Core
 
                     AppsInspResult.Instance().StartInspTime = DateTime.Now;
                     AppsInspResult.Instance().Cell_ID = GetCellID();
+
+                    if (ConfigSet.Instance().Operation.VirtualMode || AppsStatus.Instance().AutoRunTest)
+                    {
+                        DateTime dateTime = DateTime.Now;
+                        string timeStamp = dateTime.ToString("yyyyMMddHHmmss");
+                        string cellId = $"Test_{timeStamp}";
+
+                        AppsInspResult.Instance().StartInspTime = dateTime;
+                        AppsInspResult.Instance().Cell_ID = cellId;
+                    }
 
                     WriteLog("Cell ID : " + AppsInspResult.Instance().Cell_ID, true);
                     SeqStep = SeqStep.SEQ_SCAN_START;
