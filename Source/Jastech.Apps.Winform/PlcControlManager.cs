@@ -389,6 +389,7 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(true));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
+                Logger.Write(LogType.Comm, $"Wrote PC_GrabDone to D{map.AddressNum}");
             }
         }
 
