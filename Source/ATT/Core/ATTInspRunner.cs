@@ -272,7 +272,6 @@ namespace ATT.Core
             {
                 case SeqStep.SEQ_IDLE:
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -466,7 +465,6 @@ namespace ATT.Core
                     IsGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     SystemManager.Instance().EnableMainView(true);
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     WriteLog("Sequnce Error.", true);
                     ClearBuffer();
 

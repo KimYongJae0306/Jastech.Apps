@@ -229,7 +229,6 @@ namespace ATT_UT_IPAD.Core
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                 AppsStatus.Instance().AutoRunTest = false;
 
-                PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
 
                 _updateThread = null;
@@ -372,7 +371,6 @@ namespace ATT_UT_IPAD.Core
             {
                 case SeqStep.SEQ_IDLE:
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -566,7 +564,6 @@ namespace ATT_UT_IPAD.Core
                         WriteLog("Completed Send Plc Tab Result Data", true);
                     }
 
-                    PlcControlManager.Instance().EnableSendPeriodically = false;
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
@@ -641,7 +638,6 @@ namespace ATT_UT_IPAD.Core
                     IsAlignGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     SystemManager.Instance().EnableMainView(true);
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     WriteLog("Sequnce Error.", true);
                     ClearBuffer();
 
