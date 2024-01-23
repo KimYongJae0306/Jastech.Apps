@@ -631,6 +631,9 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
+            if (_isWaitingUpdateUI)
+                return;
+
             _isWaitingUpdateUI = true;
 
             LineCamera.StopGrab();
@@ -687,16 +690,7 @@ namespace Jastech.Framework.Winform.Forms
             LAFCtrl.SetTrackingOnOFF(false);
             Thread.Sleep(100);
             DeviceManager.Instance().LightCtrlHandler.TurnOff();
-
-            Stopwatch sw = new Stopwatch();
-            sw.Restart();
-            while (_isWaitingUpdateUI)
-            {
-                if (sw.ElapsedMilliseconds > 60 * 1000)
-                    break;
-                Thread.Sleep(50);
-            }
-
+ 
             Logger.Write(LogType.GUI, "Clicked InpectionTeachingForm Grab Start Button");
         }
 
