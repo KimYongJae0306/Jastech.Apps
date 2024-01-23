@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Emgu.CV.ML.KNearest;
 
 namespace Jastech.Apps.Winform
 {
@@ -166,7 +167,7 @@ namespace Jastech.Apps.Winform
                 if (CancelPlcActionTask.IsCancellationRequested)
                     break;
 
-                if(EnableSendPeriodically)
+                if (EnableSendPeriodically)
                 {
                     if (DeviceManager.Instance().PlcHandler.Count > 0)
                     {
@@ -196,6 +197,21 @@ namespace Jastech.Apps.Winform
                     value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
             }
 
+            if (map == PlcCommonMap.PC_GrabDone)
+            {
+            if (value == "1")
+            {
+int gg = 0;
+            }
+                
+
+            if (value != "1")
+            {
+int tt = 0;
+            }
+            }
+
+                
             if (value == "")
                 value = "0";
 
@@ -389,7 +405,7 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(true));
 
                 plc.Write("D" + map.AddressNum, stream.Data);
-                Logger.Write(LogType.Comm, $"Wrote PC_GrabDone to D{map.AddressNum}");
+                Logger.Write(LogType.Comm, $"Wrote PC_GrabDone to D{map.AddressNum}, value = {Encoding.Default.GetString(stream.Data)}");
             }
         }
 

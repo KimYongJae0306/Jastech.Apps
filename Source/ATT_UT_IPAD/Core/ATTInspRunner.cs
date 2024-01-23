@@ -25,12 +25,14 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -547,7 +549,7 @@ namespace ATT_UT_IPAD.Core
                     string message = $"Grab End to Insp Completed Time.({LastInspSW.ElapsedMilliseconds.ToString()}ms)";
                     WriteLog(message, true);
 
-                    PlcControlManager.Instance().EnableSendPeriodically = false;
+                    //PlcControlManager.Instance().EnableSendPeriodically = false;
 
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
@@ -561,12 +563,13 @@ namespace ATT_UT_IPAD.Core
                     else
                     {
                         if (ConfigSet.Instance().Operation.VirtualMode == false)
-                            WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
+                            WaitPlcValueClear(PlcCommonMap.PC_GrabDone, timeOutMs: 5000);
 
                         SendResultData();
                         WriteLog("Completed Send Plc Tab Result Data", true);
                     }
 
+                    PlcControlManager.Instance().EnableSendPeriodically = false;
                     SeqStep = SeqStep.SEQ_WAIT_UI_RESULT_UPDATE;
                     break;
 
@@ -728,15 +731,15 @@ namespace ATT_UT_IPAD.Core
             return finalHead;
         }
 
-        private void WaitPlcValueClear(PlcCommonMap address)
+        private void WaitPlcValueClear(PlcCommonMap address, int timeOutMs = 3000)
         {
             Stopwatch sw = Stopwatch.StartNew();
-            int timeOutMs = 3000;
             int deviceAddress = PlcControlManager.Instance().GetAddressMap(address).AddressNum;
 
             while (PlcControlManager.Instance().GetValue(address) != "0" && sw.ElapsedMilliseconds <= timeOutMs)
             {
-                Logger.Write(LogType.Comm, $"Waiting Clear {address}(D{deviceAddress}) for {sw.ElapsedMilliseconds}ms");
+                var value = (PlcControlManager.Instance().GetValue(address));
+                Logger.Write(LogType.Comm, $"Waiting Clear {address}(D{deviceAddress}) for {sw.ElapsedMilliseconds}ms, value : {value}");
                 Thread.Sleep(20);   //plcScanTime
             }
 

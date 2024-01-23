@@ -147,10 +147,11 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 _isRepeat = true;
 
-                bool tlqkf = false;
+                // 내가 한거랑 다름 스레드 매개변수에 boolean 넣은 적 없음 repeat Param을 넣기 위한 용도로 만든거였음
+                bool threadParam = false;
 
                 _repeatThread = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(this.MoveRepeatThread));
-                _repeatThread.Start(tlqkf);
+                _repeatThread.Start(threadParam);
             }
             else
             {

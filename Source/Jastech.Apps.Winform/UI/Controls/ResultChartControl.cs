@@ -573,32 +573,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
-        private void chtData_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            //HitTestResult result = chtData.HitTest(e.X, e.Y);
-
-            //if (result != null && result.Object != null)
-            //{
-            //    if (result.PointIndex >= 0)
-            //    {
-            //        double selectedValue = chtData.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
-
-            //        var tlqkf = chtData.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
-
-
-            //        var alignData = chtData.Series[$"{SeriesType}"].Points[result.PointIndex].YValues;
-            //        //chtData.Series[$"{SeriesType}"].Points[result.PointIndex].Color = Color.Red;
-
-
-            //        mtipAlignResult.ToolTipTitle = "AlignData";
-            //        mtipAlignResult.IsBalloon = false;
-            //        mtipAlignResult.SetToolTip(this.chtData, $"X : {result.PointIndex + 1} / Y : {alignData[0]}");
-            //        mtipAlignResult.ToolTipIcon = ToolTipIcon.Info;
-            //        mtipAlignResult.Active = false;
-            //    }
-            //}
-        }
-
         private void chtData_MouseClick(object sender, MouseEventArgs e)
         {
             if (IsDailyInfo)

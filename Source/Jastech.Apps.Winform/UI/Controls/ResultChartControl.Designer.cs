@@ -69,11 +69,10 @@
             this.chtData.Legends.Add(legend1);
             this.chtData.Location = new System.Drawing.Point(0, 0);
             this.chtData.Name = "chtData";
-            this.chtData.Size = new System.Drawing.Size(495, 433);
+            this.chtData.Size = new System.Drawing.Size(424, 469);
             this.chtData.TabIndex = 1;
             this.chtData.Text = "chart1";
             this.chtData.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseClick);
-            this.chtData.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseDoubleClick);
             this.chtData.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chtData_MouseDown);
             // 
             // mtipAlignResult
@@ -84,12 +83,12 @@
             // 
             // ResultChartControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.Controls.Add(this.chtData);
             this.Name = "ResultChartControl";
-            this.Size = new System.Drawing.Size(495, 433);
+            this.Size = new System.Drawing.Size(424, 469);
             this.Load += new System.EventHandler(this.ResultChartControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chtData)).EndInit();
             this.ResumeLayout(false);
