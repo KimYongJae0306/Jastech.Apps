@@ -168,7 +168,6 @@ namespace ATT_UT_Remodeling.Core
                 AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                 AppsStatus.Instance().AutoRunTest = false;
 
-                PlcControlManager.Instance().EnableSendPeriodically = true;
                 SystemManager.Instance().EnableMainView(true);
 
                 _updateThread = null;
@@ -291,7 +290,6 @@ namespace ATT_UT_Remodeling.Core
             {
                 case SeqStep.SEQ_IDLE:
 					AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     break;
 
                 case SeqStep.SEQ_INIT:
@@ -432,8 +430,6 @@ namespace ATT_UT_Remodeling.Core
                     string message = $"Grab End to Insp Completed Time.({LastInspSW.ElapsedMilliseconds.ToString()}ms)";
                     WriteLog(message, true);
 
-                    PlcControlManager.Instance().EnableSendPeriodically = false;
-
                     SeqStep = SeqStep.SEQ_SEND_RESULT;
                     break;
 
@@ -533,7 +529,6 @@ namespace ATT_UT_Remodeling.Core
                     IsGrabDone = false;
                     AppsStatus.Instance().IsInspRunnerFlagFromPlc = false;
                     SystemManager.Instance().EnableMainView(true);
-                    PlcControlManager.Instance().EnableSendPeriodically = true;
                     WriteLog("Sequnce Error.", true);
                     ClearBuffer();
 

@@ -44,8 +44,6 @@ namespace Jastech.Apps.Winform
         public Task PlcActionTask { get; set; }
 
         public CancellationTokenSource CancelPlcActionTask { get; set; }
-
-        public bool EnableSendPeriodically { get; set; } = true;
         #endregion
 
         #region 이벤트
@@ -167,15 +165,12 @@ namespace Jastech.Apps.Winform
                 if (CancelPlcActionTask.IsCancellationRequested)
                     break;
 
-                if (EnableSendPeriodically)
+                if (DeviceManager.Instance().PlcHandler.Count > 0)
                 {
-                    if (DeviceManager.Instance().PlcHandler.Count > 0)
-                    {
-                        if (_loopCount % 2 == 0)
-                            ReadCommand();
-                        else if (_loopCount % 3 == 0)
-                            WritePcStatusPeriodically(UnitName.Unit0);
-                    }
+                    if (_loopCount % 2 == 0)
+                        ReadCommand();
+                    else if (_loopCount % 3 == 0)
+                        WritePcStatusPeriodically(UnitName.Unit0);
                 }
 
                 if (_loopCount >= int.MaxValue)
