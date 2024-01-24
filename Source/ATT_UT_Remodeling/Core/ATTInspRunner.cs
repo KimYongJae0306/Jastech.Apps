@@ -1784,10 +1784,10 @@ namespace ATT_UT_Remodeling.Core
                 int capacity = ConfigSet.Instance().Operation.DataStoringCapacity;
 
                 DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
-                DeleteDirectoryByCapacity(logPath, capacity);
+                //DeleteDirectoryByCapacity(logPath, capacity);     logPath삭제는 설정한 Duration으로 삭제
 
                 int duration = ConfigSet.Instance().Operation.DataStoringDuration;
-                FileHelper.DeleteFilesInDirectory(resultPath, ".*", duration);
+                //FileHelper.DeleteFilesInDirectory(resultPath, ".*", duration);
                 FileHelper.DeleteFilesInDirectory(logPath, ".*", duration);
 
                 _deleteThread = null;
