@@ -389,7 +389,7 @@ namespace Jastech.Apps.Structure.Data
                 rightResultList.Add(position);
             }
 
-            var panelRightCenterLineList = GetPanelCenterLine(AlignResult.RightY);
+            var panelRightCenterLineList = GetPanelCenterLine(AlignResult.RightX);
             foreach (var panel in panelRightCenterLineList)
             {
                 AlignGraphicPosition position = new AlignGraphicPosition

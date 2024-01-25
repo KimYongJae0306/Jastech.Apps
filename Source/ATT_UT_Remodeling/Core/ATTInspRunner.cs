@@ -1480,11 +1480,10 @@ namespace ATT_UT_Remodeling.Core
             if (leftAlignShapeList.Count() > 0)
             {
                 PointF offset = new PointF();
-                Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset);
-
                 string orgFileName = string.Format("Left_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
-                cropLeftImage?.Save(orgFilePath);
+
+                Mat cropLeftImage = GetAlignResultImage(tabInspResult, leftAlignShapeList, out offset, orgFilePath);
 
                 var leftFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark.Left;
                 if (leftFpcMark != null)
@@ -1522,11 +1521,10 @@ namespace ATT_UT_Remodeling.Core
             if (rightAlignShapeList.Count() > 0)
             {
                 PointF offset = new PointF();
-                Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset);
-
                 string orgFileName = string.Format("Right_Align_Tab_{0}_Org.bmp", tabInspResult.TabNo);
                 string orgFilePath = Path.Combine(savePath, orgFileName);
-                cropRightImage?.Save(orgFilePath);
+
+                Mat cropRightImage = GetAlignResultImage(tabInspResult, rightAlignShapeList, out offset, orgFilePath);
 
                 var rightFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark.Right;
                 if (rightFpcMark != null)
@@ -1598,7 +1596,7 @@ namespace ATT_UT_Remodeling.Core
             CvInvoke.PutText(mat, resultString, coord, FontFace.HersheySimplex, fontScale, color);
         }
 
-        private Mat GetAlignResultImage(TabInspResult tabInspResult, List<AlignGraphicPosition> graphicList, out PointF offsetPoint)
+        private Mat GetAlignResultImage(TabInspResult tabInspResult, List<AlignGraphicPosition> graphicList, out PointF offsetPoint, string orgSavePath)
         {
             offsetPoint = new PointF();
             MCvScalar fpcColor = new MCvScalar(255, 0, 0);
@@ -1606,6 +1604,9 @@ namespace ATT_UT_Remodeling.Core
 
             var roi = GetCropROI(graphicList, tabInspResult.Image.Width, tabInspResult.Image.Height);
             var cropImage = new Mat(tabInspResult.Image, roi);
+
+            if (orgSavePath != null)
+                cropImage?.Save(orgSavePath);
 
             CvInvoke.CvtColor(cropImage, cropImage, ColorConversion.Gray2Bgr);
 
@@ -1616,6 +1617,7 @@ namespace ATT_UT_Remodeling.Core
             {
                 Point startPoint = new Point((int)shape.StartX - roi.X, (int)shape.StartY - roi.Y);
                 Point endPoint = new Point((int)shape.EndX - roi.X, (int)shape.EndY - roi.Y);
+
                 if (shape.IsFpc)
                     CvInvoke.Line(cropImage, startPoint, endPoint, fpcColor);
                 else
