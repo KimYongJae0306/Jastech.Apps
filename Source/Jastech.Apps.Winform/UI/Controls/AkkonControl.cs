@@ -1353,14 +1353,13 @@ namespace Jastech.Apps.Winform.UI.Controls
                         filteredContourList.Add(contour);
                 }
             }
-
+            
             Mat filteredImage = new Mat(new Size(mat.Width, mat.Height), DepthType.Cv8U, 1);
-            byte[] tempArray = new byte[mat.Step * mat.Height];
-            Marshal.Copy(tempArray, 0, filteredImage.DataPointer, mat.Step * mat.Height);
+            filteredImage.SetTo(new MCvScalar(0));
 
             IInputArrayOfArrays contoursArray = new VectorOfVectorOfPoint(filteredContourList.Select(vector => vector.ToArray()).ToArray());
             CvInvoke.DrawContours(filteredImage, contoursArray, -1, new MCvScalar(255), -1);
-            hierarchy.Dispose();
+            //hierarchy.Dispose();
 
             return filteredImage;
         }

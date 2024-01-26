@@ -1,5 +1,4 @@
 ﻿using Cognex.VisionPro;
-using Cognex.VisionPro.Caliper;
 using Cognex.VisionPro.PMAlign;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;

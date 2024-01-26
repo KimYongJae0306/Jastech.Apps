@@ -1,13 +1,6 @@
 ﻿using Cognex.VisionPro;
-using Cognex.VisionPro.Display;
-using Cognex.VisionPro.Exceptions;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Jastech.Apps.Structure;
-using Jastech.Apps.Winform;
 using Jastech.Apps.Winform.UI.Controls;
-using Jastech.Apps.Winform.Core;
-using Jastech.Framework.Imaging;
 using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
@@ -16,9 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Reflection;
 
 namespace Jastech.Framework.Winform.Forms
 {

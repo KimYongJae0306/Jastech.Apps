@@ -1,21 +1,16 @@
-﻿using Jastech.Apps.Winform.UI.Controls;
-using Jastech.Framework.Winform.VisionPro.Controls;
+﻿using Cognex.VisionPro;
+using Jastech.Apps.Structure.Data;
+using Jastech.Apps.Winform.UI.Controls;
+using Jastech.Framework.Device.Cameras;
+using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
 using Jastech.Framework.Winform;
+using Jastech.Framework.Winform.Helper;
+using Jastech.Framework.Winform.VisionPro.Controls;
+using Jastech.Framework.Winform.VisionPro.Helper;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Jastech.Framework.Device.LAFCtrl;
-using Jastech.Apps.Structure.Data;
-using Jastech.Apps.Structure;
-using Jastech.Framework.Imaging.VisionPro;
-using Jastech.Framework.Device.Cameras;
-using Jastech.Framework.Winform.Helper;
-using Cognex.VisionPro;
-using Jastech.Framework.Winform.VisionPro.Helper;
-using Jastech.Framework.Imaging.VisionPro.VisionAlgorithms.Parameters;
-using Cognex.VisionPro.PMAlign;
-using Jastech.Apps.Structure.Parameters;
-using Jastech.Framework.Device.LightCtrls;
 
 namespace Jastech.Apps.Winform.UI.Forms
 {
