@@ -1,0 +1,62 @@
+!#6 X1
+STOP
+
+!! Check Laser Mode
+ON (IoEnableMode(0) = 1)
+	OUT(1).IoAddr(0) = 1 RET
+ON (IoEnableMode(0) = 2)
+	OUT(1).IoAddr(0) = 0 RET
+!! Axis 0 & Bit0 Laser Trigger Output Buffer
+!! Tab0
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(0)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(0) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(0)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(0) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab1
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(1)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(1) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(1)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(1) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab2
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(2)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(2) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(2)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(2) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab3
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(3)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(3) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(3)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(3) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab4
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(4)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(4) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(4)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(4) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab5
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(5)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(5) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(5)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(5) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab6
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(6)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(6) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(6)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(6) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab7
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(7)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(7) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(7)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(7) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab8
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(8)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(8) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(8)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(8) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+!! Tab9
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(9)=1 & RVEL(X1)>0 & APOS(X1)>=LaserStartPositions(0)(9) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 1 RET
+ON IoEnableMode(0)=0 & IoPositionUsages(0)(9)=1 & RVEL(X1)>0 & APOS(X1)>=LaserEndPositions(0)(9) & HomeFlag(X1)=1
+	OUT(1).IoAddr(0) = 0 RET
+	
+ON IoEnableMode(0)=0 & RVEL(X1)<0
+	OUT(1).IoAddr(0) = 0 RET
