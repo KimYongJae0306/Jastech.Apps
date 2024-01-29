@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Jastech.Apps.Winform.Settings
 {
-    public class AppsConfig// : ConfigSet
+    public class AppsConfig
     {
         #region 필드
         private static AppsConfig _instance = null;

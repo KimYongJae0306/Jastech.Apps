@@ -286,6 +286,20 @@ namespace ATT_UT_IPAD.UI.Controls
             TabBtnControlList[tabNo].Ry = "-";
         }
 
+        public void ClearFixedImage()
+        {
+            if (TabBtnControlList.Count > 0)
+            {
+                TabBtnControlList[0].SetAlignImage(null);
+                TabBtnControlList[0].SetResultImage(null);
+                TabBtnControlList[0].SetInspImage(null);
+                TabBtnControlList[0].SetOrgImage(null);
+                TabBtnControlList[0].SetCenterImage(null);
+            }
+
+            InspAlignDisplay.ClearImage();
+        }
+
         private void UpdateImage(int tabNo)
         {
             if (UseTabFixed)

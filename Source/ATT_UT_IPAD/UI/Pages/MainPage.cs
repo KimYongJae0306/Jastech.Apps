@@ -197,6 +197,8 @@ namespace ATT_UT_IPAD.UI.Pages
 
             if (AppsConfig.Instance().EnableAlignMonitoring)
                 AlignMonitoringControl.UpdateMainResult(tabNo);
+            else
+                AlignMonitoringControl.DisposeFixedDisplay(tabNo);
         }
      
         public void UpdateAllRefreshData()

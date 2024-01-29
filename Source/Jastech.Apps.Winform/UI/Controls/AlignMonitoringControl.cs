@@ -84,6 +84,13 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
 
+        public void DisposeFixedDisplay(int tabNo)
+        {
+            var display = DisplayControlList.Where(x => x.FixedTabIndex == tabNo).FirstOrDefault();
+            DisplayControlList.ForEach(x => x.SetRatio(_leftDisplayZoomRatio, _centerDisplayZoomRatio, _rightDisplayZoomRatio));
+            display?.ClearFixedImage();
+        }
+
         public void UpdateMainResult(int tabNo)
         {
             var display = DisplayControlList.Where(x => x.FixedTabIndex == tabNo).FirstOrDefault();
