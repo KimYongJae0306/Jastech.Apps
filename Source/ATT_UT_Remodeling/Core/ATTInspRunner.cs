@@ -4,6 +4,7 @@ using Cognex.VisionPro;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.XFeatures2D;
 using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform;
@@ -113,7 +114,7 @@ namespace ATT_UT_Remodeling.Core
             {
                 IsGrabDone = isGrabDone;
 
-                if(IsGrabDone)
+                if (IsGrabDone)
                 {
                     LineCamera.StopGrab();
 
@@ -580,7 +581,7 @@ namespace ATT_UT_Remodeling.Core
                         var tab = inspModel.GetUnit(UnitName.Unit0).GetTab(tabNo);
 
                         // Overlay Image
-                        if(tabResult.AkkonInspMatImage != null)
+                        if (tabResult.AkkonInspMatImage != null)
                         {
                             Mat resultMat = GetResultImage(tabResult.AkkonInspMatImage, tabResult.AkkonResult.LeadResultList, tab.AkkonParam.AkkonAlgoritmParam, ref tabResult.AkkonNGAffineList);
                             ICogImage cogImage = ConvertCogColorImage(resultMat);
@@ -1368,9 +1369,7 @@ namespace ATT_UT_Remodeling.Core
 
                 string path = GetResultPath();
                 for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-                {
                     SaveResultImage(path, tabNo);
-                }
 
                 sw.Stop();
                 Console.WriteLine("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
@@ -1387,6 +1386,8 @@ namespace ATT_UT_Remodeling.Core
         private void SaveResultImage(string resultPath, int tabNo)
         {
             var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+            string imageName = $"{AppsInspResult.Instance().Cell_ID}_Tab_{tabInspResult.TabNo}";
             var operation = ConfigSet.Instance().Operation;
 
             string path = Path.Combine(resultPath, "Inspection");
@@ -1400,7 +1401,6 @@ namespace ATT_UT_Remodeling.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(path, TabJudgement.OK.ToString());
 
                     if (Directory.Exists(filePath) == false)
@@ -1408,7 +1408,7 @@ namespace ATT_UT_Remodeling.Core
 
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
                         SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Bmp, false);
-                    else if(operation.ExtensionOKImage == ImageExtension.Jpg)
+                    else if (operation.ExtensionOKImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
                             SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Jpg, true);
@@ -1421,7 +1421,6 @@ namespace ATT_UT_Remodeling.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(path, TabJudgement.NG.ToString());
 
                     if (Directory.Exists(filePath) == false)
@@ -1437,7 +1436,7 @@ namespace ATT_UT_Remodeling.Core
                             SaveImage(tabInspResult.Image, filePath, imageName, Judgement.NG, ImageExtension.Jpg, false);
                     }
 
-                    if(tabInspResult.AkkonResult.Judgement == Judgement.NG)
+                    if (tabInspResult.AkkonResult.Judgement == Judgement.NG)
                     {
                         string akkonLeadImagePath = Path.Combine(resultPath, "Inspection", "NG", "AkkonLeadImage");
                         if (Directory.Exists(akkonLeadImagePath) == false)

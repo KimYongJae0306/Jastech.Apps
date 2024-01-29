@@ -163,7 +163,7 @@ namespace Jastech.Apps.Structure.Data
 
         public void Dispose()
         {
-            if(TabImage != null)
+            if (TabImage != null)
             {
                 TabImage.Dispose();
                 TabImage = null;
@@ -374,7 +374,6 @@ namespace Jastech.Apps.Structure.Data
             PointF panelLeftOffset = MathHelper.GetOffset(panelMarkResult.Left.MaxMatchPos.FoundPos, leftMarkOrigin);
             SetPanelLeftOffset(panelLeftOffset);
 
-           
             PointF panelRightOffset = MathHelper.GetOffset(panelMarkResult.Right.MaxMatchPos.FoundPos, rightMarkOrigin);
             SetPanelRightOffset(panelRightOffset);
         }

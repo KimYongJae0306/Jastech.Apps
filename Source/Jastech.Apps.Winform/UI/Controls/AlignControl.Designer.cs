@@ -50,6 +50,9 @@
             this.tlpParams = new System.Windows.Forms.TableLayoutPanel();
             this.pnlCaliperParam = new System.Windows.Forms.Panel();
             this.pnlLeadParam = new System.Windows.Forms.Panel();
+            this.lblOutsideSearchDirection = new System.Windows.Forms.Label();
+            this.lblInsideSearchDirection = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.lblPanelToFpcOffset = new System.Windows.Forms.Label();
             this.lblOffset = new System.Windows.Forms.Label();
             this.lblApply = new System.Windows.Forms.Label();
@@ -87,9 +90,6 @@
             this.lblLeftAlignSpecX = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.lblInsideSearchDirection = new System.Windows.Forms.Label();
-            this.lblOutsideSearchDirection = new System.Windows.Forms.Label();
             this.tlpAlign.SuspendLayout();
             this.pnlPosition.SuspendLayout();
             this.tlpParams.SuspendLayout();
@@ -387,6 +387,41 @@
             this.pnlLeadParam.Size = new System.Drawing.Size(893, 115);
             this.pnlLeadParam.TabIndex = 16;
             // 
+            // lblOutsideSearchDirection
+            // 
+            this.lblOutsideSearchDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOutsideSearchDirection.Location = new System.Drawing.Point(754, 62);
+            this.lblOutsideSearchDirection.Margin = new System.Windows.Forms.Padding(0);
+            this.lblOutsideSearchDirection.Name = "lblOutsideSearchDirection";
+            this.lblOutsideSearchDirection.Size = new System.Drawing.Size(106, 40);
+            this.lblOutsideSearchDirection.TabIndex = 8;
+            this.lblOutsideSearchDirection.Text = "OutSide";
+            this.lblOutsideSearchDirection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblOutsideSearchDirection.Click += new System.EventHandler(this.lblOutsideSearchDirection_Click);
+            // 
+            // lblInsideSearchDirection
+            // 
+            this.lblInsideSearchDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblInsideSearchDirection.Location = new System.Drawing.Point(648, 62);
+            this.lblInsideSearchDirection.Margin = new System.Windows.Forms.Padding(0);
+            this.lblInsideSearchDirection.Name = "lblInsideSearchDirection";
+            this.lblInsideSearchDirection.Size = new System.Drawing.Size(106, 40);
+            this.lblInsideSearchDirection.TabIndex = 7;
+            this.lblInsideSearchDirection.Text = "InSide";
+            this.lblInsideSearchDirection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInsideSearchDirection.Click += new System.EventHandler(this.lblInsideSearchDirection_Click);
+            // 
+            // label11
+            // 
+            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label11.Location = new System.Drawing.Point(436, 62);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(200, 40);
+            this.label11.TabIndex = 6;
+            this.label11.Text = "Search Direction";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblPanelToFpcOffset
             // 
             this.lblPanelToFpcOffset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -485,6 +520,7 @@
             // 
             // label23
             // 
+            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label23.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label23.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
             this.label23.ForeColor = System.Drawing.Color.White;
@@ -862,41 +898,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Left Align SpecX(um)";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label11
-            // 
-            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Location = new System.Drawing.Point(436, 62);
-            this.label11.Margin = new System.Windows.Forms.Padding(0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(200, 40);
-            this.label11.TabIndex = 6;
-            this.label11.Text = "Search Direction";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblInsideSearchDirection
-            // 
-            this.lblInsideSearchDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblInsideSearchDirection.Location = new System.Drawing.Point(648, 62);
-            this.lblInsideSearchDirection.Margin = new System.Windows.Forms.Padding(0);
-            this.lblInsideSearchDirection.Name = "lblInsideSearchDirection";
-            this.lblInsideSearchDirection.Size = new System.Drawing.Size(106, 40);
-            this.lblInsideSearchDirection.TabIndex = 7;
-            this.lblInsideSearchDirection.Text = "InSide";
-            this.lblInsideSearchDirection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblInsideSearchDirection.Click += new System.EventHandler(this.lblInsideSearchDirection_Click);
-            // 
-            // lblOutsideSearchDirection
-            // 
-            this.lblOutsideSearchDirection.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOutsideSearchDirection.Location = new System.Drawing.Point(754, 62);
-            this.lblOutsideSearchDirection.Margin = new System.Windows.Forms.Padding(0);
-            this.lblOutsideSearchDirection.Name = "lblOutsideSearchDirection";
-            this.lblOutsideSearchDirection.Size = new System.Drawing.Size(106, 40);
-            this.lblOutsideSearchDirection.TabIndex = 8;
-            this.lblOutsideSearchDirection.Text = "OutSide";
-            this.lblOutsideSearchDirection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblOutsideSearchDirection.Click += new System.EventHandler(this.lblOutsideSearchDirection_Click);
             // 
             // AlignControl
             // 

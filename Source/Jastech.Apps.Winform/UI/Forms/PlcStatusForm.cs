@@ -80,7 +80,7 @@ namespace Jastech.Apps.Winform.UI.Forms
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            if(PlcCommandControl != null)
+            if (PlcCommandControl != null)
             {
                 if (PlcCommandControl.Visible)
                     PlcCommandControl?.UpdateData();

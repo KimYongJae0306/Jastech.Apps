@@ -129,7 +129,7 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (tabCount <= 0)
                 return;
 
-            if(tabCount <= 2)
+            if (tabCount <= 2)
             {
                 tlpSplitView.ColumnCount = 1;
                 tlpSplitView.RowCount = tabCount;
@@ -138,7 +138,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             {
                 tlpSplitView.ColumnCount = 2;
                 var remain = tabCount % 2.0;
-
 
                 if (remain == 0)
                     tlpSplitView.RowCount = (tabCount / 2);

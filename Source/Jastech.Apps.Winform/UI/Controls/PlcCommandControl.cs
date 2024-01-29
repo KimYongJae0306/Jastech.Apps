@@ -58,7 +58,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             foreach (Judgement type in Enum.GetValues(typeof(Judgement)))
             {
-                if(type != Judgement.FAIL)
+                if (type != Judgement.FAIL)
                     cbxWriteAkkonJudgement.Items.Add(type.ToString());
             }
             cbxWriteAkkonJudgement.SelectedIndex = 0;

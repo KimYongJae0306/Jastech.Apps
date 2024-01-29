@@ -1114,7 +1114,7 @@ int tt = 0;
 
                 PlcDataStream stream = new PlcDataStream();
 
-                if(manualFlag == true)
+                if (manualFlag == true)
                 {
                     if (plc.MelsecParser.ParserType == ParserType.Binary)
                         stream.AddSwap16BitData(5);

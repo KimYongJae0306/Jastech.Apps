@@ -182,7 +182,7 @@ namespace AkkonTester.UI.Pages
 
             // Filter
             var filter = param.ImageFilterParam.GetCurrentFilter();
-            if(filter == null)
+            if (filter == null)
             {
                 cbxFilterType.SelectedIndex = 0;
                 string currentFilterName = cbxFilterType.SelectedItem as string;
@@ -488,7 +488,7 @@ namespace AkkonTester.UI.Pages
                     if (blob.BoundingRect.Width <= 1 || blob.BoundingRect.Height <= 1)
                         continue;
 
-                    if(blob.IsAkkonShape)
+                    if (blob.IsAkkonShape)
                     {
                         CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     }

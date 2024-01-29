@@ -17,7 +17,7 @@ namespace Jastech.Apps.Structure.Parameters
 
         private void AddGroup()
         {
-            if(GroupList.Count() > 0)
+            if (GroupList.Count() > 0)
             {
                 int newName = GroupList.Count();
                 var newGroup = GroupList[GroupList.Count() - 1].DeepCopy();
@@ -50,7 +50,7 @@ namespace Jastech.Apps.Structure.Parameters
             if (GroupList.Count() == newGroupCount)
                 return;
 
-            if(GroupList.Count() < newGroupCount)
+            if (GroupList.Count() < newGroupCount)
             {
                 int newCount = newGroupCount - GroupList.Count();
                 AddGroup(newCount);

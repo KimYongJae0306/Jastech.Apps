@@ -220,10 +220,10 @@ namespace ATT_UT_Remodeling
                     AppsPreAlignResult.Instance().Cell_ID = GetCellID();
                     WriteLog("Cell ID : " + AppsPreAlignResult.Instance().Cell_ID, true);
 
-                    SeqStep = SeqStep.SEQ_PREALIGN_R;
+                    SeqStep = SeqStep.SEQ_PREALIGN_RIGHT;
                     break;
 
-                case SeqStep.SEQ_PREALIGN_R:
+                case SeqStep.SEQ_PREALIGN_RIGHT:
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_PreAlign_Right, LAFCtrl, AxisName.Z0);
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Right, out errorMessage) == false)
@@ -249,10 +249,10 @@ namespace ATT_UT_Remodeling
                         AppsPreAlignResult.Instance().Right.CogImage = VirtualRightImage;
                         AppsPreAlignResult.Instance().Right.MatchResult = RunPreAlignMark(unit, VirtualRightImage, MarkDirection.Right);
                     }
-                    SeqStep = SeqStep.SEQ_PREALIGN_R_MANUAL_MATCHING;
+                    SeqStep = SeqStep.SEQ_PREALIGN_RIGHT_MANUAL_MATCHING;
 
                     break;
-                case SeqStep.SEQ_PREALIGN_R_MANUAL_MATCHING:
+                case SeqStep.SEQ_PREALIGN_RIGHT_MANUAL_MATCHING:
                     if (AppsPreAlignResult.Instance().Right.MatchResult == null)
                     {
                         SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right, UnitName.Unit0);
@@ -290,10 +290,10 @@ namespace ATT_UT_Remodeling
                     SetMarkMotionPosition(unit, MarkDirection.Right);
                     WriteLog("Set Axis Information For PreAlign Right Mark Position.");
 
-                    SeqStep = SeqStep.SEQ_PREALIGN_L;
+                    SeqStep = SeqStep.SEQ_PREALIGN_LEFT;
 
                     break;
-                case SeqStep.SEQ_PREALIGN_L:
+                case SeqStep.SEQ_PREALIGN_LEFT:
                     MotionManager.Instance().MoveAxisZ(UnitName.Unit0, TeachingPosType.Stage1_PreAlign_Left, LAFCtrl, AxisName.Z0);
 
                     if (MoveTo(TeachingPosType.Stage1_PreAlign_Left, out errorMessage) == false)
@@ -320,9 +320,9 @@ namespace ATT_UT_Remodeling
                         AppsPreAlignResult.Instance().Left.MatchResult = RunPreAlignMark(unit, VirtualLeftImage, MarkDirection.Left);
                     }
 
-                    SeqStep = SeqStep.SEQ_PREALIGN_L_MANUAL_MATCHING;
+                    SeqStep = SeqStep.SEQ_PREALIGN_LEFT_MANUAL_MATCHING;
                     break;
-                case SeqStep.SEQ_PREALIGN_L_MANUAL_MATCHING:
+                case SeqStep.SEQ_PREALIGN_LEFT_MANUAL_MATCHING:
                     if (AppsPreAlignResult.Instance().Left.MatchResult == null)
                     {
                         SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left, UnitName.Unit0);
@@ -797,10 +797,10 @@ namespace ATT_UT_Remodeling
         SEQ_INIT,
         SEQ_WAITING,
         SEQ_START,
-        SEQ_PREALIGN_R,
-        SEQ_PREALIGN_R_MANUAL_MATCHING,
-        SEQ_PREALIGN_L,
-        SEQ_PREALIGN_L_MANUAL_MATCHING,
+        SEQ_PREALIGN_RIGHT,
+        SEQ_PREALIGN_RIGHT_MANUAL_MATCHING,
+        SEQ_PREALIGN_LEFT,
+        SEQ_PREALIGN_LEFT_MANUAL_MATCHING,
         SEQ_SEND_PREALIGN_DATA,
         SEQ_SAVE_RESULT_DATA,
         SEQ_SAVE_IMAGE,

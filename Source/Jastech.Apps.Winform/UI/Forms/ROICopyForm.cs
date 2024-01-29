@@ -283,7 +283,7 @@ namespace Jastech.Apps.Winform.UI.Forms
             {
                 Tab selectedTargetTab = TeachingData.Instance().GetUnit(UnitName.ToString()).GetTab(index: tabNo);
 
-                if(UseAlignCamMark)
+                if (UseAlignCamMark)
                     selectedTargetTab.AlignCamMark = selectedSourceTab.AlignCamMark.DeepCopy();
                 else
                     selectedTargetTab.Mark = selectedSourceTab.Mark.DeepCopy();

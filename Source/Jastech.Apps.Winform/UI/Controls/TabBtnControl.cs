@@ -198,7 +198,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         {
             foreach (var shape in LeftShapeResultList.CaliperShapeList)
             {
-                if(shape != null)
+                if (shape != null)
                     shape.Dispose();
             }
             LeftShapeResultList.CaliperShapeList.Clear();

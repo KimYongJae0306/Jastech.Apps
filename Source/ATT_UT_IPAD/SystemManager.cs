@@ -280,7 +280,7 @@ namespace ATT_UT_IPAD
 
         public void StartRun()
         {
-            if(ConfigSet.Instance().Operation.VirtualMode == false)
+            if (ConfigSet.Instance().Operation.VirtualMode == false)
             {
                 if (PlcControlManager.Instance().IsDoorOpened == true)
                 {
@@ -291,7 +291,7 @@ namespace ATT_UT_IPAD
                 }
             
                 bool isServoOnAxisX = MotionManager.Instance().IsEnable(AxisHandlerName.Handler0, AxisName.X);
-                if(isServoOnAxisX == false)
+                if (isServoOnAxisX == false)
                 {
                     MessageConfirmForm alert = new MessageConfirmForm();
                     alert.Message = "AxisX Servo Off. Please Servo On.";
@@ -434,7 +434,7 @@ namespace ATT_UT_IPAD
             #region AxisZ0(Akkon)
             Axis axisZ0 = MotionManager.Instance().GetAxis(AxisHandlerName.Handler0, AxisName.Z0);
 
-            if(PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff).Value != "1")
+            if (PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PLC_AkkonZ_ServoOnOff).Value != "1")
             {
                 alarmMessage = "Akkon AxisZ Servo Off.";
                 Logger.Write(LogType.Device, alarmMessage);

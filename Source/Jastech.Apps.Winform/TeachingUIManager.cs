@@ -53,7 +53,7 @@ namespace Jastech.Apps.Winform
 
         public void SetOrginCogImageBuffer(ICogImage cogImage)
         {
-            if(OriginCogImageBuffer != null)
+            if (OriginCogImageBuffer != null)
                 (OriginCogImageBuffer as CogImage8Grey).Dispose();
 
             if (BinaryCogImageBuffer != null)
@@ -62,7 +62,7 @@ namespace Jastech.Apps.Winform
             if (ResultCogImageBuffer != null)
                 (ResultCogImageBuffer as CogImage24PlanarColor).Dispose();
 
-            if(AkkonCogImageBuffer != null)
+            if (AkkonCogImageBuffer != null)
                 (AkkonCogImageBuffer as CogImage8Grey).Dispose();
 
             OriginCogImageBuffer = null;
@@ -80,7 +80,7 @@ namespace Jastech.Apps.Winform
 
         public void SetOriginMatImageBuffer(Mat mat)
         {
-            if(OriginMatImageBuffer != null)
+            if (OriginMatImageBuffer != null)
             {
                 OriginMatImageBuffer.Dispose();
                 OriginMatImageBuffer = null;
@@ -90,7 +90,7 @@ namespace Jastech.Apps.Winform
 
         public Mat GetOriginMatImageBuffer(bool isDeepCopy)
         {
-            if(isDeepCopy)
+            if (isDeepCopy)
                 return MatHelper.DeepCopy(OriginMatImageBuffer);
 
             return OriginMatImageBuffer;

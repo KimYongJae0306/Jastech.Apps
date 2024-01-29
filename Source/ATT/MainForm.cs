@@ -266,13 +266,9 @@ namespace ATT
             var user = UserManager.Instance().CurrentUser;
 
             if (user.Type == AuthorityType.None)
-            {
                 lblCurrentUser.Text = "Operator";
-            }
             else
-            {
                 lblCurrentUser.Text = user.Id.ToString();
-            }
 
             if (MainPageControl.Visible)
                 MainPageControl.UpdateButton();

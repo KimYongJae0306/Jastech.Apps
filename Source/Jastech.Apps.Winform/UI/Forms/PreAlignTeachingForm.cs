@@ -100,7 +100,7 @@ namespace Jastech.Apps.Winform.UI.Forms
         private void AddControl()
         {
             Display = new CogTeachingDisplayControl();
-            if(AreaCamera != null)
+            if (AreaCamera != null)
             {
                 var camera = AreaCamera.Camera;
                 Display.PixelResolution = camera.PixelResolution_um / camera.LensScale;

@@ -158,7 +158,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         public delegate void InitializeGroupInfoDele(bool isLoading);
         private void InitializeGroupInfo(bool isLoading = false)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 InitializeGroupInfoDele callback = InitializeGroupInfo;
                 BeginInvoke(callback, isLoading);
@@ -179,9 +179,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             if (cbxGroupNumber.Items.Count > 0)
                 cbxGroupNumber.SelectedIndex = 0;
             else
-            {
                 _curSelectedGroup = -1;
-            }
+
             _prevTabName = CurrentTab.Name;
             _isLoading = false;
         }
@@ -189,7 +188,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         public delegate void UpdateDataDele();
         private void UpdateData()
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateDataDele callback = UpdateData;
                 BeginInvoke(callback);
@@ -805,7 +804,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 foreach (var index in selectedIndexList)
                 {
                     group.DeleteROI(index);
-                    if(_cogRectAffineList.Count > index)
+                    if (_cogRectAffineList.Count > index)
                         _cogRectAffineList.RemoveAt(index);
                 }
             }
@@ -831,7 +830,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 return;
 
             int groupIndex = cbxGroupNumber.SelectedIndex;
-            if(groupIndex < 0)
+            if (groupIndex < 0)
             {
                 dgvAkkonROI.Rows.Clear();
                 return;
@@ -849,7 +848,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
                 else
                 {
-                    if(row.Index < _cogRectAffineList.Count)
+                    if (row.Index < _cogRectAffineList.Count)
                         _cogRectAffineList[row.Index].Color = CogColorConstants.Blue;
                 }
             }
@@ -1170,7 +1169,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                 lblThresholdPreview.BackColor = _nonSelectedColor;
 
-                if(_autoTeachingPolygon != null)
+                if (_autoTeachingPolygon != null)
                 {
                     _autoTeachingCollect.Clear();
                     _autoTeachingCollect.Add(_autoTeachingPolygon);
@@ -1334,6 +1333,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private Mat GetFilterImage(Mat mat)
         {
             int ignoreSize = 10000;
+            //int ignoreSize = 10;
             var contours = new VectorOfVectorOfPoint();
             Mat hierarchy = new Mat();
             CvInvoke.FindContours(mat, contours, hierarchy, RetrType.External, ChainApproxMethod.ChainApproxSimple);
@@ -1478,7 +1478,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 int calcX = (int)Math.Round(x, 0);
                 int calcY = (int)Math.Round(y, 0);
 
-                if(prevX != calcX)
+                if (prevX != calcX)
                 {
                     Point point = new Point(calcX, calcY);
                     rstPoints.Add(point);
@@ -1724,7 +1724,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                             CvInvoke.PutText(colorMat, strength, pt, FontFace.HersheySimplex, 0.3, redColor);
                     }
 
-                    if(blob.IsAkkonShape == false)
+                    if (blob.IsAkkonShape == false)
                     {
                         double strengthValue = Math.Abs(blob.Strength - akkonParameters.ShapeFilterParam.MinAkkonStrength);
                         if (strengthValue <= 1)
@@ -1844,7 +1844,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 textY = centerPt.Y + (baseLine / 2);
                 CvInvoke.PutText(colorMat, akkonCountString, new Point(textX, textY + 60), FontFace.HersheyComplex, 0.25, new MCvScalar(50, 230, 50, 255));
 
-                if(result.Judgement == Judgement.NG)
+                if (result.Judgement == Judgement.NG)
                 {
                     CvInvoke.Line(colorMat, leftTop, leftBottom, redColor, 1);
                     CvInvoke.Line(colorMat, leftTop, rightTop, redColor, 1);
@@ -1854,11 +1854,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                     var rect = VisionProShapeHelper.ConvertToCogRectAffine(leftTop, rightTop, leftBottom);
                     akkonNGAffineList.Add(rect);
                 }
-                if (result.AkkonCount >= AkkonParameters.JudgementParam.AkkonCount)
-                {
-                    
-                }
             }
+
             return colorMat;
         }
 

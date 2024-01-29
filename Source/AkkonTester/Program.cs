@@ -17,7 +17,7 @@ namespace AkkonTester
             bool isRunning = false;
             Mutex mutex = new Mutex(true, "AkkonTester", out isRunning);
 
-            if(isRunning)
+            if (isRunning)
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

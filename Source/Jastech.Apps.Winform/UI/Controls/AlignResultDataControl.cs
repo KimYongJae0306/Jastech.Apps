@@ -124,10 +124,8 @@ namespace Jastech.Apps.Winform.UI.Controls
 
         private string GetValue(string value)
         {
-            if(double.TryParse(value, out double temp))
-            {
+            if (double.TryParse(value, out double temp))
                 return MathHelper.GetFloorDecimal(temp, 4).ToString();
-            }
             else
                 return "-";
         }

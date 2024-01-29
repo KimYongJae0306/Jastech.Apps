@@ -137,14 +137,14 @@ namespace Jastech.Apps.Winform.Settings
 
         public void Initialize()
         {
-            string dirPath = ConfigSet.Instance().Path.Config;
             string fullPath = Path.Combine(ConfigSet.Instance().Path.Config, "AppsConfig.cfg");
 
-            if(!File.Exists(fullPath))
+            if (File.Exists(fullPath) == false)
             {
                 Save();
                 return;
             }
+
             Load();
         }
 

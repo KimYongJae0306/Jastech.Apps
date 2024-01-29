@@ -587,7 +587,7 @@ namespace ATT.UI.Forms
         {
             var unit = TeachingData.Instance().GetUnit(UnitName.ToString());
 
-            if(unit != null)
+            if (unit != null)
             {
                 if (LAFManager.Instance().GetLAF(LafCtrl.Name) is LAF laf)
                 {

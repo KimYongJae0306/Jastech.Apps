@@ -229,7 +229,7 @@ namespace Jastech.Apps.Structure.VisionTool
         {
             var centerParam = tab.GetAlignParam(ATTTabAlignName.CenterFPC)?.DeepCopy();
 
-            if(centerParam != null)
+            if (centerParam != null)
             {
                 //var calcFpcRegion = CoordinateRectangle(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcCoordinate);
                 var calcFpcRegion = VisionProShapeHelper.AddOffsetToCogRectAffine(centerParam.CaliperParams.GetRegion() as CogRectangleAffine, fpcOffset);

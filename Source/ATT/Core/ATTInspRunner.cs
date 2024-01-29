@@ -105,11 +105,11 @@ namespace ATT.Core
 
         private void ATTSeqRunner_GrabDoneEventHandler(string cameraName, bool isGrabDone)
         {
-             if(LineCamera.Camera.Name == cameraName)
+             if (LineCamera.Camera.Name == cameraName)
             {
                 IsGrabDone = isGrabDone;
 
-                if(IsGrabDone == false)
+                if (IsGrabDone == false)
                 {
                     LineCamera.StopGrab();
                     if (AppsStatus.Instance().IsRepeat == false)
@@ -142,7 +142,7 @@ namespace ATT.Core
 
         public void StartUpdateThread()
         {
-            if(_updateThread == null)
+            if (_updateThread == null)
             {
                 _updateThread = new Thread(UpdateUI);
                 _updateThread.Start();
@@ -353,7 +353,7 @@ namespace ATT.Core
                 case SeqStep.SEQ_SCAN_START:
                     IsGrabDone = false;
 
-                    if(unit.LightParam != null)
+                    if (unit.LightParam != null)
                     {
                         LightCtrlHandler?.TurnOn(unit.LightParam);
                         WriteLog("Light Turn On.", true);
@@ -551,7 +551,7 @@ namespace ATT.Core
 
         public void StartSaveThread()
         {
-            if(_saveThread == null)
+            if (_saveThread == null)
             {
                 _saveThread = new Thread(SaveImage);
                 _saveThread.Start();
@@ -1232,9 +1232,7 @@ namespace ATT.Core
 
                 string path = GetResultPath();
                 for (int tabNo = 0; tabNo < inspModel.TabCount; tabNo++)
-                {
                     SaveResultImage(path, tabNo);
-                }
 
                 sw.Stop();
                 Console.WriteLine("Save Image : " + sw.ElapsedMilliseconds.ToString() + "ms");
@@ -1251,6 +1249,8 @@ namespace ATT.Core
         private void SaveResultImage(string resultPath, int tabNo)
         {
             var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+
+            string imageName = $"{AppsInspResult.Instance().Cell_ID}_Tab_{tabInspResult.TabNo}";
             var operation = ConfigSet.Instance().Operation;
 
             string path = Path.Combine(resultPath, "Inspection");
@@ -1264,7 +1264,6 @@ namespace ATT.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(path, imageName);
 
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
@@ -1282,7 +1281,6 @@ namespace ATT.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(path, imageName);
                     if (operation.ExtensionNGImage == ImageExtension.Bmp)
                         SaveImage(tabInspResult.Image, filePath, imageName, Judgement.NG, ImageExtension.Bmp, false);

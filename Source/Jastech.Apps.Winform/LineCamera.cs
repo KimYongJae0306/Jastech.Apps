@@ -318,7 +318,7 @@ namespace Jastech.Apps.Winform
 
         private TabScanBuffer GetTabScanBuffer(int tabNo)
         {
-            if(tabNo < TabScanBufferList.Count)
+            if (tabNo < TabScanBufferList.Count)
                 return TabScanBufferList[tabNo];
 
             return null;

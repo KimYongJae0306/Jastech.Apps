@@ -45,7 +45,7 @@ namespace AkkonTester
         {
             _mainForm = mainForm;
 
-            if(AkkonParameters.ImageFilterParam.Filters.Count == 0)
+            if (AkkonParameters.ImageFilterParam.Filters.Count == 0)
             {
                 AkkonParameters.Initalize();
                 AkkonParameters.ImageFilterParam.AddMacronFilter();
@@ -160,12 +160,12 @@ namespace AkkonTester
                         CvInvoke.Circle(colorMat, center, radius / 2, greenColor, 1);
                     else
                     {
-                        if(AkkonParameters.DrawOption.ContainNG)
+                        if (AkkonParameters.DrawOption.ContainNG)
                             CvInvoke.Circle(colorMat, center, radius / 2, redColor, 1);
                     }
                 }
 
-                if(AkkonParameters.DrawOption.ContainLeadCount)
+                if (AkkonParameters.DrawOption.ContainLeadCount)
                 {
                     string leadIndexString = result.Roi.Index.ToString();
                     string akkonCountString = string.Format("[{0}]", result.AkkonCount);

@@ -451,65 +451,9 @@ namespace Jastech.Apps.Winform.UI.Controls
             DrawOriginPointMark(display, centerPoint, size);
 
             var rect = currentParam.GetTrainRegion() as CogRectangle;
-            if(rect != null)
+            if (rect != null)
                 display.SetDisplayToCenter(new Point((int)rect.CenterX, (int)rect.CenterY));
         }
-
-        //public void Run()
-        //{
-        //    var display = TeachingUIManager.Instance().TeachingDisplayControl.GetDisplay();
-        //    if (display == null)
-        //        return;
-
-        //    ICogImage cogImage = display.GetImage();
-        //    if (cogImage == null)
-        //        return;
-
-        //    display.ClearGraphic();
-        //    display.DisplayRefresh();
-
-        //    MainAlgorithmTool algorithmTool = new MainAlgorithmTool();
-        //    TabInspResult tabInspResult = new TabInspResult();
-           
-        //    //algorithmTool.MainMarkInspect(cogImage, CurrentTab, ref tabInspResult, UseAlignMark);
-        //    algorithmTool.MainPanelMarkInspect(cogImage, CurrentTab, ref tabInspResult);
-
-        //    if (tabInspResult.MarkResult.Judgement != Judgement.OK)
-        //    {
-        //        // 검사 실패
-        //        string message = string.Format("Mark Insp NG !!! Tab_{0} / Fpc_{1}, Panel_{2}", CurrentTab.Index,
-        //            tabInspResult.MarkResult.FpcMark.Judgement, tabInspResult.MarkResult.PanelMark.Judgement);
-
-        //        MessageConfirmForm form = new MessageConfirmForm();
-        //        form.Message = message;
-        //        form.ShowDialog();
-        //    }
-        //    display.ClearGraphic();
-        //    List<VisionProPatternMatchingResult> matchingResultList = new List<VisionProPatternMatchingResult>();
-
-        //    var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
-        //    if(foundedFpcMark != null)
-        //    {
-        //        var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
-        //        var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
-        //        matchingResultList.Add(foundedFpcMark.Left);
-        //        matchingResultList.Add(foundedFpcMark.Right);
-        //    }
-            
-
-        //    var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
-
-        //    if(foundedPanelMark != null)
-        //    {
-        //        var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
-        //        var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
-
-        //        matchingResultList.Add(foundedPanelMark.Left);
-        //        matchingResultList.Add(foundedPanelMark.Right);
-        //    }
-            
-        //    display.UpdateResult(matchingResultList);
-        //}
 
         private void SetNGColor(CogGraphicChildren shapes)
         {

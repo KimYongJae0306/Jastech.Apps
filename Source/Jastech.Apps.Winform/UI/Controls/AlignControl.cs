@@ -134,7 +134,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             CogCaliperParamControl.UpdateData(alignParam.CaliperParams);
 
-            if(alignName == ATTTabAlignName.CenterFPC)
+            if (alignName == ATTTabAlignName.CenterFPC)
             {
                 pnlLeadParam.Visible = false;
                 pnlCaliperParam.Visible = false;

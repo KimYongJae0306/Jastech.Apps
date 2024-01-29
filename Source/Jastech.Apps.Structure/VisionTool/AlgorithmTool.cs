@@ -110,11 +110,11 @@ namespace Jastech.Apps.Structure.VisionTool
                     //searchMaxParam.TrainImageMask(param.GetTrainImageMask());
                     //searchMaxParam.Train();
                     //var searchMaxResults = searchMaxTool.Run(image, searchMaxParam);
-                    //if(searchMaxResults != null)
+                    //if (searchMaxResults != null)
                     //{
-                    //    if(searchMaxResults.MatchPosList.Count > 0)
+                    //    if (searchMaxResults.MatchPosList.Count > 0)
                     //    {
-                    //        if(searchMaxResults.MaxScore * 100 >= param.Score)
+                    //        if (searchMaxResults.MaxScore * 100 >= param.Score)
                     //        {
                     //            matchingResult.MatchPosList.Clear();
                     //            matchingResult.MatchPosList = searchMaxResults.MatchPosList;

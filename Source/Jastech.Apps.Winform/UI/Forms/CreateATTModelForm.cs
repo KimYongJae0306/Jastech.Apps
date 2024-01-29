@@ -42,13 +42,13 @@ namespace Jastech.Apps.Winform.UI.Forms
                 return;
             }
 
-            if(tabCount == "" || tabCount == "0")
+            if (tabCount == "" || tabCount == "0")
             {
                 ShowMessageBox("Enter your tab count.");
                 return;
             }
 
-            if(Convert.ToInt16(tabCount) > AppsConfig.Instance().TabMaxCount)
+            if (Convert.ToInt16(tabCount) > AppsConfig.Instance().TabMaxCount)
             {
                 ShowMessageBox("TabCount Max is 10.");
                 return;

@@ -146,7 +146,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             Point point = new Point(0, 0);
 
-            if(UseTabFixed)
+            if (UseTabFixed)
             {
                 AddTabButton(ref point, FixedTabIndex);
 
@@ -208,7 +208,7 @@ namespace ATT_UT_IPAD.UI.Controls
             if (AppsStatus.Instance().IsInspRunnerFlagFromPlc)
                 return;
 
-            if(UseTabFixed)
+            if (UseTabFixed)
             {
                 TabBtnControlList.ForEach(x => x.SetButtonClickNone());
                 TabBtnControlList[0].SetButtonClick();
@@ -377,7 +377,7 @@ namespace ATT_UT_IPAD.UI.Controls
         public delegate void UpdateTabButtonDele(int tabNo);
         public void UpdateResultTabButton(int tabNo)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateTabButtonDele callback = UpdateResultTabButton;
                 BeginInvoke(callback, tabNo);
@@ -386,9 +386,9 @@ namespace ATT_UT_IPAD.UI.Controls
 
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
-            if(tabInspResult != null)
+            if (tabInspResult != null)
             {
-                if(UseTabFixed)
+                if (UseTabFixed)
                 {
                     if (tabInspResult.AlignResult.Judgement == Judgement.OK)
                         TabBtnControlList[0].BackColor = Color.MediumSeaGreen;

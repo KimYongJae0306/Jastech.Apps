@@ -209,7 +209,7 @@ namespace ATT_UT_IPAD.UI.Controls
                 }
                 else
                 {
-                    if(tabControl.GetCogInspImage() is ICogImage inspImage)
+                    if (tabControl.GetCogInspImage() is ICogImage inspImage)
                         InspDisplayControl.SetImage(inspImage, false);
                     else
                         InspDisplayControl.SetImage(orgImage, false);
@@ -252,7 +252,7 @@ namespace ATT_UT_IPAD.UI.Controls
 
             var tabInspResult = GetTabInspResultEvent?.Invoke(tabNo);
 
-            if(tabInspResult != null)
+            if (tabInspResult != null)
             {
                 if (tabInspResult.AkkonResult.Judgement == Judgement.OK)
                     TabBtnControlList[tabNo].BackColor = Color.MediumSeaGreen;

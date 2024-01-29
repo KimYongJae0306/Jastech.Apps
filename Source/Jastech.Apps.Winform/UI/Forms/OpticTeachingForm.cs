@@ -146,7 +146,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void TeachingEventFunction(ATTInspTab inspTab)
         {
-            if(lblAreaMode.BackColor == _selectedColor)
+            if (lblAreaMode.BackColor == _selectedColor)
             {
                 if (inspTab.MergeMatImage != null)
                     DrawBoxControl.SetImage(inspTab.MergeMatImage.ToBitmap());
@@ -216,7 +216,7 @@ namespace Jastech.Framework.Winform.Forms
 
             var lafData = unit.GetLafData(LAFCtrl.Name);
             
-            if(lafData == null)
+            if (lafData == null)
             {
                 unit.LafData = new LAFData();
                 unit.LafData.Name = LAFCtrl.Name;
@@ -672,7 +672,7 @@ namespace Jastech.Framework.Winform.Forms
 
             var camera = LineCamera.Camera;
 
-            if(camera is ICameraTDIavailable tdiCamera)
+            if (camera is ICameraTDIavailable tdiCamera)
             {
                 if (tdiCamera.TDIOperationMode == TDIOperationMode.Area)
                 {
@@ -696,7 +696,7 @@ namespace Jastech.Framework.Winform.Forms
 
         private void btnGrabStart_Click(object sender, EventArgs e)
         {
-            if(lblAreaMode.BackColor == _selectedColor)
+            if (lblAreaMode.BackColor == _selectedColor)
             {
                 LineCamera.IsLive = true;
                 LineCamera.StartLiveTask();
@@ -999,7 +999,7 @@ namespace Jastech.Framework.Winform.Forms
         public delegate void UpdateGrabButtonDele(bool isEnable);
         private void UpdateGrabButton(bool isEnable)
         {
-            if(this.InvokeRequired)
+            if (this.InvokeRequired)
             {
                 UpdateGrabButtonDele callback = UpdateGrabButton;
                 BeginInvoke(callback, isEnable);
@@ -1054,9 +1054,9 @@ namespace Jastech.Framework.Winform.Forms
                 lock (DrawBoxControl)
                 {
                     var orgImage = DrawBoxControl.OrgImage;
-                    if(orgImage != null)
+                    if (orgImage != null)
                     {
-                        if(OpenSaveFileDialog() is string filePath)
+                        if (OpenSaveFileDialog() is string filePath)
                             orgImage.Save(filePath);
                     }
                 }

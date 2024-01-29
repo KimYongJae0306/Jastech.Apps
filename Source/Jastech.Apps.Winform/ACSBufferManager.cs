@@ -84,7 +84,7 @@ namespace Jastech.Apps.Winform
                 int index = ACSBufferConfig.Instance().CameraTrigger;
                 motion?.StopBuffer(index);
 
-                if(_activeLafTrigger)
+                if (_activeLafTrigger)
                 {
                     foreach (var trigger in ACSBufferConfig.Instance().LafTriggerBufferList)
                         motion?.StopBuffer(trigger.BufferNumber);
@@ -104,7 +104,7 @@ namespace Jastech.Apps.Winform
 
                 foreach (var buffer in ACSBufferConfig.Instance().LafTriggerBufferList)
                 {
-                    if(targetAFName == "")
+                    if (targetAFName == "")
                     {
                         if (AppsConfig.Instance().EnableLafTriggerAutoMode)
                             motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
@@ -113,7 +113,7 @@ namespace Jastech.Apps.Winform
                     }
                     else
                     {
-                        if(buffer.LafName == targetAFName)
+                        if (buffer.LafName == targetAFName)
                             motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Auto, buffer.LafArrayIndex, buffer.LafArrayIndex);
                         else
                             motion?.WriteRealVariable(config.IoEnableModeName, (int)IoEnableMode.Off, buffer.LafArrayIndex, buffer.LafArrayIndex);

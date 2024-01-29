@@ -184,7 +184,7 @@ namespace Jastech.Framework.Winform.Forms
         {
             // Display Control
             Display = new CogTeachingDisplayControl();
-            if(LineCamera != null)
+            if (LineCamera != null)
             {
                 var camera = LineCamera.Camera;
                 Display.PixelResolution = camera.PixelResolution_um / camera.LensScale;
@@ -855,7 +855,7 @@ namespace Jastech.Framework.Winform.Forms
                 AkkonControl.SetParams(CurrentTab);
                 AkkonControl.DrawROI();
             }
-            else if(_displayType == DisplayType.Trigger)
+            else if (_displayType == DisplayType.Trigger)
             {
                 TriggerSettingControl.SetParams(CurrentTab);
             }
@@ -1026,8 +1026,11 @@ namespace Jastech.Framework.Winform.Forms
 
         private void lblStageCam_Click(object sender, EventArgs e)
         {
-            string dir = ConfigSet.Instance().Path.Model;
-            Process.Start(dir);
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Maker)
+            {
+                string dir = ConfigSet.Instance().Path.Model;
+                Process.Start(dir);
+            }
         }
 
         private void lblImageSave_Click(object sender, EventArgs e)
@@ -1219,16 +1222,16 @@ namespace Jastech.Framework.Winform.Forms
             if (tabInspResult.MarkResult.FpcMark != null)
             {
                 var foundedFpcMark = tabInspResult.MarkResult.FpcMark.FoundedMark;
-                if(foundedFpcMark != null)
+                if (foundedFpcMark != null)
                 {
-                    if(foundedFpcMark.Left != null)
+                    if (foundedFpcMark.Left != null)
                     {
                         var leftFpc = foundedFpcMark.Left.MaxMatchPos.ResultGraphics;
                         if (foundedFpcMark.Left.Found)
                             shapeList.Add(leftFpc);
                     }
 
-                    if(foundedFpcMark.Right != null)
+                    if (foundedFpcMark.Right != null)
                     {
                         var rightFpc = foundedFpcMark.Right.MaxMatchPos.ResultGraphics;
                         if (foundedFpcMark.Right.Found)
@@ -1240,16 +1243,16 @@ namespace Jastech.Framework.Winform.Forms
             if (tabInspResult.MarkResult.PanelMark != null)
             {
                 var foundedPanelMark = tabInspResult.MarkResult.PanelMark.FoundedMark;
-                if(foundedPanelMark != null)
+                if (foundedPanelMark != null)
                 {
-                    if(foundedPanelMark.Left != null)
+                    if (foundedPanelMark.Left != null)
                     {
                         var leftPanel = foundedPanelMark.Left.MaxMatchPos.ResultGraphics;
                         if (foundedPanelMark.Left.Found)
                             shapeList.Add(leftPanel);
                     }
                     
-                    if(foundedPanelMark.Right != null)
+                    if (foundedPanelMark.Right != null)
                     {
                         var rightPanel = foundedPanelMark.Right.MaxMatchPos.ResultGraphics;
                         if (foundedPanelMark.Right.Found)

@@ -1506,6 +1506,12 @@ namespace ATT_UT_IPAD.Core
             else
                 tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
 
+            string imageName = string.Empty;
+            if (isAkkonResult)
+                imageName = $"{AppsInspResult.Instance().Cell_ID}_Akkon_Tab_{tabInspResult.TabNo}";
+            else
+                imageName = $"{AppsInspResult.Instance().Cell_ID}_Align_Tab_{tabInspResult.TabNo}";
+
             var operation = ConfigSet.Instance().Operation;
 
             string okExtension = operation.GetExtensionOKImage();
@@ -1515,7 +1521,6 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageOK)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(resultPath, TabJudgement.OK.ToString());
 
                     if (Directory.Exists(filePath) == false)
@@ -1536,7 +1541,6 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.SaveImageNG)
                 {
-                    string imageName = "Tab_" + tabInspResult.TabNo.ToString();
                     string filePath = Path.Combine(resultPath, TabJudgement.NG.ToString());
 
                     if (Directory.Exists(filePath) == false)

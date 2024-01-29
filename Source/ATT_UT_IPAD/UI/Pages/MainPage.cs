@@ -195,7 +195,7 @@ namespace ATT_UT_IPAD.UI.Pages
         {
             AlignViewerControl.UpdateMainResult(tabNo);
 
-            if(AppsConfig.Instance().EnableAlignMonitoring)
+            if (AppsConfig.Instance().EnableAlignMonitoring)
                 AlignMonitoringControl.UpdateMainResult(tabNo);
         }
      

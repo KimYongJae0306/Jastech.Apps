@@ -722,10 +722,8 @@ namespace Jastech.Apps.Structure.Data
         {
             get
             {
-                if(AlignMissing)
-                {
+                if (AlignMissing)
                     return Judgement.FAIL;
-                }
                 else
                 {
                     if (Fpc.Judgement == Judgement.OK && Panel.Judgement == Judgement.OK)

@@ -190,7 +190,7 @@ namespace Jastech.Framework.Winform.Forms
             form.Message = "Save Completed.";
             form.ShowDialog();
 
-            if(NeedProgramRebot)
+            if (NeedProgramRebot)
             {
                 form.Message = "Changing the Device settings will require you to restart the program.";
                 form.ShowDialog();
