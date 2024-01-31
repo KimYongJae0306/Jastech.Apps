@@ -253,13 +253,15 @@ namespace ATT_UT_Remodeling
 
                     break;
                 case SeqStep.SEQ_PREALIGN_RIGHT_MANUAL_MATCHING:
-                    if (AppsPreAlignResult.Instance().Right.MatchResult == null)
+                    if (AppsPreAlignResult.Instance().Right.MatchResult == null || 
+                        !AppsPreAlignResult.Instance().Right.MatchResult.Judgement.Equals(Judgement.OK))
                     {
+                        PlcControlManager.Instance().WriteManualJudge(true);
+
                         SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Right, UnitName.Unit0);
                         
                         if (AppsStatus.Instance().IsManualMatching_OK)
                         {
-                            PlcControlManager.Instance().WriteManualJudge(true);
                             WriteLog("Send Plc ManualJudge[Right]", true);
 
                             VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
@@ -277,6 +279,7 @@ namespace ATT_UT_Remodeling
                         else
                         {
                             SeqStep = SeqStep.SEQ_ERROR;
+                            PlcControlManager.Instance().WriteManualJudge(false);
                             break;
                         }
                     }
@@ -323,13 +326,15 @@ namespace ATT_UT_Remodeling
                     SeqStep = SeqStep.SEQ_PREALIGN_LEFT_MANUAL_MATCHING;
                     break;
                 case SeqStep.SEQ_PREALIGN_LEFT_MANUAL_MATCHING:
-                    if (AppsPreAlignResult.Instance().Left.MatchResult == null)
+                    if (AppsPreAlignResult.Instance().Left.MatchResult == null ||
+                        !AppsPreAlignResult.Instance().Left.MatchResult.Judgement.Equals(Judgement.OK))
                     {
+                        PlcControlManager.Instance().WriteManualJudge(true);
+
                         SystemManager.Instance().ShowManualMatchingForm(PreAlignCamera, MarkDirection.Left, UnitName.Unit0);
 
                         if (AppsStatus.Instance().IsManualMatching_OK)
                         {
-                            PlcControlManager.Instance().WriteManualJudge(true);
                             WriteLog("Send Plc ManualJudge[Left]", true);
 
                             VisionProPatternMatchingResult patternResult = new VisionProPatternMatchingResult();
@@ -348,6 +353,7 @@ namespace ATT_UT_Remodeling
                         else
                         {
                             SeqStep = SeqStep.SEQ_ERROR;
+                            PlcControlManager.Instance().WriteManualJudge(false);
                             break;
                         }
                     }
