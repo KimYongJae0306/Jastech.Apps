@@ -844,7 +844,10 @@ namespace ATT_UT_Remodeling.Core
 
         private void SaveAlignResult(string resultPath, int tabCount)
         {
-            string csvFile = Path.Combine(resultPath, "Align.csv");
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
+            string date = currentTime.ToString("yyyyMMdd");
+            string csvFileName = $"Align_{date}.csv";
+            string csvFile = Path.Combine(resultPath, csvFileName);
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>
@@ -903,6 +906,9 @@ namespace ATT_UT_Remodeling.Core
 
         private void SaveAkkonResult(string resultPath, int tabCount)
         {
+            DateTime currentTime = AppsPreAlignResult.Instance().StartInspTime;
+            string date = currentTime.ToString("yyyyMMdd");
+            string csvFileName = $"Akkon_{date}.csv";
             string csvFile = Path.Combine(resultPath, "Akkon.csv");
             if (File.Exists(csvFile) == false)
             {

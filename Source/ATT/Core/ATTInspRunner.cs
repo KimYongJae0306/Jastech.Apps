@@ -693,7 +693,10 @@ namespace ATT.Core
 
         private void SaveAlignResult(string resultPath, int tabCount)
         {
-            string csvFile = Path.Combine(resultPath, "Align.csv");
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+            string date = currentTime.ToString("yyyyMMdd");
+            string csvFileName = $"Align_{date}.csv";
+            string csvFile = Path.Combine(resultPath, csvFileName);
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>
@@ -752,7 +755,10 @@ namespace ATT.Core
 
         private void SaveAkkonResult(string resultPath, int tabCount)
         {
-            string csvFile = Path.Combine(resultPath, "Akkon.csv");
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+            string date = currentTime.ToString("yyyyMMdd");
+            string csvFileName = $"Akkon_{date}.csv";
+            string csvFile = Path.Combine(resultPath, csvFileName);
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>
