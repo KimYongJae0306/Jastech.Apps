@@ -442,8 +442,8 @@ namespace ATT_UT_Remodeling.Core
                     }
                     else
                     {
-                        if (ConfigSet.Instance().Operation.VirtualMode == false)
-                            WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
+                        //if (ConfigSet.Instance().Operation.VirtualMode == false)
+                        //    WaitPlcValueClear(PlcCommonMap.PC_GrabDone);
 
                         SendResultData();
                         WriteLog("Completed Send Plc Tab Result Data", true);
