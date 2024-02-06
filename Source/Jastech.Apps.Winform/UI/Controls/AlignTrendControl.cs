@@ -1,7 +1,6 @@
 ﻿using Jastech.Apps.Structure;
-using Jastech.Apps.Winform.Settings;
-using Jastech.Framework.Structure;
-using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Winform.Forms;
+using Jastech.Framework.Winform.Controls;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,6 +27,8 @@ namespace Jastech.Apps.Winform.UI.Controls
         private AlignResultType _alignResultType { get; set; } = AlignResultType.All;
 
         private List<TrendResult> _alignTrendResults { get; set; } = new List<TrendResult>();
+
+        private DoubleBufferedDatagridView dgvAlignTrendData = null;
         #endregion
 
         #region 속성
@@ -56,6 +57,39 @@ namespace Jastech.Apps.Winform.UI.Controls
             ChartControl.ChartType = ResultChartControl.InspChartType.Align;
             pnlChart.Controls.Add(ChartControl);
             _alignTypeLabelList.AddRange(new Label[] { lblAllData, lblLx, lblLy, lblCx, lblRx, lblRy });
+
+            dgvAlignTrendData = new DoubleBufferedDatagridView
+            {
+                ReadOnly = true,
+                AllowUserToAddRows = false,
+                RowHeadersVisible = false,
+                EnableHeadersVisualStyles = false,
+                Dock = DockStyle.Fill,
+                ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                BackgroundColor = Color.FromArgb(52, 52, 52),
+                Location = new Point(3, 33),
+                Size = new Size(418, 318),
+                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold),
+                    BackColor = Color.Black,
+                    ForeColor = Color.White,
+                    SelectionBackColor = Color.FromArgb(104, 104, 104),
+                },
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter,
+                    Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    BackColor = Color.FromArgb(52, 52, 52),
+                    SelectionBackColor = Color.FromArgb(104, 104, 104),
+                }
+            };
+
+            tableLayoutPanel1.Controls.Add(dgvAlignTrendData, 0, 1);
         }
 
         private void InitializeUI()

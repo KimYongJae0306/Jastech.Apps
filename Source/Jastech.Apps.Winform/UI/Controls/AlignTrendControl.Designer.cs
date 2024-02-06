@@ -30,14 +30,11 @@ namespace Jastech.Apps.Winform.UI.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpAlignTrend = new System.Windows.Forms.TableLayoutPanel();
             this.tlpData = new System.Windows.Forms.TableLayoutPanel();
             this.pnlChart = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblResult = new System.Windows.Forms.Label();
-            this.dgvAlignTrendData = new Jastech.Framework.Winform.Controls.DoubleBufferedDatagridView();
             this.tclChartType = new System.Windows.Forms.TableLayoutPanel();
             this.lblChartType = new System.Windows.Forms.Label();
             this.pnlChartTypes = new System.Windows.Forms.Panel();
@@ -53,7 +50,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpAlignTrend.SuspendLayout();
             this.tlpData.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).BeginInit();
             this.tclChartType.SuspendLayout();
             this.pnlChartTypes.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -110,7 +106,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.lblResult, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dgvAlignTrendData, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(433, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -132,39 +127,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.lblResult.TabIndex = 8;
             this.lblResult.Text = "Align Result";
             this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // dgvAlignTrendData
-            // 
-            this.dgvAlignTrendData.AllowUserToAddRows = false;
-            this.dgvAlignTrendData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvAlignTrendData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlignTrendData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvAlignTrendData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlignTrendData.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvAlignTrendData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAlignTrendData.EnableHeadersVisualStyles = false;
-            this.dgvAlignTrendData.Location = new System.Drawing.Point(3, 33);
-            this.dgvAlignTrendData.Name = "dgvAlignTrendData";
-            this.dgvAlignTrendData.ReadOnly = true;
-            this.dgvAlignTrendData.RowHeadersVisible = false;
-            this.dgvAlignTrendData.RowTemplate.Height = 23;
-            this.dgvAlignTrendData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlignTrendData.Size = new System.Drawing.Size(418, 318);
-            this.dgvAlignTrendData.TabIndex = 0;
             // 
             // tclChartType
             // 
@@ -331,7 +293,6 @@ namespace Jastech.Apps.Winform.UI.Controls
             this.tlpAlignTrend.ResumeLayout(false);
             this.tlpData.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAlignTrendData)).EndInit();
             this.tclChartType.ResumeLayout(false);
             this.pnlChartTypes.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -350,7 +311,6 @@ namespace Jastech.Apps.Winform.UI.Controls
         private System.Windows.Forms.Label lblLx;
         private System.Windows.Forms.Label lblAllData;
         private System.Windows.Forms.TableLayoutPanel tlpData;
-        private DoubleBufferedDatagridView dgvAlignTrendData;
         private System.Windows.Forms.Label lblTabSelection;
         private System.Windows.Forms.Panel pnlChart;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;

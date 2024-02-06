@@ -2,6 +2,7 @@
 using Jastech.Apps.Structure;
 using Jastech.Apps.Winform.UI.Controls;
 using Jastech.Framework.Imaging.VisionPro;
+using Jastech.Framework.Winform.Controls;
 using Jastech.Framework.Winform.Helper;
 using Jastech.Framework.Winform.VisionPro.Controls;
 using System;
@@ -11,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Jastech.Framework.Winform.Forms
+namespace Jastech.Apps.Winform.Forms
 {
     public partial class LogForm : Form
     {
@@ -27,6 +28,8 @@ namespace Jastech.Framework.Winform.Forms
         private PageType _selectedPageType { get; set; } = PageType.Log;
 
         private string _selectedPagePath { get; set; } = string.Empty;
+
+        private StyledCalender cdrMonthCalendar { get; set; } = null;
         #endregion
 
         #region 속성
@@ -78,14 +81,29 @@ namespace Jastech.Framework.Winform.Forms
 
         private void AddControls()
         {
+            cdrMonthCalendar = new StyledCalender
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(26, 26, 26),
+                Font = new Font("맑은 고딕", 12.75F, FontStyle.Bold, GraphicsUnit.Point, 129),
+                Margin = new Padding(0),
+                MaxSelectionCount = 28,
+                TitleBackColor = Color.DimGray,
+                TitleForeColor = Color.White,
+                TrailingForeColor = Color.Silver,
+            };
             LogControl = new LogControl { Dock = DockStyle.Fill };
-            InspDisplayControl = new CogInspDisplayControl { Dock = DockStyle.Top, Height = tvwLogPath.Height + cdrMonthCalendar.Height - pnlLogType.Height};
+            InspDisplayControl = new CogInspDisplayControl { Dock = DockStyle.Top, Height = tvwLogPath.Height + cdrMonthCalendar.Height - pnlLogType.Height };
             AlignTrendControl = new AlignTrendControl { Dock = DockStyle.Fill };
             AlignTrendPreviewControl = new AlignTrendPreviewControl { Dock = DockStyle.Fill };
             AkkonTrendControl = new AkkonTrendControl { Dock = DockStyle.Fill };
             UPHControl = new UPHControl { Dock = DockStyle.Fill };
             ProcessCapabilityControl = new ProcessCapabilityIndexControl { Dock = DockStyle.Fill };
-;        }
+            cdrMonthCalendar.DateChanged += new DateRangeEventHandler(cdrMonthCalendar_DateChanged);
+
+            tlpBasicFunction.Controls.Add(cdrMonthCalendar, 0, 0);
+            tlpBasicFunction.SetColumnSpan(cdrMonthCalendar, 2);
+        }
 
         private void InitializeUI()
         {

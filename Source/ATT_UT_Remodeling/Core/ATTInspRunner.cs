@@ -26,6 +26,7 @@ using Jastech.Framework.Imaging.VisionPro;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform;
 using Jastech.Framework.Winform.Forms;
+using Jastech.Apps.Winform.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

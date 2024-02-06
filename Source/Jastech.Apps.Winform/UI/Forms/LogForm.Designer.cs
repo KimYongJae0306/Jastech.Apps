@@ -1,6 +1,4 @@
-﻿using Jastech.Framework.Winform.Controls;
-
-namespace Jastech.Framework.Winform.Forms
+﻿namespace Jastech.Apps.Winform.Forms
 {
     partial class LogForm
     {
@@ -43,7 +41,6 @@ namespace Jastech.Framework.Winform.Forms
             this.pnlContents = new System.Windows.Forms.Panel();
             this.tlpBasicFunction = new System.Windows.Forms.TableLayoutPanel();
             this.tvwLogPath = new System.Windows.Forms.TreeView();
-            this.cdrMonthCalendar = new Jastech.Framework.Winform.Controls.StyledCalender();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tlpLog.SuspendLayout();
             this.tlpContents.SuspendLayout();
@@ -225,7 +222,6 @@ namespace Jastech.Framework.Winform.Forms
             this.tlpBasicFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBasicFunction.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 146F));
             this.tlpBasicFunction.Controls.Add(this.tvwLogPath, 0, 1);
-            this.tlpBasicFunction.Controls.Add(this.cdrMonthCalendar, 0, 0);
             this.tlpBasicFunction.Controls.Add(this.btnCancel, 1, 3);
             this.tlpBasicFunction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpBasicFunction.Location = new System.Drawing.Point(1097, 0);
@@ -251,21 +247,6 @@ namespace Jastech.Framework.Winform.Forms
             this.tvwLogPath.Size = new System.Drawing.Size(283, 544);
             this.tvwLogPath.TabIndex = 11;
             this.tvwLogPath.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvwLogPath_NodeMouseClick);
-            // 
-            // cdrMonthCalendar
-            // 
-            this.cdrMonthCalendar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
-            this.cdrMonthCalendar.Font = new System.Drawing.Font("맑은 고딕", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.cdrMonthCalendar.ForeColor = System.Drawing.Color.White;
-            this.cdrMonthCalendar.Location = new System.Drawing.Point(0, 0);
-            this.cdrMonthCalendar.Margin = new System.Windows.Forms.Padding(0);
-            this.cdrMonthCalendar.MaxSelectionCount = 28;
-            this.cdrMonthCalendar.Name = "cdrMonthCalendar";
-            this.cdrMonthCalendar.TabIndex = 7;
-            this.cdrMonthCalendar.TitleBackColor = System.Drawing.Color.DimGray;
-            this.cdrMonthCalendar.TitleForeColor = System.Drawing.Color.White;
-            this.cdrMonthCalendar.TrailingForeColor = System.Drawing.Color.Silver;
-            this.cdrMonthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.cdrMonthCalendar_DateChanged);
             // 
             // btnCancel
             // 
@@ -323,7 +304,6 @@ namespace Jastech.Framework.Winform.Forms
         private System.Windows.Forms.Button btnSelectionLog;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.TreeView tvwLogPath;
-        private StyledCalender cdrMonthCalendar;
         private System.Windows.Forms.Button btnSelectionAlignTrend;
     }
 }
