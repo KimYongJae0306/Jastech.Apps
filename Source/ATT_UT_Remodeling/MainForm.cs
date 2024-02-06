@@ -415,22 +415,22 @@ namespace ATT_UT_Remodeling
         {
             var plc = DeviceManager.Instance().PlcHandler;
             bool isPlcConnected = plc.Count > 0 && plc.All(h => h.IsConnected());
-            ControlDisplayHelper.DisposeDisplay(lblPLCState);
+            ControlHelper.DisposeDisplay(lblPLCState);
             lblPLCState.Image = GetStateImage(isPlcConnected);
 
             var motion = DeviceManager.Instance().MotionHandler;
             bool isMotionConnected = motion.Count > 0 && motion.All(h => h.IsConnected());
-            ControlDisplayHelper.DisposeDisplay(lblMotionState);
+            ControlHelper.DisposeDisplay(lblMotionState);
             lblMotionState.Image = GetStateImage(isMotionConnected);
 
             var laf = DeviceManager.Instance().LAFCtrlHandler;
             bool isLafConnected = laf.Count > 0 && laf.All(h => h.IsConnected());
-            ControlDisplayHelper.DisposeDisplay(lblLafState);
+            ControlHelper.DisposeDisplay(lblLafState);
             lblLafState.Image = GetStateImage(isLafConnected);
 
             var light = DeviceManager.Instance().LightCtrlHandler;
             bool isLightConnected = light.Count > 0 && light.All(h => h.IsConnected());
-            ControlDisplayHelper.DisposeDisplay(lblLightState);
+            ControlHelper.DisposeDisplay(lblLightState);
             lblLightState.Image = GetStateImage(isLightConnected);
         }
 

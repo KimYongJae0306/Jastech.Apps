@@ -67,13 +67,13 @@ namespace Jastech.Framework.Winform.Forms
             InspDisplayControl.ClearImage();
             InspDisplayControl.ClearThumbnail();
             InspDisplayControl.ClearGraphic();
-            ControlDisplayHelper.DisposeChildControls(InspDisplayControl);
-            ControlDisplayHelper.DisposeChildControls(LogControl);
-            ControlDisplayHelper.DisposeChildControls(AlignTrendControl);
-            ControlDisplayHelper.DisposeChildControls(AlignTrendPreviewControl);
-            ControlDisplayHelper.DisposeChildControls(AkkonTrendControl);
-            ControlDisplayHelper.DisposeChildControls(UPHControl);
-            ControlDisplayHelper.DisposeChildControls(ProcessCapabilityControl);
+            ControlHelper.DisposeChildControls(InspDisplayControl);
+            ControlHelper.DisposeChildControls(LogControl);
+            ControlHelper.DisposeChildControls(AlignTrendControl);
+            ControlHelper.DisposeChildControls(AlignTrendPreviewControl);
+            ControlHelper.DisposeChildControls(AkkonTrendControl);
+            ControlHelper.DisposeChildControls(UPHControl);
+            ControlHelper.DisposeChildControls(ProcessCapabilityControl);
         }
 
         private void AddControls()

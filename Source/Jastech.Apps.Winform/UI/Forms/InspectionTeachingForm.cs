@@ -747,8 +747,8 @@ namespace Jastech.Framework.Winform.Forms
             DisposeInspTabList();
             LineCamera.GrabDoneEventHandler -= InspectionTeachingForm_GrabDoneEventHandler;
 
-            ControlDisplayHelper.DisposeChildControls(AkkonControl);
-            ControlDisplayHelper.DisposeChildControls(AlignControl);
+            ControlHelper.DisposeChildControls(AkkonControl);
+            ControlHelper.DisposeChildControls(AlignControl);
         }
 
         private void cbxTabList_DrawItem(object sender, DrawItemEventArgs e)
