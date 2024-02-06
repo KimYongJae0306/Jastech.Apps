@@ -254,12 +254,11 @@ namespace ATT_UT_IPAD
 
         private void SetSelectLabel(object sender)
         {
-            foreach (Label label in PageLabelList)
-                label.ForeColor = Color.White;
+            foreach (Control control in ControlHelper.GetAllControlsUsingRecursive(tlpFunctionButtons))
+                control.ForeColor = Color.White;
 
             Label currentLabel = sender as Label;
-            int labelIndex = Convert.ToInt32(currentLabel.Parent.Tag);
-            PageLabelList[labelIndex].ForeColor = Color.DodgerBlue;
+            currentLabel.ForeColor = Color.DodgerBlue;
         }
 
         private void SetSelectPage(UserControl selectedControl)

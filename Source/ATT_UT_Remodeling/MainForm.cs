@@ -261,8 +261,8 @@ namespace ATT_UT_Remodeling
 
         private void SetSelectLabel(object sender)
         {
-            foreach (Label label in PageLabelList)
-                label.ForeColor = Color.White;
+            foreach (Control control in ControlHelper.GetAllControlsUsingRecursive(tlpFunctionButtons))
+                control.ForeColor = Color.White;
 
             Label currentLabel = sender as Label;
             currentLabel.ForeColor = Color.DodgerBlue;
