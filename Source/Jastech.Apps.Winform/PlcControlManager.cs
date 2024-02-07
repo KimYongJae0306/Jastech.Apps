@@ -192,21 +192,6 @@ namespace Jastech.Apps.Winform
                     value = PlcAddressService.AddressMapList.Where(x => x.Name == map.ToString()).First().Value;
             }
 
-            if (map == PlcCommonMap.PC_GrabDone)
-            {
-            if (value == "1")
-            {
-int gg = 0;
-            }
-                
-
-            if (value != "1")
-            {
-int tt = 0;
-            }
-            }
-
-                
             if (value == "")
                 value = "0";
 
