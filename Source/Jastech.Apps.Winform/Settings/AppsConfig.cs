@@ -37,6 +37,9 @@ namespace Jastech.Apps.Winform.Settings
         public float CameraGap_mm { get; set; } = 1.0F;  //um
 
         [JsonProperty]
+        public double CxOffset { get; set; } = 0.0F;  //um
+
+        [JsonProperty]
         public float PreAlignToleranceX { get; set; } = 0.0F;  //um
 
         [JsonProperty]

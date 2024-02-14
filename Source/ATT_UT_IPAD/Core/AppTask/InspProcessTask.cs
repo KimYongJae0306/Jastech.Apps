@@ -178,6 +178,8 @@ namespace ATT_UT_IPAD.Core.AppTask
             // 231128_E
 
             tabInspResult.AlignResult.PreHead = PlcControlManager.Instance().GetPreHeadData(tabInspResult.TabNo);
+            tabInspResult.AlignResult.CxSpec = tab.AlignSpec.CenterSpecX_um;
+            tabInspResult.AlignResult.CxOffset = AppsConfig.Instance().CxOffset;
 
             algorithmTool.MainMarkInspect(inspTab.MergeCogImage, tab, ref tabInspResult, true);
 
