@@ -356,7 +356,7 @@ namespace ATT_UT_Remodeling
 
             var user = UserManager.Instance().CurrentUser;
 
-            if (user.Type == AuthorityType.None)
+            if (user.Type == AuthorityType.Operator)
             {
                 lblCurrentUser.Text = "Operator";
                 //lblTeachingPage.Enabled = false;
@@ -394,7 +394,7 @@ namespace ATT_UT_Remodeling
             }
             else
             {
-                if (user.Type == AuthorityType.None)
+                if (user.Type == AuthorityType.Operator)
                 {
                     lblTeachingPage.Enabled = false;
                     lblTeachingPageImage.Enabled = false;
@@ -850,7 +850,7 @@ namespace ATT_UT_Remodeling
 
             if (inspModel == null)
             {
-                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.Operator)
                     Process.Start(ConfigSet.Instance().Path.Result);
             }
             else
@@ -860,7 +860,7 @@ namespace ATT_UT_Remodeling
                 if (Directory.Exists(path) == false)
                     Directory.CreateDirectory(path);
 
-                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.Operator)
                     Process.Start(path);
             }
         }

@@ -259,7 +259,7 @@ namespace ATT
 
             var user = UserManager.Instance().CurrentUser;
 
-            if (user.Type == AuthorityType.None)
+            if (user.Type == AuthorityType.Operator)
                 lblCurrentUser.Text = "Operator";
             else
                 lblCurrentUser.Text = user.Id.ToString();
@@ -289,7 +289,7 @@ namespace ATT
             }
             else
             {
-                if (user.Type == AuthorityType.None)
+                if (user.Type == AuthorityType.Operator)
                 {
                     lblTeachingPage.Enabled = false;
                     lblTeachingPageImage.Enabled = false;

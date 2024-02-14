@@ -1,6 +1,8 @@
-﻿using Jastech.Apps.Winform.Settings;
+﻿using Jastech.Apps.Winform;
+using Jastech.Apps.Winform.Settings;
 using Jastech.Framework.Config;
 using Jastech.Framework.Imaging;
+using Jastech.Framework.Users;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Helper;
 using MetroFramework.Controls;
@@ -43,6 +45,12 @@ namespace Jastech.Framework.Winform.Forms
                 mcbxOKExtension.Items.Add(type.ToString());
                 mcbxNGExtension.Items.Add(type.ToString());
             }
+
+            if (UserManager.Instance().CurrentUser.Type == AuthorityType.Operator)
+                pnlCxOffset.Visible = false;
+            else
+                pnlCxOffset.Visible = true;
+
             NeedProgramRebot = false;
             LoadData();
         }
@@ -102,8 +110,8 @@ namespace Jastech.Framework.Winform.Forms
                     mcbxNGExtension.SelectedIndex = i;
             }
 
-            txtAlignResultCount.Text = AppsConfig.Instance().AlignResultDailyCount.ToString();
-            txtAkkonResultCount.Text = AppsConfig.Instance().AkkonResultDailyCount.ToString();
+            txtAlignResultCount.Text = appsConfig.AlignResultDailyCount.ToString();
+            txtAkkonResultCount.Text = appsConfig.AkkonResultDailyCount.ToString();
 
             mtgEnableWriteMarkScore.Checked = appsConfig.EnableWriteMarkScore;
             mtgEnableWriteMarkDistance.Checked = appsConfig.EnableWriteMarkToMarkDistance;
@@ -111,6 +119,8 @@ namespace Jastech.Framework.Winform.Forms
             mtgEnableWriteRetData.Checked = appsConfig.EnableWriteRetData;
 
             mtgEnableAlignMonitoring.Checked = appsConfig.EnableAlignMonitoring;
+
+            txtCxOffset.Text = appsConfig.CxOffset.ToString();
         }
 
         public void UpdateCurrentData()
@@ -163,6 +173,8 @@ namespace Jastech.Framework.Winform.Forms
             appsConfig.EnableWriteRetData = mtgEnableWriteRetData.Checked;
 
             appsConfig.EnableAlignMonitoring = mtgEnableAlignMonitoring.Checked;
+
+            appsConfig.CxOffset = Convert.ToDouble(txtCxOffset.Text);
         }
 
         public string GetValue(string value)

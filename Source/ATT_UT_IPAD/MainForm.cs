@@ -344,7 +344,7 @@ namespace ATT_UT_IPAD
 
             var user = UserManager.Instance().CurrentUser;
 
-            if (user.Type == AuthorityType.None)
+            if (user.Type == AuthorityType.Operator)
                 lblCurrentUser.Text = "Operator";
             else
                 lblCurrentUser.Text = user.Id.ToString();
@@ -374,7 +374,7 @@ namespace ATT_UT_IPAD
             }
             else
             {
-                if (user.Type == AuthorityType.None)
+                if (user.Type == AuthorityType.Operator)
                 {
                     lblTeachingPage.Enabled = false;
                     lblTeachingPageImage.Enabled = false;
@@ -753,7 +753,7 @@ namespace ATT_UT_IPAD
 
             if (inspModel == null)
             {
-                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.Operator)
                     Process.Start(ConfigSet.Instance().Path.Result);
             }
             else
@@ -763,7 +763,7 @@ namespace ATT_UT_IPAD
                 if (Directory.Exists(path) == false)
                     Directory.CreateDirectory(path);
 
-                if (UserManager.Instance().CurrentUser.Type != AuthorityType.None)
+                if (UserManager.Instance().CurrentUser.Type != AuthorityType.Operator)
                     Process.Start(path);
             }
         }

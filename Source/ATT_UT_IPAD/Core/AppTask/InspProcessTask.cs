@@ -173,9 +173,7 @@ namespace ATT_UT_IPAD.Core.AppTask
             tabInspResult.CogImage = inspTab.MergeCogImage;
             tabInspResult.Resolution_um = resolution_um;
 
-            // 231128_S
             tabInspResult.AlignResult = new TabAlignResult();
-            // 231128_E
 
             tabInspResult.AlignResult.PreHead = PlcControlManager.Instance().GetPreHeadData(tabInspResult.TabNo);
             tabInspResult.AlignResult.CxSpec = tab.AlignSpec.CenterSpecX_um;

@@ -32,7 +32,7 @@ namespace Jastech.Apps.Winform
             string filePath = Path.Combine(ConfigSet.Instance().Path.Config, "User.cfg");
             if (File.Exists(filePath) == false)
             {
-                UserHandler.AddUser(new User(AuthorityType.None, ""));
+                UserHandler.AddUser(new User(AuthorityType.Operator, ""));
                 UserHandler.AddUser(new User(AuthorityType.Engineer, "1"));
 
                 Save(filePath);
