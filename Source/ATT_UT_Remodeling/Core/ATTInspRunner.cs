@@ -655,7 +655,7 @@ namespace ATT_UT_Remodeling.Core
                     inspAkkonResult = false;
 
                 if (tabInspResult.AlignResult.Judgement.Equals(Judgement.OK) == false)
-                    inspAkkonResult = false;
+                    inspAlignResult = false;
 
                 Thread.Sleep(20);
             }
