@@ -129,6 +129,13 @@
             this.label26 = new System.Windows.Forms.Label();
             this.txtAlignResultCount = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.pnlCxOffset = new System.Windows.Forms.Panel();
+            this.label50 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
+            this.label51 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.txtCxOffset = new System.Windows.Forms.TextBox();
+            this.panel22 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
             this.label48 = new System.Windows.Forms.Label();
             this.mtgEnableAlignMonitoring = new MetroFramework.Controls.MetroToggle();
@@ -163,13 +170,6 @@
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblApplyImage = new System.Windows.Forms.Label();
             this.lblSave = new System.Windows.Forms.Label();
-            this.panel22 = new System.Windows.Forms.Panel();
-            this.label50 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
-            this.label51 = new System.Windows.Forms.Label();
-            this.label52 = new System.Windows.Forms.Label();
-            this.txtCxOffset = new System.Windows.Forms.TextBox();
-            this.pnlCxOffset = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel13.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
@@ -197,6 +197,8 @@
             this.tlpDailyResultEnableAkkon.SuspendLayout();
             this.tlpDailyResultEnableAlign.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.pnlCxOffset.SuspendLayout();
+            this.tableLayoutPanel18.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -209,8 +211,6 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.panel11.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
-            this.tableLayoutPanel18.SuspendLayout();
-            this.pnlCxOffset.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel7
@@ -1575,6 +1575,92 @@
             this.panel4.Size = new System.Drawing.Size(382, 802);
             this.panel4.TabIndex = 2;
             // 
+            // pnlCxOffset
+            // 
+            this.pnlCxOffset.Controls.Add(this.label50);
+            this.pnlCxOffset.Controls.Add(this.tableLayoutPanel18);
+            this.pnlCxOffset.Controls.Add(this.panel22);
+            this.pnlCxOffset.Location = new System.Drawing.Point(15, 449);
+            this.pnlCxOffset.Name = "pnlCxOffset";
+            this.pnlCxOffset.Size = new System.Drawing.Size(353, 107);
+            this.pnlCxOffset.TabIndex = 45;
+            // 
+            // label50
+            // 
+            this.label50.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label50.ForeColor = System.Drawing.Color.White;
+            this.label50.Location = new System.Drawing.Point(4, 7);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(347, 33);
+            this.label50.TabIndex = 43;
+            this.label50.Text = "Cx Offset";
+            this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableLayoutPanel18
+            // 
+            this.tableLayoutPanel18.ColumnCount = 3;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel18.Controls.Add(this.label51, 2, 0);
+            this.tableLayoutPanel18.Controls.Add(this.label52, 0, 0);
+            this.tableLayoutPanel18.Controls.Add(this.txtCxOffset, 1, 0);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(59, 52);
+            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
+            this.tableLayoutPanel18.RowCount = 1;
+            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(298, 40);
+            this.tableLayoutPanel18.TabIndex = 10;
+            // 
+            // label51
+            // 
+            this.label51.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label51.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label51.ForeColor = System.Drawing.Color.White;
+            this.label51.Location = new System.Drawing.Point(251, 0);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(44, 40);
+            this.label51.TabIndex = 11;
+            this.label51.Text = "um";
+            this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label52
+            // 
+            this.label52.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label52.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label52.ForeColor = System.Drawing.Color.White;
+            this.label52.Location = new System.Drawing.Point(3, 0);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(94, 40);
+            this.label52.TabIndex = 5;
+            this.label52.Text = "Offset";
+            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // txtCxOffset
+            // 
+            this.txtCxOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
+            this.txtCxOffset.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCxOffset.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
+            this.txtCxOffset.ForeColor = System.Drawing.Color.White;
+            this.txtCxOffset.Location = new System.Drawing.Point(103, 3);
+            this.txtCxOffset.Name = "txtCxOffset";
+            this.txtCxOffset.ReadOnly = true;
+            this.txtCxOffset.Size = new System.Drawing.Size(142, 33);
+            this.txtCxOffset.TabIndex = 8;
+            this.txtCxOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtCxOffset.Click += new System.EventHandler(this.textbox_KeyPad_Click);
+            this.txtCxOffset.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
+            this.txtCxOffset.Leave += new System.EventHandler(this.txtKeyPad_Leave);
+            // 
+            // panel22
+            // 
+            this.panel22.BackColor = System.Drawing.SystemColors.Highlight;
+            this.panel22.Location = new System.Drawing.Point(9, 40);
+            this.panel22.Margin = new System.Windows.Forms.Padding(0);
+            this.panel22.Name = "panel22";
+            this.panel22.Size = new System.Drawing.Size(345, 2);
+            this.panel22.TabIndex = 42;
+            // 
             // tableLayoutPanel17
             // 
             this.tableLayoutPanel17.ColumnCount = 3;
@@ -2003,92 +2089,6 @@
             this.lblSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSave.Click += new System.EventHandler(this.lblSave_Click);
             // 
-            // panel22
-            // 
-            this.panel22.BackColor = System.Drawing.SystemColors.Highlight;
-            this.panel22.Location = new System.Drawing.Point(9, 40);
-            this.panel22.Margin = new System.Windows.Forms.Padding(0);
-            this.panel22.Name = "panel22";
-            this.panel22.Size = new System.Drawing.Size(345, 2);
-            this.panel22.TabIndex = 42;
-            // 
-            // label50
-            // 
-            this.label50.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label50.ForeColor = System.Drawing.Color.White;
-            this.label50.Location = new System.Drawing.Point(4, 7);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(347, 33);
-            this.label50.TabIndex = 43;
-            this.label50.Text = "Cx Offset";
-            this.label50.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tableLayoutPanel18
-            // 
-            this.tableLayoutPanel18.ColumnCount = 3;
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel18.Controls.Add(this.label51, 2, 0);
-            this.tableLayoutPanel18.Controls.Add(this.label52, 0, 0);
-            this.tableLayoutPanel18.Controls.Add(this.txtCxOffset, 1, 0);
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(59, 52);
-            this.tableLayoutPanel18.Name = "tableLayoutPanel18";
-            this.tableLayoutPanel18.RowCount = 1;
-            this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(298, 40);
-            this.tableLayoutPanel18.TabIndex = 10;
-            // 
-            // label51
-            // 
-            this.label51.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label51.Font = new System.Drawing.Font("맑은 고딕", 10.25F, System.Drawing.FontStyle.Bold);
-            this.label51.ForeColor = System.Drawing.Color.White;
-            this.label51.Location = new System.Drawing.Point(251, 0);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(44, 40);
-            this.label51.TabIndex = 11;
-            this.label51.Text = "um";
-            this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label52
-            // 
-            this.label52.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label52.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label52.ForeColor = System.Drawing.Color.White;
-            this.label52.Location = new System.Drawing.Point(3, 0);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(94, 40);
-            this.label52.TabIndex = 5;
-            this.label52.Text = "Offset";
-            this.label52.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // txtCxOffset
-            // 
-            this.txtCxOffset.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
-            this.txtCxOffset.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtCxOffset.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold);
-            this.txtCxOffset.ForeColor = System.Drawing.Color.White;
-            this.txtCxOffset.Location = new System.Drawing.Point(103, 3);
-            this.txtCxOffset.Name = "txtCxOffset";
-            this.txtCxOffset.ReadOnly = true;
-            this.txtCxOffset.Size = new System.Drawing.Size(142, 33);
-            this.txtCxOffset.TabIndex = 8;
-            this.txtCxOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtCxOffset.Click += new System.EventHandler(this.textbox_KeyPad_Click);
-            this.txtCxOffset.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtKeyPad_KeyPress);
-            this.txtCxOffset.Leave += new System.EventHandler(this.txtKeyPad_Leave);
-            // 
-            // pnlCxOffset
-            // 
-            this.pnlCxOffset.Controls.Add(this.label50);
-            this.pnlCxOffset.Controls.Add(this.tableLayoutPanel18);
-            this.pnlCxOffset.Controls.Add(this.panel22);
-            this.pnlCxOffset.Location = new System.Drawing.Point(15, 449);
-            this.pnlCxOffset.Name = "pnlCxOffset";
-            this.pnlCxOffset.Size = new System.Drawing.Size(353, 107);
-            this.pnlCxOffset.TabIndex = 45;
-            // 
             // OperationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2152,6 +2152,9 @@
             this.tlpDailyResultEnableAlign.ResumeLayout(false);
             this.tlpDailyResultEnableAlign.PerformLayout();
             this.panel4.ResumeLayout(false);
+            this.pnlCxOffset.ResumeLayout(false);
+            this.tableLayoutPanel18.ResumeLayout(false);
+            this.tableLayoutPanel18.PerformLayout();
             this.tableLayoutPanel17.ResumeLayout(false);
             this.tableLayoutPanel17.PerformLayout();
             this.tableLayoutPanel8.ResumeLayout(false);
@@ -2169,9 +2172,6 @@
             this.tableLayoutPanel15.ResumeLayout(false);
             this.panel11.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel18.ResumeLayout(false);
-            this.tableLayoutPanel18.PerformLayout();
-            this.pnlCxOffset.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
