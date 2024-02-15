@@ -240,19 +240,19 @@
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 3;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.97971F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.02028F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(237, 498);
             this.tableLayoutPanel6.TabIndex = 2;
             // 
             // pnlSystemLog
             // 
             this.pnlSystemLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSystemLog.Location = new System.Drawing.Point(0, 350);
+            this.pnlSystemLog.Location = new System.Drawing.Point(0, 399);
             this.pnlSystemLog.Margin = new System.Windows.Forms.Padding(0);
             this.pnlSystemLog.Name = "pnlSystemLog";
-            this.pnlSystemLog.Size = new System.Drawing.Size(237, 148);
+            this.pnlSystemLog.Size = new System.Drawing.Size(237, 99);
             this.pnlSystemLog.TabIndex = 1;
             // 
             // pnlDailyInfo
@@ -261,7 +261,7 @@
             this.pnlDailyInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlDailyInfo.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDailyInfo.Name = "pnlDailyInfo";
-            this.pnlDailyInfo.Size = new System.Drawing.Size(237, 345);
+            this.pnlDailyInfo.Size = new System.Drawing.Size(237, 394);
             this.pnlDailyInfo.TabIndex = 2;
             // 
             // MainPage

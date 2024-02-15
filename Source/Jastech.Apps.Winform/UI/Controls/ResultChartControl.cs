@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Jastech.Framework.Winform.Helper;
 
 namespace Jastech.Apps.Winform.UI.Controls
 {
@@ -168,7 +169,13 @@ namespace Jastech.Apps.Winform.UI.Controls
 
             SelectedTabNo = tabNo;
 
-            UpdateAlignChart(tabNo, _selectedAlignResult);
+
+            int dataCount = Convert.ToInt32(lblDataCountValue.Text.ToString());
+
+            if (dataCount > 0)
+                UpdateAlignChart(SelectedTabNo, dataCount, _selectedAlignResult);
+            else
+                UpdateAlignChart(tabNo, _selectedAlignResult);
         }
 
         public void UpdateChart()
@@ -181,7 +188,14 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
 
             if (ChartType == InspChartType.Align)
-                UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
+            {
+                int dataCount = Convert.ToInt32(lblDataCountValue.Text.ToString());
+
+                if (dataCount > 0)
+                    UpdateAlignChart(SelectedTabNo, dataCount, _selectedAlignResult);
+                else
+                    UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
+            }
             else if (ChartType == InspChartType.Akkon)
                 UpdateAkkonChart(SelectedTabNo, _selectedAkkonResult);
         }
@@ -200,6 +214,8 @@ namespace Jastech.Apps.Winform.UI.Controls
             chtData.ChartAreas[0].AxisY.TitleForeColor = Color.White;
             chtData.ChartAreas[0].AxisY.TitleAlignment = StringAlignment.Far;
             chtData.ChartAreas[0].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+            chtData.ChartAreas[0].AxisY.Minimum = Double.NaN;
+            chtData.ChartAreas[0].AxisY.Maximum = Double.NaN;
         }
 
         private void InitializeAkkonChart(AkkonResultType akkonResultType)
@@ -243,6 +259,75 @@ namespace Jastech.Apps.Winform.UI.Controls
                     AddSeriesPoint(tabData, alignResultType);
                 }
             }
+        }
+
+        private void UpdateAlignChart(int tabNo, int dataCount, AlignResultType alignResultType = AlignResultType.All)
+        {
+            ClearChartData();
+            InitializeAlignChart();
+            var dailyInfo = DailyInfoService.GetDailyInfo();
+            List<double> LXDataList = new List<double>();
+            List<double> RXDataList = new List<double>();
+            List<double> CXDataList = new List<double>();
+
+            for (int count = 0; count < dataCount; count++)
+            {
+                int index = dailyInfo.DailyDataList.Count - dataCount + count;
+                if (index <= 0)
+                    continue;
+                var tabData = dailyInfo.DailyDataList[index].AlignDailyInfoList[tabNo];
+                if (tabData == null)
+                    continue;
+
+                if (double.TryParse(tabData.LX, out double lx))
+                    LXDataList.Add(lx);
+                else
+                    LXDataList.Add(0);
+
+                if (double.TryParse(tabData.RX, out double rx))
+                    RXDataList.Add(rx);
+                else
+                    RXDataList.Add(0);
+
+                if (double.TryParse(tabData.CX, out double cx))
+                    CXDataList.Add(cx);
+                else
+                    CXDataList.Add(0);
+
+                AddSeriesPoint(tabData, alignResultType);
+            }
+
+            switch (_selectedAlignResult)
+            {
+                case AlignResultType.Lx:
+                    UpdateAlignChartAxisYRange(alignResultType, LXDataList);
+                    break;
+                case AlignResultType.Cx:
+                    UpdateAlignChartAxisYRange(alignResultType, CXDataList);
+                    break;
+                case AlignResultType.Rx:
+                    UpdateAlignChartAxisYRange(alignResultType, RXDataList);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void UpdateAlignChartAxisYRange(AlignResultType alignResultType, List<double> dataList)
+        {
+            double maxValue = dataList.Max();
+            double minValue = dataList.Min();
+            double chartYRange = 0;
+
+            if (Math.Abs(maxValue) >= Math.Abs(minValue))          
+                chartYRange = Math.Ceiling(Math.Abs(maxValue));
+
+            else if(Math.Abs(maxValue) <= Math.Abs(minValue))            
+                chartYRange = Math.Ceiling(Math.Abs(minValue));
+
+
+            chtData.ChartAreas[0].AxisY.Minimum = -chartYRange;
+            chtData.ChartAreas[0].AxisY.Maximum = chartYRange;
         }
 
         private void AddSeriesPoint(AlignDailyInfo tabData, AlignResultType alignResultType)
@@ -535,6 +620,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private void ShowSelectedAlignLegend(int x, int y)
         {
             HitTestResult result = chtData.HitTest(x, y);
+            int dataCount = Convert.ToInt32(lblDataCountValue.Text.ToString());
 
             if (result != null && result.Object != null)
             {
@@ -543,7 +629,11 @@ namespace Jastech.Apps.Winform.UI.Controls
                     LegendItem legendItem = (LegendItem)result.Object;
 
                     _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
-                    UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
+
+                    if(dataCount > 0)
+                        UpdateAlignChart(SelectedTabNo, dataCount, _selectedAlignResult);
+                    else
+                        UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
                 }
             }
             else
@@ -621,5 +711,18 @@ namespace Jastech.Apps.Winform.UI.Controls
             }
         }
         #endregion
+
+        private void lblDataCountValue_Click(object sender, EventArgs e)
+        {
+            int dataCount = KeyPadHelper.SetLabelIntegerData((Label)sender);
+
+            if (dataCount < 1 || dataCount > 100)
+            {
+                dataCount = 100;
+                lblDataCountValue.Text = "100";
+            }
+            if (ChartType == InspChartType.Align)
+                UpdateAlignChart(SelectedTabNo, dataCount, _selectedAlignResult);
+        }
     }
 }

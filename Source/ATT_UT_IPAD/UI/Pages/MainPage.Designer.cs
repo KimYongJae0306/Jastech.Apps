@@ -109,9 +109,9 @@
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 3;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(283, 498);
             this.tableLayoutPanel8.TabIndex = 3;
             // 
@@ -121,16 +121,16 @@
             this.pnlDailyInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlDailyInfo.Margin = new System.Windows.Forms.Padding(0);
             this.pnlDailyInfo.Name = "pnlDailyInfo";
-            this.pnlDailyInfo.Size = new System.Drawing.Size(283, 345);
+            this.pnlDailyInfo.Size = new System.Drawing.Size(283, 394);
             this.pnlDailyInfo.TabIndex = 3;
             // 
             // pnlSystemLog
             // 
             this.pnlSystemLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlSystemLog.Location = new System.Drawing.Point(0, 350);
+            this.pnlSystemLog.Location = new System.Drawing.Point(0, 399);
             this.pnlSystemLog.Margin = new System.Windows.Forms.Padding(0);
             this.pnlSystemLog.Name = "pnlSystemLog";
-            this.pnlSystemLog.Size = new System.Drawing.Size(283, 148);
+            this.pnlSystemLog.Size = new System.Drawing.Size(283, 99);
             this.pnlSystemLog.TabIndex = 1;
             // 
             // pnlView
