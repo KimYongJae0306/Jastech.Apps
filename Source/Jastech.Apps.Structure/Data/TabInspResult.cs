@@ -620,9 +620,9 @@ namespace Jastech.Apps.Structure.Data
             if (IsCxSpecIn() == false)
             {
                 if (lx > 0)
-                    lx -= CxOffset;
-                else
                     lx += CxOffset;
+                else
+                    lx -= CxOffset;
             }
 
             return MathHelper.GetFloorDecimal(lx, 4).ToString();
@@ -651,9 +651,9 @@ namespace Jastech.Apps.Structure.Data
             if (IsCxSpecIn() == false)
             {
                 if (rx > 0)
-                    rx -= CxOffset;
-                else
                     rx += CxOffset;
+                else
+                    rx -= CxOffset;
             }
 
             return MathHelper.GetFloorDecimal(rx, 4).ToString();

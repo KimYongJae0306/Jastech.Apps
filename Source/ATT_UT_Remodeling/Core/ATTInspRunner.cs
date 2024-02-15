@@ -830,6 +830,8 @@ namespace ATT_UT_Remodeling.Core
                 Directory.CreateDirectory(path);
 
             SaveAlignResult(path, inspModel.TabCount);
+            SaveCxOffsetAlignResult(path, inspModel.TabCount);
+
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
 
@@ -895,11 +897,82 @@ namespace ATT_UT_Remodeling.Core
                 body.Add($"{tabInspResult.TabNo + 1}");                                     // Tab No
                 body.Add($"{alignResult.Judgement}");                                       // Judge
                 body.Add($"{alignResult.PreHead}");                                         // Pre Head
+                body.Add($"{cx}");                                                       // Align Cx
                 body.Add($"{lx}");                                                       // Align Lx
                 body.Add($"{rx}");                                                       // Align Rx
-                body.Add($"{cx}");                                                       // Align Cx
                 body.Add($"{ly}");                                                       // Align Ly
                 body.Add($"{ry}");                                                       // Align Ry
+            }
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveCxOffsetAlignResult(string resultPath, int tabCount)
+        {
+            DateTime currentTime = AppsInspResult.Instance().StartInspTime;
+            string date = currentTime.ToString("yyyyMMdd");
+            string csvFileName = $"CxOffsetAlign_{date}.csv";
+            string csvFile = Path.Combine(resultPath, csvFileName);
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "CxOffset"
+                };
+                for (int index = 0; index < tabCount; index++)
+                {
+                    header.Add($"Tab");
+                    header.Add($"Judge");
+                    header.Add($"Lx(Org)");
+                    header.Add($"Cx(Org)");
+                    header.Add($"Rx(Org)");
+                    header.Add($"Lx");
+                    header.Add($"Cx");
+                    header.Add($"Rx");
+                }
+
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                                            // Stage No
+            body.Add($"{AppsConfig.Instance().CxOffset}");                                                  // Cx Offset
+
+            for (int tabNo = 0; tabNo < tabCount; tabNo++)
+            {
+                var tabInspResult = AppsInspResult.Instance().Get(tabNo);
+                var alignResult = tabInspResult.AlignResult;
+
+                var orgLx = alignResult.GetOrgStringLx_um();
+                var orgRx = alignResult.GetOrgStringRx_um();
+                var orgCx = alignResult.GetOrgStringCx_um();
+
+                string lx = "-";
+                string rx = "-";
+                string cx = "-";
+
+                if (alignResult.EnableCxOffset == true)
+                {
+                    lx = alignResult.GetStringLx_um();
+                    rx = alignResult.GetStringRx_um();
+                    cx = alignResult.GetStringCx_um();
+                }
+
+                body.Add($"{tabInspResult.TabNo + 1}");         // Tab No
+                body.Add($"{alignResult.Judgement}");           // Judge
+                body.Add($"{orgLx}");                           // Align Org Lx
+                body.Add($"{orgCx}");                           // Align Org Cx
+                body.Add($"{orgRx}");                           // Align Org Rx
+                body.Add($"{lx}");                              // Align Offset Lx
+                body.Add($"{cx}");                              // Align Offset Cx
+                body.Add($"{rx}");                              // Align Offset Rx
             }
 
             CSVHelper.WriteData(csvFile, body);
