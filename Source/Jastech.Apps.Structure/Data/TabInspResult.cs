@@ -613,16 +613,18 @@ namespace Jastech.Apps.Structure.Data
         public string GetStringLx_um()
         {
             var lxString = GetOrgStringLx_um();
+            var cxString = GetOrgStringCx_um();
             if (lxString == "-")
                 return lxString;
 
+            double cx = Convert.ToDouble(cxString);
             double lx = Convert.ToDouble(lxString);
             if (IsCxSpecIn() == false)
             {
-                if (lx > 0)
-                    lx += CxOffset;
-                else
+                if (cx > 0)
                     lx -= CxOffset;
+                else
+                    lx += CxOffset;
             }
 
             return MathHelper.GetFloorDecimal(lx, 4).ToString();
@@ -644,16 +646,19 @@ namespace Jastech.Apps.Structure.Data
         public string GetStringRx_um()
         {
             var rxString = GetOrgStringRx_um();
+            var cxString = GetOrgStringCx_um();
             if (rxString == "-")
                 return rxString;
 
+            double cx = Convert.ToDouble(cxString);
             double rx = Convert.ToDouble(rxString);
+
             if (IsCxSpecIn() == false)
             {
-                if (rx > 0)
-                    rx += CxOffset;
-                else
+                if (cx > 0)
                     rx -= CxOffset;
+                else
+                    rx += CxOffset;
             }
 
             return MathHelper.GetFloorDecimal(rx, 4).ToString();
