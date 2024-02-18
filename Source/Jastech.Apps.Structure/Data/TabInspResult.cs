@@ -617,10 +617,11 @@ namespace Jastech.Apps.Structure.Data
             if (lxString == "-")
                 return lxString;
 
-            if(cxString != "-")
+            double lx = 0.0;
+            if (cxString != "-")
             {
                 double cx = Convert.ToDouble(cxString);
-                double lx = Convert.ToDouble(lxString);
+                lx = Convert.ToDouble(lxString);
                 if (IsCxSpecIn() == false)
                 {
                     if (cx > 0)
@@ -653,10 +654,12 @@ namespace Jastech.Apps.Structure.Data
             if (rxString == "-")
                 return rxString;
 
-            if(cxString != "-")
+            double rx = 0.0;
+            if (cxString != "-")
             {
                 double cx = Convert.ToDouble(cxString);
-                double rx = Convert.ToDouble(rxString);
+
+                rx = Convert.ToDouble(rxString);
                 if (IsCxSpecIn() == false)
                 {
                     if (cx > 0)
