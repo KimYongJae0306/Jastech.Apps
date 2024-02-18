@@ -617,14 +617,17 @@ namespace Jastech.Apps.Structure.Data
             if (lxString == "-")
                 return lxString;
 
-            double cx = Convert.ToDouble(cxString);
-            double lx = Convert.ToDouble(lxString);
-            if (IsCxSpecIn() == false)
+            if(cxString != "-")
             {
-                if (cx > 0)
-                    lx -= CxOffset;
-                else
-                    lx += CxOffset;
+                double cx = Convert.ToDouble(cxString);
+                double lx = Convert.ToDouble(lxString);
+                if (IsCxSpecIn() == false)
+                {
+                    if (cx > 0)
+                        lx -= CxOffset;
+                    else
+                        lx += CxOffset;
+                }
             }
 
             return MathHelper.GetFloorDecimal(lx, 4).ToString();
@@ -650,15 +653,17 @@ namespace Jastech.Apps.Structure.Data
             if (rxString == "-")
                 return rxString;
 
-            double cx = Convert.ToDouble(cxString);
-            double rx = Convert.ToDouble(rxString);
-
-            if (IsCxSpecIn() == false)
+            if(cxString != "-")
             {
-                if (cx > 0)
-                    rx -= CxOffset;
-                else
-                    rx += CxOffset;
+                double cx = Convert.ToDouble(cxString);
+                double rx = Convert.ToDouble(rxString);
+                if (IsCxSpecIn() == false)
+                {
+                    if (cx > 0)
+                        rx -= CxOffset;
+                    else
+                        rx += CxOffset;
+                }
             }
 
             return MathHelper.GetFloorDecimal(rx, 4).ToString();
