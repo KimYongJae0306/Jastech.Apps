@@ -48,7 +48,7 @@ namespace Jastech.Apps.Winform
 #if DEBUG
             CurrentUser = UserHandler.GetUser(AuthorityType.Maker);
 #else
-            CurrentUser = UserHandler.GetUser(AuthorityType.None);
+            CurrentUser = UserHandler.GetUser(AuthorityType.Operator);
 #endif
 
         }

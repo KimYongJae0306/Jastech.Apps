@@ -262,6 +262,14 @@ namespace Jastech.Framework.Winform.Forms
                 double oldValue = Convert.ToDouble(textBox.Text);
                 double newValue = KeyPadHelper.SetLabelDoubleData(textBox);
 
+                if (newValue < 0)
+                {
+                    MessageConfirmForm form = new MessageConfirmForm();
+                    textBox.Text = oldValue.ToString();
+                    form.Message = "Cannot be set to negative number.";
+                    form.ShowDialog();
+                    return;
+                }
                 ParamTrackingLogger.AddChangeHistory("Operation Setting", textBox.Name.Replace("txt", ""), oldValue, newValue);
             }
         }
