@@ -98,6 +98,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string panelID = item.PanelID;
                     string tabNumber = (item.TabNo + 1).ToString();
                     string judge = item.Judgement.ToString();
+                    string gapRxLx = GetValue(item.GapRxLx);
                     string preHead = item.PreHead;
                     string finalHead = item.FinalHead;
                     string leftAlignX = GetValue(item.LX);
@@ -106,7 +107,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                     string rightAlignX = GetValue(item.RX);
                     string rightAlignY = GetValue(item.RY);
 
-                    string[] row = { inspectionTime, panelID, tabNumber, judge, preHead, finalHead, leftAlignX, leftAlignY, centerAlignX, rightAlignX, rightAlignY };
+                    string[] row = { inspectionTime, panelID, tabNumber, judge, gapRxLx, preHead, finalHead, leftAlignX, leftAlignY, centerAlignX, rightAlignX, rightAlignY };
                     dgvAlignHistory.Rows.Add(row);
                 }
             }
@@ -125,7 +126,7 @@ namespace Jastech.Apps.Winform.UI.Controls
         private string GetValue(string value)
         {
             if (double.TryParse(value, out double temp))
-                return MathHelper.GetFloorDecimal(temp, 4).ToString();
+                return MathHelper.GetFloorDecimal(temp, 2).ToString();
             else
                 return "-";
         }

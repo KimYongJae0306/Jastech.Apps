@@ -122,6 +122,9 @@ namespace Jastech.Apps.Winform.Service
         public Judgement Judgement { get; set; } = Judgement.FAIL;
 
         [JsonProperty]
+        public string GapRxLx { get; set; } = "-";
+
+        [JsonProperty]
         public string PreHead { get; set; } = "0";//string.Empty;
 
         [JsonProperty]

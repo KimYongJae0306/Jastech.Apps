@@ -38,10 +38,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvAlignHistory = new System.Windows.Forms.DataGridView();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlChart = new System.Windows.Forms.Panel();
             this.colTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPanelID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTab = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colJudge = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAlignGapX = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPreHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFinalHead = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,8 +52,6 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlChart = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlignHistory)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -77,6 +78,7 @@
             this.colPanelID,
             this.colTab,
             this.colJudge,
+            this.colAlignGapX,
             this.colPreHead,
             this.colFinalHead,
             this.colCount,
@@ -108,6 +110,31 @@
             this.dgvAlignHistory.Size = new System.Drawing.Size(933, 265);
             this.dgvAlignHistory.TabIndex = 2;
             this.dgvAlignHistory.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAlignHistory_CellContentDoubleClick);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.dgvAlignHistory, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnlChart, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(933, 443);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // pnlChart
+            // 
+            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChart.Location = new System.Drawing.Point(0, 265);
+            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlChart.Name = "pnlChart";
+            this.pnlChart.Size = new System.Drawing.Size(933, 178);
+            this.pnlChart.TabIndex = 3;
             // 
             // colTime
             // 
@@ -156,6 +183,14 @@
             this.colJudge.ReadOnly = true;
             this.colJudge.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colJudge.Width = 51;
+            // 
+            // colAlignGapX
+            // 
+            this.colAlignGapX.HeaderText = "Rx-Lx";
+            this.colAlignGapX.Name = "colAlignGapX";
+            this.colAlignGapX.ReadOnly = true;
+            this.colAlignGapX.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colAlignGapX.Width = 48;
             // 
             // colPreHead
             // 
@@ -228,31 +263,6 @@
             this.Column2.ReadOnly = true;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.dgvAlignHistory, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pnlChart, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(933, 443);
-            this.tableLayoutPanel1.TabIndex = 3;
-            // 
-            // pnlChart
-            // 
-            this.pnlChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChart.Location = new System.Drawing.Point(0, 265);
-            this.pnlChart.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlChart.Name = "pnlChart";
-            this.pnlChart.Size = new System.Drawing.Size(933, 178);
-            this.pnlChart.TabIndex = 3;
-            // 
             // AlignResultDataControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -272,10 +282,13 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dgvAlignHistory;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel pnlChart;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPanelID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTab;
         private System.Windows.Forms.DataGridViewTextBoxColumn colJudge;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAlignGapX;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPreHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFinalHead;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCount;
@@ -283,7 +296,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel pnlChart;
     }
 }

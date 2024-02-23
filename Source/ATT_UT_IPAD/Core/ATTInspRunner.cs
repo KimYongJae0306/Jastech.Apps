@@ -872,6 +872,7 @@ namespace ATT_UT_IPAD.Core
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
+                alignInfo.GapRxLx = (Convert.ToDouble(tabInspResult.AlignResult.GetStringRx_um()) - Convert.ToDouble(tabInspResult.AlignResult.GetStringLx_um())).ToString();
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
                 alignInfo.LX = tabInspResult.AlignResult.GetStringLx_um();
