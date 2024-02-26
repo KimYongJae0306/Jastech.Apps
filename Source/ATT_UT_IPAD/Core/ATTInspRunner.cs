@@ -956,7 +956,8 @@ namespace ATT_UT_IPAD.Core
         {
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
             string date = currentTime.ToString("yyyyMMdd");
-            string csvFileName = $"Align_{date}.csv";
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            string csvFileName = $"Align_Unit{(int)programType + 1}_{date}.csv";
             string csvFile = Path.Combine(resultPath, csvFileName);
             if (File.Exists(csvFile) == false)
             {
@@ -984,7 +985,6 @@ namespace ATT_UT_IPAD.Core
 
             List<string> body = new List<string>();
 
-            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
@@ -1089,7 +1089,8 @@ namespace ATT_UT_IPAD.Core
         {
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
             string date = currentTime.ToString("yyyyMMdd");
-            string csvFileName = $"Akkon_{date}.csv";
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            string csvFileName = $"Akkon_Unit{(int)programType + 1}_{date}.csv";
             string csvFile = Path.Combine(resultPath, csvFileName);
             if (File.Exists(csvFile) == false)
             {
@@ -1114,7 +1115,6 @@ namespace ATT_UT_IPAD.Core
 
             List<string> body = new List<string>();
 
-            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
             body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No

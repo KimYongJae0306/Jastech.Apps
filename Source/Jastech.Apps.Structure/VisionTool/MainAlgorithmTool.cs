@@ -777,7 +777,7 @@ namespace Jastech.Apps.Structure.VisionTool
 
                 if (markdirection == MarkDirection.Left)
                     derivedData.Reverse();
-
+                 
                 // Return Edge coordinate
                 int edgeIndex = derivedData.FindIndex(value => value == 255);
                 if (edgeIndex != -1)
