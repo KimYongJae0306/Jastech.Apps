@@ -799,6 +799,19 @@ namespace Jastech.Apps.Structure.Data
                 grey = null;
             }
         }
+
+        public string GetStringGapRxLx_um()
+        {
+            var lxString = GetStringLx_um();
+            var rxString = GetStringRx_um();
+
+            if (lxString == "-" || rxString == "-")
+                return "-";
+
+            double gap = (Convert.ToDouble(rxString) - Convert.ToDouble(lxString));
+
+            return MathHelper.GetFloorDecimal(gap, 4).ToString();
+        }
     }
 
     public class AlignResult
