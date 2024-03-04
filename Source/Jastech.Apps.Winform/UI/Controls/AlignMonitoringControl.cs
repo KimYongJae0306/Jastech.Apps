@@ -14,7 +14,6 @@ namespace Jastech.Apps.Winform.UI.Controls
 {
     public partial class AlignMonitoringControl : UserControl
     {
-
         #region 필드
         private const int MaxTabCount = 8;
 

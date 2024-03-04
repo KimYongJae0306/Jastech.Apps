@@ -187,10 +187,15 @@ namespace ATT.Core.AppTask
 
                     // Tracking ROI Save
                     SaveTrackingAkkonROI(tabInspResult.TabNo, coordinateRoiList);
+                    message = "Save akkon tracking Roi.";
+                    Logger.Write(LogType.Inspection, message);
 
                     Judgement tabJudgement = Judgement.NG;
 
                     AkkonAlgorithm.UseOverCount = AppsConfig.Instance().EnableTest2;
+
+                    message = "Start Akkon Algorithm Run.";
+                    Logger.Write(LogType.Inspection, message);
                     var leadResultList = AkkonAlgorithm.Run(inspTab.MergeMatImage, coordinateRoiList, tab.AkkonParam.AkkonAlgoritmParam, resolution_um, ref tabJudgement);
                     var resizeRatio = tab.AkkonParam.AkkonAlgoritmParam.ImageFilterParam.ResizeRatio;
 
