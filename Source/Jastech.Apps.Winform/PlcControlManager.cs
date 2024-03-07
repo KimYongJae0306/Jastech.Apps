@@ -1,4 +1,5 @@
-﻿using Jastech.Apps.Structure;
+﻿using Emgu.CV.Ocl;
+using Jastech.Apps.Structure;
 using Jastech.Apps.Structure.Data;
 using Jastech.Apps.Winform.Core;
 using Jastech.Apps.Winform.Service.Plc;
@@ -277,6 +278,7 @@ namespace Jastech.Apps.Winform
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
                 int machineStatus = PlcControlManager.Instance().MachineStatus == MachineStatus.RUN ? 9000 : 0;
+                var akkonBypassMode = AppsConfig.Instance().EnableAkkonByPass;
 
                 PlcDataStream stream = new PlcDataStream();
 
@@ -287,6 +289,7 @@ namespace Jastech.Apps.Winform
                     stream.AddSwap16BitData(Convert.ToInt16(currentPosX));
                     stream.AddSwap16BitData(Convert.ToInt16(isServoOn));
                     stream.AddSwap16BitData(Convert.ToInt16(machineStatus));
+                    stream.AddSwap16BitData(Convert.ToInt16(akkonBypassMode));
                 }
                 else
                 {
@@ -295,6 +298,7 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(currentPosX));
                     stream.Add16BitData(Convert.ToInt16(isServoOn));
                     stream.Add16BitData(Convert.ToInt16(machineStatus));
+                    stream.Add16BitData(Convert.ToInt16(akkonBypassMode));
                 }
 
                 plc.Write("D" + map.AddressNum, stream.Data);
