@@ -278,7 +278,7 @@ namespace Jastech.Apps.Winform
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 var map = PlcControlManager.Instance().GetAddressMap(PlcCommonMap.PC_Alive);
                 int machineStatus = PlcControlManager.Instance().MachineStatus == MachineStatus.RUN ? 9000 : 0;
-                var akkonBypassMode = AppsConfig.Instance().EnableAkkonByPass;
+                var akkonBypassMode = AppsConfig.Instance().EnableAkkonByPass == true ? 2 : 1;
 
                 PlcDataStream stream = new PlcDataStream();
 

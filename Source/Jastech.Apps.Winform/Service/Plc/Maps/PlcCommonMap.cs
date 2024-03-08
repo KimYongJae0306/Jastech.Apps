@@ -9,7 +9,7 @@
         PLC_Alive,
         PLC_RunMode,
         PLC_DoorStatus,
-        PC_AkkonBypass,
+        PC_AkkonByPass,
 
         PC_Ready,
         PLC_Ready,
