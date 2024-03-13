@@ -526,9 +526,9 @@ namespace ATT_UT_IPAD
             var exception = (Exception)e.ExceptionObject;
             string message = "CurrentDomain_UnhandledException " + exception.Message + " Source: " + exception.Source.ToString() + "StackTrack :" + exception.StackTrace.ToString();
             Logger.Error(ErrorType.Apps, message);
-
             Trace.WriteLine(message);
             MessageBox.Show(message);
+            //Application.Exit(new System.ComponentModel.CancelEventArgs(false));
         }
 
         private static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -539,7 +539,6 @@ namespace ATT_UT_IPAD
             Logger.Error(ErrorType.Apps, message);
             Trace.WriteLine(message);
             MessageBox.Show(message);
-            //Application.Exit(new System.ComponentModel.CancelEventArgs(false));
         }
 
         private static void AddTraceListner()

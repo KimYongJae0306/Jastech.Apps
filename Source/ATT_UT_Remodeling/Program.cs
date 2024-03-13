@@ -18,7 +18,9 @@ using Jastech.Framework.Matrox;
 using Jastech.Framework.Util.Helper;
 using Jastech.Framework.Winform.Forms;
 using System;
+using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ATT_UT_Remodeling
@@ -31,51 +33,62 @@ namespace ATT_UT_Remodeling
         [STAThread]
         static void Main()
         {
-            bool isRunning = false;
-            Mutex mutex = new Mutex(true, "ATT", out isRunning);
-
-            if (isRunning)
+            try
             {
-                Application.ThreadException += Application_ThreadException;
-                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                bool isRunning = false;
+                Mutex mutex = new Mutex(true, "ATT", out isRunning);
 
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                Logger.Initialize(ConfigSet.Instance().Path.Log);
-
-                MilHelper.InitApplication();
-                CameraMil.BufferPoolCount = 200;
-                //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
-                AppsConfig.Instance().UnitCount = 1;
-
-                if (Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count == 0)
+                if (isRunning)
                 {
-                    MessageConfirmForm cognexAlart = new MessageConfirmForm { Message = "Cognex license not detected.\r\nPlease check the key." };
-                    cognexAlart.ShowDialog();
+                    AddTraceListner();
+
+                    Application.ThreadException += Application_ThreadException;
+                    Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                    TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+
+                    Logger.Initialize(ConfigSet.Instance().Path.Log);
+
+                    MilHelper.InitApplication();
+                    CameraMil.BufferPoolCount = 200;
+                    //SystemHelper.StartChecker(@"D:\ATT_Memory_Test.txt");
+                    AppsConfig.Instance().UnitCount = 1;
+
+                    if (Cognex.VisionPro.CogLicense.GetLicensedFeatures(false, false).Count == 0)
+                    {
+                        MessageConfirmForm cognexAlart = new MessageConfirmForm { Message = "Cognex license not detected.\r\nPlease check the key." };
+                        cognexAlart.ShowDialog();
+                    }
+
+                    ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
+                    ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
+                    ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
+                    ConfigSet.Instance().Initialize();
+
+                    AppsConfig.Instance().Initialize();
+                    CalibrationData.Instance().LoadCalibrationData();
+
+                    ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
+                    ACSBufferConfig.Instance().Initialize();
+                    UserManager.Instance().Initialize();
+
+                    var mainForm = new MainForm();
+                    SystemManager.Instance().SetMainForm(mainForm);
+                    Application.Run(mainForm);
                 }
-
-                ConfigSet.Instance().PathConfigCreated += ConfigSet_PathConfigCreated;
-                ConfigSet.Instance().OperationConfigCreated += ConfigSet_OperationConfigCreated;
-                ConfigSet.Instance().MachineConfigCreated += ConfigSet_MachineConfigCreated;
-                ConfigSet.Instance().Initialize();
-
-                AppsConfig.Instance().Initialize();
-                CalibrationData.Instance().LoadCalibrationData();
-
-                ACSBufferConfig.Instance().NewAcsBufferSettingEventHandler += NewAcsBufferSettingEventHandler;
-                ACSBufferConfig.Instance().Initialize();
-                UserManager.Instance().Initialize();
-
-                var mainForm = new MainForm();
-                SystemManager.Instance().SetMainForm(mainForm);
-                Application.Run(mainForm);
+                else
+                {
+                    MessageBox.Show("The program already started.");
+                    Application.Exit();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("The program already started.");
-                Application.Exit();
+                Logger.Error(ErrorType.Apps, $"Occured Exception : {ex}");
+                throw;
             }
         }
 
@@ -264,9 +277,9 @@ namespace ATT_UT_Remodeling
             PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
             string message = "Application_ThreadException " + e.Exception.Message;
             Logger.Error(ErrorType.Apps, message);
-            System.Diagnostics.Trace.WriteLine(message);
+            Trace.WriteLine(message);
             MessageBox.Show(message);
-            Application.Exit(new System.ComponentModel.CancelEventArgs(false));
+            //Application.Exit(new System.ComponentModel.CancelEventArgs(false));
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -275,9 +288,31 @@ namespace ATT_UT_Remodeling
             var exception = (Exception)e.ExceptionObject;
             string message = "CurrentDomain_UnhandledException " + exception.Message + " Source: " + exception.Source.ToString() + "StackTrack :" + exception.StackTrace.ToString();
             Logger.Error(ErrorType.Apps, message);
-
-            System.Diagnostics.Trace.WriteLine(message);
+            Trace.WriteLine(message);
             MessageBox.Show(message);
+        }
+
+        private static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            PlcControlManager.Instance().WritePcVisionStatus(MachineStatus.STOP);
+            var exception = (Exception)e.Exception;
+            string message = "TaskScheduler_UnobservedTaskException " + exception.Message;// + " Source: " + exception.Source.ToString();// + "StackTrack :" + exception.StackTrace.ToString();
+            Logger.Error(ErrorType.Apps, message);
+            Trace.WriteLine(message);
+            MessageBox.Show(message);
+        }
+
+        private static void AddTraceListner()
+        {
+            try
+            {
+                Trace.Listeners.Add(new ConsoleTraceListener());
+                Trace.Listeners.Add(new TextWriterTraceListener(System.IO.File.Open(@"D:\dump.log", System.IO.FileMode.Append)));
+                Trace.AutoFlush = true;
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
