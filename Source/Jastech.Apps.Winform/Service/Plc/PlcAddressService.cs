@@ -205,7 +205,9 @@ namespace Jastech.Apps.Winform.Service.Plc
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AxisX_CurPos, WordType.DEC, index + 2, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AxisX_ServoOn, WordType.DEC, index + 3, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Ready, WordType.DEC, index + 4, 1));
+            AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_AkkonByPass, WordType.DEC, index + 5, 1));
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_Status_Common, WordType.DEC, index + 6, 1));
+
 
             // 10~19
             AddressMapList.Add(new PlcAddressMap(PlcCommonMap.PC_X_NegativeLimit, WordType.DEC, index + 10, 1));
