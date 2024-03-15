@@ -1847,6 +1847,8 @@ namespace ATT_UT_Remodeling.Core
         {
             try
             {
+                FileHelper.KillProcess("Honeyview");
+
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                 if (inspModel == null)
                 {
