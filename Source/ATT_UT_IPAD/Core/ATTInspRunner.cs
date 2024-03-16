@@ -1969,7 +1969,10 @@ namespace ATT_UT_IPAD.Core
         {
             try
             {
-                FileHelper.KillProcess("Honeyview");
+                FileHelper.KillViewerProcess("Honeyview");
+                FileHelper.KillViewerProcess("ImageJ");
+                FileHelper.KillViewerProcess("ALSee");
+                FileHelper.KillViewerProcess("Microsoft.Photos");
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
                 if (inspModel == null)
