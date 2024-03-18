@@ -151,10 +151,11 @@
             // 
             // colPanelID
             // 
+            this.colPanelID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.colPanelID.DefaultCellStyle = dataGridViewCellStyle3;
             this.colPanelID.HeaderText = "ID";
-            this.colPanelID.MinimumWidth = 150;
+            this.colPanelID.MinimumWidth = 20;
             this.colPanelID.Name = "colPanelID";
             this.colPanelID.ReadOnly = true;
             this.colPanelID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -194,8 +195,9 @@
             // 
             // colPreHead
             // 
+            this.colPreHead.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.colPreHead.HeaderText = "P";
-            this.colPreHead.MinimumWidth = 50;
+            this.colPreHead.MinimumWidth = 20;
             this.colPreHead.Name = "colPreHead";
             this.colPreHead.ReadOnly = true;
             this.colPreHead.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -203,8 +205,9 @@
             // 
             // colFinalHead
             // 
+            this.colFinalHead.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.colFinalHead.HeaderText = "F";
-            this.colFinalHead.MinimumWidth = 50;
+            this.colFinalHead.MinimumWidth = 20;
             this.colFinalHead.Name = "colFinalHead";
             this.colFinalHead.ReadOnly = true;
             this.colFinalHead.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;

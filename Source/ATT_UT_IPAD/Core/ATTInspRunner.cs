@@ -57,7 +57,9 @@ namespace ATT_UT_IPAD.Core
 
         private Thread _updateThread { get; set; } = null;
 
-        private Thread _getLAFDataThread { get; set; } = null;
+        private Thread _getAkkonLAFDataThread { get; set; } = null;
+
+        private Thread _getAlignLAFDataThread { get; set; } = null;
         #endregion
 
         #region 속성
@@ -83,9 +85,13 @@ namespace ATT_UT_IPAD.Core
 
         private Stopwatch LastInspSW { get; set; } = new Stopwatch();
 
-        private List<double> MPosDataList { get; set; } = new List<double>();
+        private List<double> AkkonMPosDataList { get; set; } = new List<double>();
 
-        private List<double> RetDataList { get; set; } = new List<double>();
+        private List<double> AkkonRetDataList { get; set; } = new List<double>();
+
+        private List<double> AlignMPosDataList { get; set; } = new List<double>();
+
+        private List<double> AlignRetDataList { get; set; } = new List<double>();
 
         public InspProcessTask InspProcessTask { get; set; } = new InspProcessTask();
         #endregion
@@ -152,22 +158,37 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        public void StartGetLAFDataThread()
+        public void StartGetAkkonLAFDataThread()
         {
-            if (_getLAFDataThread == null)
+            if (_getAkkonLAFDataThread == null)
             {
-                _getLAFDataThread = new Thread(GetLAFData);
-                _getLAFDataThread.Start();
+                _getAkkonLAFDataThread = new Thread(GetAkkonLAFData);
+                _getAkkonLAFDataThread.Start();
             }
         }
 
-        public void StopGetLAFDataThread()
+        public void StartGetAlignLAFDataThread()
         {
-            _getLAFDataThread.Abort();
-            _getLAFDataThread = null;
+            if (_getAlignLAFDataThread == null)
+            {
+                _getAlignLAFDataThread = new Thread(GetAlignLAFData);
+                _getAlignLAFDataThread.Start();
+            }
         }
 
-        private void GetLAFData()
+        public void StopGetAkkonLAFDataThread()
+        {
+            _getAkkonLAFDataThread.Abort();
+            _getAkkonLAFDataThread = null;
+        }
+
+        public void StopGetAlignLAFDataThread()
+        {
+            _getAlignLAFDataThread.Abort();
+            _getAlignLAFDataThread = null;
+        }
+
+        private void GetAkkonLAFData()
         {
             double getData = 0;
             while (true)
@@ -176,9 +197,26 @@ namespace ATT_UT_IPAD.Core
                 {
                     // AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
                     getData = AkkonLAFCtrl.Status.MPosPulse;
-                    MPosDataList.Add(getData);
+                    AkkonMPosDataList.Add(getData);
                     getData = AkkonLAFCtrl.Status.ReturndB;
-                    RetDataList.Add(getData);
+                    AkkonRetDataList.Add(getData);
+                }
+                Thread.Sleep(50);
+            }
+        }
+
+        private void GetAlignLAFData()
+        {
+            double getData = 0;
+            while (true)
+            {
+                if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == true)
+                {
+                    // AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
+                    getData = AlignLAFCtrl.Status.MPosPulse;
+                    AlignMPosDataList.Add(getData);
+                    getData = AlignLAFCtrl.Status.ReturndB;
+                    AlignRetDataList.Add(getData);
                 }
                 Thread.Sleep(50);
             }
@@ -275,13 +313,15 @@ namespace ATT_UT_IPAD.Core
 
             InspProcessTask.StartTask();
             StartSeqTask();
-            StartGetLAFDataThread();
+            StartGetAkkonLAFDataThread();
+            StartGetAlignLAFDataThread();
         }
 
         public void Release()
         {
             StopDevice();
-            StopGetLAFDataThread();
+            StopGetAkkonLAFDataThread();
+            StopGetAlignLAFDataThread();
             InspProcessTask.StopTask();
             StopSeqTask();
         }
@@ -414,8 +454,10 @@ namespace ATT_UT_IPAD.Core
                     if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == false)
                         break;
 
-                    MPosDataList.Clear();
-                    RetDataList.Clear();
+                    AkkonMPosDataList.Clear();
+                    AkkonRetDataList.Clear();
+                    AlignMPosDataList.Clear();
+                    AlignRetDataList.Clear();
 
                     AppsStatus.Instance().IsInspRunnerRunning = true;
              
@@ -937,8 +979,10 @@ namespace ATT_UT_IPAD.Core
             SaveAkkonResult(path, inspModel.TabCount);
             SaveUPHResult(path, inspModel.TabCount);
 
-            SaveAxisZMposData(path);
-            SaveRetData(path);
+            SaveAxisZAkkonMposData(path);
+            SaveAxisZAlignMposData(path);
+            SaveAkkonRetData(path);
+            SaveAlignRetData(path);
             SaveMarkToMarkDistanceData(path, inspModel.TabCount);
             SaveMarkScoreData(path, inspModel.TabCount);
 
@@ -2152,12 +2196,12 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        private void SaveAxisZMposData(string resultPath)
+        private void SaveAxisZAkkonMposData(string resultPath)
         {
             if (AppsConfig.Instance().EnableWriteMPosData == false)
                 return;
 
-            string csvFile = Path.Combine(resultPath, "MPosData.csv");
+            string csvFile = Path.Combine(resultPath, "Akkon_MPosData.csv");
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>
@@ -2177,18 +2221,49 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
 
-            foreach (var item in MPosDataList)
+            foreach (var item in AkkonMPosDataList)
                 body.Add(item.ToString());
 
             CSVHelper.WriteData(csvFile, body);
         }
 
-        private void SaveRetData(string resultPath)
+        private void SaveAxisZAlignMposData(string resultPath)
+        {
+            if (AppsConfig.Instance().EnableWriteMPosData == false)
+                return;
+
+            string csvFile = Path.Combine(resultPath, "Align_MPosData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Z Mpos",
+                };
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            foreach (var item in AlignMPosDataList)
+                body.Add(item.ToString());
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveAkkonRetData(string resultPath)
         {
             if (AppsConfig.Instance().EnableWriteRetData == false)
                 return;
 
-            string csvFile = Path.Combine(resultPath, "RetData.csv");
+            string csvFile = Path.Combine(resultPath, "Akkon_RetData.csv");
             if (File.Exists(csvFile) == false)
             {
                 List<string> header = new List<string>
@@ -2208,7 +2283,38 @@ namespace ATT_UT_IPAD.Core
             body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
             body.Add($"{(int)programType + 1}");                                            // Stage No
 
-            foreach (var item in RetDataList)
+            foreach (var item in AkkonRetDataList)
+                body.Add(item.ToString());
+
+            CSVHelper.WriteData(csvFile, body);
+        }
+
+        private void SaveAlignRetData(string resultPath)
+        {
+            if (AppsConfig.Instance().EnableWriteRetData == false)
+                return;
+
+            string csvFile = Path.Combine(resultPath, "Align_RetData.csv");
+            if (File.Exists(csvFile) == false)
+            {
+                List<string> header = new List<string>
+                {
+                    "Inspection Time",
+                    "Panel ID",
+                    "Stage No",
+                    "Ret",
+                };
+                CSVHelper.WriteHeader(csvFile, header);
+            }
+
+            List<string> body = new List<string>();
+
+            var programType = StringHelper.StringToEnum<ProgramType>(AppsConfig.Instance().ProgramType);
+            body.Add($"{AppsInspResult.Instance().EndInspTime:HH:mm:ss}");                  // Insp Time
+            body.Add($"{AppsInspResult.Instance().Cell_ID}");                               // Panel ID
+            body.Add($"{(int)programType + 1}");                                            // Stage No
+
+            foreach (var item in AlignRetDataList)
                 body.Add(item.ToString());
 
             CSVHelper.WriteData(csvFile, body);

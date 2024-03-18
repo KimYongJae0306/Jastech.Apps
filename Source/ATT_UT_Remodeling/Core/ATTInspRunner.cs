@@ -760,6 +760,7 @@ namespace ATT_UT_Remodeling.Core
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
                 alignInfo.Judgement = tabInspResult.AlignResult.Judgement;
+                alignInfo.GapRxLx = tabInspResult.AlignResult.GetStringGapRxLx_um();
                 alignInfo.PreHead = tabInspResult.AlignResult.PreHead;
                 alignInfo.FinalHead = AppsInspResult.Instance().FinalHead;
                 alignInfo.LX = tabInspResult.AlignResult.GetStringLx_um();
