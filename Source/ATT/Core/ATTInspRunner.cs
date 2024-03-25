@@ -672,7 +672,7 @@ namespace ATT.Core
             string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, "Data", date);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -1498,7 +1498,7 @@ namespace ATT.Core
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string cellId = AppsPreAlignResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, cellId);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name,"Image", date, cellId);
 
             return path;
         }
@@ -1642,7 +1642,7 @@ namespace ATT.Core
 
                 int capacity = ConfigSet.Instance().Operation.DataStoringCapacity;
 
-                DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
+                DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name, "Image"), capacity);
                 //DeleteDirectoryByCapacity(logPath, capacity);     logPath삭제는 설정한 Duration으로 삭제
 
                 int duration = ConfigSet.Instance().Operation.DataStoringDuration;

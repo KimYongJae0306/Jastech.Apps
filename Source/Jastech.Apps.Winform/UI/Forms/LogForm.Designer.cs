@@ -118,14 +118,13 @@
             this.btnSelectionProcessCapability.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionProcessCapability.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionProcessCapability.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionProcessCapability.Location = new System.Drawing.Point(860, 20);
+            this.btnSelectionProcessCapability.Location = new System.Drawing.Point(443, 20);
             this.btnSelectionProcessCapability.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionProcessCapability.Name = "btnSelectionProcessCapability";
             this.btnSelectionProcessCapability.Size = new System.Drawing.Size(120, 80);
             this.btnSelectionProcessCapability.TabIndex = 204;
             this.btnSelectionProcessCapability.Text = "PROCESS\r\nCAPABILITY";
             this.btnSelectionProcessCapability.UseVisualStyleBackColor = false;
-            this.btnSelectionProcessCapability.Visible = false;
             this.btnSelectionProcessCapability.Click += new System.EventHandler(this.btnSelectionProcessCapability_Click);
             // 
             // btnSelectionUPH
@@ -134,7 +133,7 @@
             this.btnSelectionUPH.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionUPH.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionUPH.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionUPH.Location = new System.Drawing.Point(720, 20);
+            this.btnSelectionUPH.Location = new System.Drawing.Point(865, 20);
             this.btnSelectionUPH.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionUPH.Name = "btnSelectionUPH";
             this.btnSelectionUPH.Size = new System.Drawing.Size(120, 80);
@@ -150,7 +149,7 @@
             this.btnSelectionAkkonTrend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionAkkonTrend.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionAkkonTrend.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionAkkonTrend.Location = new System.Drawing.Point(580, 20);
+            this.btnSelectionAkkonTrend.Location = new System.Drawing.Point(725, 20);
             this.btnSelectionAkkonTrend.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionAkkonTrend.Name = "btnSelectionAkkonTrend";
             this.btnSelectionAkkonTrend.Size = new System.Drawing.Size(120, 80);
@@ -166,7 +165,7 @@
             this.btnSelectionAlignTrend_Old.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnSelectionAlignTrend_Old.Font = new System.Drawing.Font("맑은 고딕", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSelectionAlignTrend_Old.ForeColor = System.Drawing.Color.White;
-            this.btnSelectionAlignTrend_Old.Location = new System.Drawing.Point(440, 20);
+            this.btnSelectionAlignTrend_Old.Location = new System.Drawing.Point(585, 20);
             this.btnSelectionAlignTrend_Old.Margin = new System.Windows.Forms.Padding(0);
             this.btnSelectionAlignTrend_Old.Name = "btnSelectionAlignTrend_Old";
             this.btnSelectionAlignTrend_Old.Size = new System.Drawing.Size(120, 80);

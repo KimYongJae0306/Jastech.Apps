@@ -23,7 +23,9 @@ namespace Jastech.Apps.Winform.Forms
 
         private string _logPath { get; set; } = string.Empty;
 
-        private string _resultPath { get; set; } = string.Empty;
+        private string _resultDataPath { get; set; } = string.Empty;
+
+        private string _resultImagePath { get; set; } = string.Empty;
 
         private PageType _selectedPageType { get; set; } = PageType.Log;
 
@@ -133,14 +135,14 @@ namespace Jastech.Apps.Winform.Forms
                     break;
 
                 case PageType.Image:
-                    _selectedPagePath = _resultPath;
+                    _selectedPagePath = _resultImagePath;
                     btnSelectionImage.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(InspDisplayControl);
                     break;
 
                 case PageType.AlignTrend:
-                    _selectedPagePath = _resultPath;
+                    _selectedPagePath = _resultDataPath;
                     btnSelectionAlignTrend_Old.BackColor = _selectedColor;
 
                     AlignTrendControl.MakeTabListControl(inspModel.TabCount);
@@ -148,14 +150,14 @@ namespace Jastech.Apps.Winform.Forms
                     break;
 
                 case PageType.AlignTrendPreview:
-                    _selectedPagePath = _resultPath;
+                    _selectedPagePath = _resultDataPath;
                     btnSelectionAlignTrend.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(AlignTrendPreviewControl);
                     break;
 
                 case PageType.AkkonTrend:
-                    _selectedPagePath = _resultPath;
+                    _selectedPagePath = _resultDataPath;
                     btnSelectionAkkonTrend.BackColor = _selectedColor;
 
                     AkkonTrendControl.MakeTabListControl(inspModel.TabCount);
@@ -163,14 +165,14 @@ namespace Jastech.Apps.Winform.Forms
                     break;
 
                 case PageType.UPH:
-                    _selectedPagePath = _resultPath;
+                    _selectedPagePath = _resultDataPath;
                     btnSelectionUPH.BackColor = _selectedColor;
 
                     pnlContents.Controls.Add(UPHControl);
                     break;
 
                 case PageType.ProcessCapability:
-                    _selectedPagePath = _resultPath;
+                    _selectedPagePath = _resultDataPath;
                     btnSelectionProcessCapability.BackColor = _selectedColor;
 
                     ProcessCapabilityControl.MakeTabListControl(inspModel.TabCount);
@@ -236,7 +238,8 @@ namespace Jastech.Apps.Winform.Forms
         public void SetLogViewPath(string logPath, string resultPath, string modelName)
         {
             _logPath = logPath;
-            _resultPath = Path.Combine(resultPath, modelName);
+            _resultDataPath = Path.Combine(resultPath, modelName, "Data");
+            _resultImagePath = Path.Combine(resultPath, modelName, "Image");
         }
 
         private void cdrMonthCalendar_DateChanged(object sender, DateRangeEventArgs e)

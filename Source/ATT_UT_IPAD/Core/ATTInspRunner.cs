@@ -57,9 +57,7 @@ namespace ATT_UT_IPAD.Core
 
         private Thread _updateThread { get; set; } = null;
 
-        private Thread _getAkkonLAFDataThread { get; set; } = null;
-
-        private Thread _getAlignLAFDataThread { get; set; } = null;
+        private Thread _getLAFDataThread { get; set; } = null;
         #endregion
 
         #region 속성
@@ -158,37 +156,23 @@ namespace ATT_UT_IPAD.Core
             }
         }
 
-        public void StartGetAkkonLAFDataThread()
+        public void StartGetLAFDataThread()
         {
-            if (_getAkkonLAFDataThread == null)
+            if (_getLAFDataThread == null)
             {
-                _getAkkonLAFDataThread = new Thread(GetAkkonLAFData);
-                _getAkkonLAFDataThread.Start();
+                _getLAFDataThread = new Thread(GetLAFData);
+                _getLAFDataThread.Start();
             }
         }
 
-        public void StartGetAlignLAFDataThread()
+        public void StopGetLAFDataThread()
         {
-            if (_getAlignLAFDataThread == null)
-            {
-                _getAlignLAFDataThread = new Thread(GetAlignLAFData);
-                _getAlignLAFDataThread.Start();
-            }
+            _getLAFDataThread.Abort();
+            _getLAFDataThread = null;
         }
 
-        public void StopGetAkkonLAFDataThread()
-        {
-            _getAkkonLAFDataThread.Abort();
-            _getAkkonLAFDataThread = null;
-        }
 
-        public void StopGetAlignLAFDataThread()
-        {
-            _getAlignLAFDataThread.Abort();
-            _getAlignLAFDataThread = null;
-        }
-
-        private void GetAkkonLAFData()
+        private void GetLAFData()
         {
             double getData = 0;
             while (true)
@@ -196,23 +180,13 @@ namespace ATT_UT_IPAD.Core
                 if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == true)
                 {
                     // AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
+                    //AkkonLaf
                     getData = AkkonLAFCtrl.Status.MPosPulse;
                     AkkonMPosDataList.Add(getData);
                     getData = AkkonLAFCtrl.Status.ReturndB;
                     AkkonRetDataList.Add(getData);
-                }
-                Thread.Sleep(50);
-            }
-        }
 
-        private void GetAlignLAFData()
-        {
-            double getData = 0;
-            while (true)
-            {
-                if (AppsStatus.Instance().IsInspRunnerFlagFromPlc == true)
-                {
-                    // AutoRun 일때만 동작, List에 계속 add하고 런 완료 시 한꺼번에 Save하는 방식
+                    //AlignLaf
                     getData = AlignLAFCtrl.Status.MPosPulse;
                     AlignMPosDataList.Add(getData);
                     getData = AlignLAFCtrl.Status.ReturndB;
@@ -313,15 +287,15 @@ namespace ATT_UT_IPAD.Core
 
             InspProcessTask.StartTask();
             StartSeqTask();
-            StartGetAkkonLAFDataThread();
-            StartGetAlignLAFDataThread();
+            StartGetLAFDataThread();
+            //StartGetAlignLAFDataThread();
         }
 
         public void Release()
         {
             StopDevice();
-            StopGetAkkonLAFDataThread();
-            StopGetAlignLAFDataThread();
+            StopGetLAFDataThread();
+            //StopGetAlignLAFDataThread();
             InspProcessTask.StopTask();
             StopSeqTask();
         }
@@ -968,7 +942,7 @@ namespace ATT_UT_IPAD.Core
             string date = currentTime.ToString("yyyyMMdd");
             string folderPath = AppsInspResult.Instance().Cell_ID;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, "Data", date);
 
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
@@ -1592,8 +1566,8 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.VirtualMode)
                 {
-                    _saveThread = null;
-                    return;
+                    //_saveThread = null;
+                    //return;
                 }
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -1881,7 +1855,7 @@ namespace ATT_UT_IPAD.Core
             string timeStamp = currentTime.ToString("yyyyMMddHHmmss");
             string folderPath = AppsInspResult.Instance().Cell_ID + "_" + timeStamp;
 
-            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, date, folderPath);
+            string path = Path.Combine(ConfigSet.Instance().Path.Result, inspModel.Name, "Image", date, folderPath);
 
             return path;
         }
@@ -2030,7 +2004,7 @@ namespace ATT_UT_IPAD.Core
 
                 int capacity = ConfigSet.Instance().Operation.DataStoringCapacity;
 
-                DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name), capacity);
+                DeleteDirectoryByCapacity(Path.Combine(resultPath, inspModel.Name, "Image"), capacity);
                 //DeleteDirectoryByCapacity(logPath, capacity);     logPath삭제는 설정한 Duration으로 삭제
 
                 int duration = ConfigSet.Instance().Operation.DataStoringDuration;

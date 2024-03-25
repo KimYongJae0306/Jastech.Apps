@@ -319,10 +319,10 @@ namespace Jastech.Apps.Winform.UI.Controls
             double minValue = dataList.Min();
             double chartYRange = 0;
 
-            if (Math.Abs(maxValue) >= Math.Abs(minValue))          
+            if (Math.Abs(maxValue) >= Math.Abs(minValue))
                 chartYRange = Math.Ceiling(Math.Abs(maxValue));
 
-            else if(Math.Abs(maxValue) <= Math.Abs(minValue))            
+            else if (Math.Abs(maxValue) <= Math.Abs(minValue))
                 chartYRange = Math.Ceiling(Math.Abs(minValue));
 
 
@@ -630,7 +630,7 @@ namespace Jastech.Apps.Winform.UI.Controls
 
                     _selectedAlignResult = (AlignResultType)Enum.Parse(typeof(AlignResultType), legendItem.SeriesName);
 
-                    if(dataCount > 0)
+                    if (dataCount > 0)
                         UpdateAlignChart(SelectedTabNo, dataCount, _selectedAlignResult);
                     else
                         UpdateAlignChart(SelectedTabNo, _selectedAlignResult);
@@ -710,6 +710,7 @@ namespace Jastech.Apps.Winform.UI.Controls
                 }
             }
         }
+
         #endregion
 
         private void lblDataCountValue_Click(object sender, EventArgs e)

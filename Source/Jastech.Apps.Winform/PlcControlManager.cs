@@ -1157,6 +1157,18 @@ namespace Jastech.Apps.Winform
                 int rightPanelX_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelX).CaliperParams.GetContrastThreshold();
                 int rightPanelY_param = (int)tab.GetAlignParam(ATTTabAlignName.RightPanelY).CaliperParams.GetContrastThreshold();
 
+                double lx = (double)tab.AlignSpec.LeftSpecX_um;
+                double ly = (double)tab.AlignSpec.LeftSpecY_um;
+                double rx = (double)tab.AlignSpec.RightSpecX_um;
+                double ry = (double)tab.AlignSpec.RightSpecY_um;
+                double cx = (double)tab.AlignSpec.CenterSpecX_um;
+
+                int leftAlignX_Spec = ConvertDoubleWordData(lx);
+                int leftAlignY_Spec = ConvertDoubleWordData(ly);
+                int rightAlignX_Spec = ConvertDoubleWordData(rx);
+                int rightAlignY_Spec = ConvertDoubleWordData(ry);
+                int centerAlignX_Spec = ConvertDoubleWordData(cx);
+
                 var plc = DeviceManager.Instance().PlcHandler.First() as MelsecPlc;
                 PlcDataStream stream = new PlcDataStream();
 
@@ -1171,6 +1183,15 @@ namespace Jastech.Apps.Winform
                     stream.AddSwap16BitData(Convert.ToInt16(rightFpcY_param));
                     stream.AddSwap16BitData(Convert.ToInt16(rightPanelX_param));
                     stream.AddSwap16BitData(Convert.ToInt16(rightPanelY_param));
+
+                    stream.AddSwap16BitData(0);     //Empty
+                    stream.AddSwap16BitData(0);     //Empty
+
+                    stream.AddSwap32BitData(leftAlignX_Spec);
+                    stream.AddSwap32BitData(leftAlignY_Spec);
+                    stream.AddSwap32BitData(rightAlignX_Spec);
+                    stream.AddSwap32BitData(rightAlignY_Spec);
+                    stream.AddSwap32BitData(centerAlignX_Spec);
                 }
                 else
                 {
@@ -1183,6 +1204,15 @@ namespace Jastech.Apps.Winform
                     stream.Add16BitData(Convert.ToInt16(rightFpcY_param));
                     stream.Add16BitData(Convert.ToInt16(rightPanelX_param));
                     stream.Add16BitData(Convert.ToInt16(rightPanelY_param));
+
+                    stream.Add16BitData(0);     //Empty
+                    stream.Add16BitData(0);     //Empty
+
+                    stream.Add32BitData(leftAlignX_Spec);
+                    stream.Add32BitData(leftAlignY_Spec);
+                    stream.Add32BitData(rightAlignX_Spec);
+                    stream.Add32BitData(rightAlignY_Spec);
+                    stream.Add32BitData(centerAlignX_Spec);
                 }
 
                 plc.Write("D" + map.AddressNum, stream.Data);

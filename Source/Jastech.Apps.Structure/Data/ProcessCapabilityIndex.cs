@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 
 namespace Jastech.Apps.Structure.Data
 {
@@ -59,6 +60,8 @@ namespace Jastech.Apps.Structure.Data
             result.Ppk = Math.Abs(Math.Round(result.Ppk, 3));
 
             // Round the results and Get absolute value
+            result.Max = Math.Round(valueList.Max());
+            result.Min = Math.Round(valueList.Min());
             result.Range = Math.Round(valueList.Max() - valueList.Min(), 3);
             result.Mean = Math.Round(mean, 3);
             result.Sigma = Math.Round(populationStdDev, 3);
@@ -81,6 +84,10 @@ namespace Jastech.Apps.Structure.Data
         public double Pp { get; set; } = 0.0;
 
         public double Ppk { get; set; } = 0.0;
+
+        public double Max { get; set; } = 0.0;
+
+        public double Min { get; set; } = 0.0;
 
         public double Range { get; set; } = 0.0;
 

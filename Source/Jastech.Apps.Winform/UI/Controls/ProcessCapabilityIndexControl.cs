@@ -144,8 +144,10 @@ namespace Jastech.Apps.Winform.UI.Controls
                 "Cpk",
                 "Pp",
                 "Ppk",
-                "Range",
-                "Mean",
+                "Max",
+                "Min",
+                "Max-Min",  //Range
+                "Avg",      //Mean
                 "σ",
                 "6σ",
             };
@@ -280,6 +282,8 @@ namespace Jastech.Apps.Winform.UI.Controls
                     $"{pcResult.Cpk}",
                     $"{pcResult.Pp}",
                     $"{pcResult.Ppk}",
+                    $"{pcResult.Max}",
+                    $"{pcResult.Min}",
                     $"{pcResult.Range}",
                     $"{pcResult.Mean}",
                     $"{pcResult.Sigma}",
