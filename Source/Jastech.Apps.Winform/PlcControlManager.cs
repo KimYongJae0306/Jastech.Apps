@@ -31,6 +31,8 @@ namespace Jastech.Apps.Winform
         private static PlcControlManager _instance = null;
 
         private int _loopCount { get; set; } = 0;
+
+        private bool plcTest { get; set; } = true;
         #endregion
 
         #region 속성

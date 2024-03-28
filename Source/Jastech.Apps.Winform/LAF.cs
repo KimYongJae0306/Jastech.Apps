@@ -83,7 +83,7 @@ namespace Jastech.Apps.Winform
                     string command = "uc rep cog mpos ls1 ls2 ret mbusy";
                     laf.RequestData(command);
                 }
-                Thread.Sleep(100); //원래 150ms
+                Thread.Sleep(150); //원래 150ms
             }
         }
 
@@ -119,6 +119,7 @@ namespace Jastech.Apps.Winform
 
                 status.IsLaserOn = laf.IsLaserOn;
                 status.IsTrackingOn = laf.IsTrackingOn;
+                Logger.Debug(LogType.Device, $"Device name : {name}, Tracking ON? -> {status.IsTrackingOn.ToString()}");
             }
         }
 

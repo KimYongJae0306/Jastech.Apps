@@ -434,7 +434,7 @@ namespace ATT_UT_IPAD.Core
                     AlignRetDataList.Clear();
 
                     AppsStatus.Instance().IsInspRunnerRunning = true;
-             
+
                     WriteLog("Receive Inspection Start Signal From PLC.", true);
 
                     if (PlcControlManager.Instance().GetValue(PlcCommonMap.PLC_RunMode) == "2")
@@ -454,6 +454,7 @@ namespace ATT_UT_IPAD.Core
                     WriteLog("Align LAF Tracking On.");
 
                     Thread.Sleep(300);
+                    Thread.Sleep(200);      // 200 추가
 
                     SeqStep = SeqStep.SEQ_BUFFER_INIT;
                     break;
@@ -596,7 +597,7 @@ namespace ATT_UT_IPAD.Core
                 case SeqStep.SEQ_MANUAL_JUDGE:
                     if (_updateThread != null)
                         break;
-                    
+
                     AppsStatus.Instance().IsManualJudgeCompleted = false;
 
                     SetManualJudgeData(unit, AppsInspResult.Instance());
@@ -883,7 +884,7 @@ namespace ATT_UT_IPAD.Core
                 AlignDailyInfo alignInfo = new AlignDailyInfo();
 
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
-     
+
                 alignInfo.InspectionTime = AppsInspResult.Instance().EndInspTime.ToString("HH:mm:ss");
                 alignInfo.PanelID = AppsInspResult.Instance().Cell_ID;
                 alignInfo.TabNo = tabInspResult.TabNo;
@@ -969,7 +970,7 @@ namespace ATT_UT_IPAD.Core
                 SaveAlignResultAsMsaSummary(path, inspModel.TabCount);
             }
         }
-        
+
         private void SaveAlignResult(string resultPath, int tabCount)
         {
             DateTime currentTime = AppsInspResult.Instance().StartInspTime;
@@ -1566,8 +1567,8 @@ namespace ATT_UT_IPAD.Core
             {
                 if (ConfigSet.Instance().Operation.VirtualMode)
                 {
-                    //_saveThread = null;
-                    //return;
+                    _saveThread = null;
+                    return;
                 }
 
                 var inspModel = ModelManager.Instance().CurrentModel as AppsInspModel;
@@ -1623,7 +1624,10 @@ namespace ATT_UT_IPAD.Core
                         Directory.CreateDirectory(filePath);
 
                     if (operation.ExtensionOKImage == ImageExtension.Bmp)
+                    {
                         SaveImage(tabInspResult.Image, filePath, imageName, Judgement.OK, ImageExtension.Bmp, false);
+                        SaveAlignResult(tabInspResult, resultPath);
+                    }
                     else if (operation.ExtensionOKImage == ImageExtension.Jpg)
                     {
                         if (tabInspResult.Image.Width > SAVE_IMAGE_MAX_WIDTH)
@@ -1657,11 +1661,10 @@ namespace ATT_UT_IPAD.Core
                         if (tabInspResult.AkkonResult.Judgement == Judgement.NG)
                             SaveAkkonDefectLeadImage(resultPath, tabInspResult);
                     }
+                    else
+                        SaveAlignResult(tabInspResult, resultPath);
                 }
             }
-
-            if (isAkkonResult == false)
-                SaveAlignResult(tabInspResult, resultPath);
         }
 
         public void SaveAlignResult(TabInspResult tabInspResult, string path)
@@ -2031,7 +2034,7 @@ namespace ATT_UT_IPAD.Core
         private void DeleteDirectoryByCapacity(string folderPath, int capacity)
         {
             double useRate = FileHelper.CheckCapacity("D");
-            if (useRate >= capacity)
+            while (useRate >= capacity)
             {
                 var directoryList = FileHelper.GetDirectoryList(folderPath);
                 string directoryPath = directoryList.FirstOrDefault();
@@ -2042,7 +2045,11 @@ namespace ATT_UT_IPAD.Core
                     directoryInfo.Delete(true);
                 }
                 else
+                {
                     oldDirectory.Delete(true);
+                }
+
+                useRate = FileHelper.CheckCapacity("D");
             }
         }
 
@@ -2294,7 +2301,7 @@ namespace ATT_UT_IPAD.Core
             CSVHelper.WriteData(csvFile, body);
         }
 
-        private void SaveMarkToMarkDistanceData(string resultPath,int tabCount)
+        private void SaveMarkToMarkDistanceData(string resultPath, int tabCount)
         {
             if (AppsConfig.Instance().EnableWriteMarkToMarkDistance == false)
                 return;
@@ -2330,7 +2337,7 @@ namespace ATT_UT_IPAD.Core
             {
                 var tabInspResult = AppsInspResult.Instance().GetAlign(tabNo);
                 var alignResult = tabInspResult.AlignResult;
-                
+
                 var panelDistance = GetMarkToMarkOriginDistance(tabInspResult, Material.Panel);
                 var cofDistance = GetMarkToMarkOriginDistance(tabInspResult, Material.Fpc);
 
